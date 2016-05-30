@@ -5,17 +5,14 @@ import java.awt.Image;
 
 public class Player extends MoveableObject
 {
-	private int dmg, hp, speed;
 	private int projectile; 
 	private Item currentItem;
-	private int xPos, yPos;
-	private Image image;
-	private Dimension size;
 	
-	
-	public Player (int dmg, int hp, int speed, int x, int y, Image i, Dimension s)
+	public Player (int dmg, int hp, int speed, int x, int y, Image i, Dimension s, int maxHP, int projectile, Item item)
 	{
-		super(dmg, hp, speed, x, y, i, s);
+		super(dmg, hp, speed, x, y, i, s, maxHP);
+		this.projectile = projectile;
+		this.currentItem = item;
 	}
 	
 	/**
@@ -27,6 +24,19 @@ public class Player extends MoveableObject
 		projectile = projectileNumber;
 	}
 	
+	/**
+	 * Returns the projectile type
+	 * @return the projectile number
+	 */
+	public int getProjectile ()
+	{
+		return projectile;
+	}
+	
+	/**
+	 * 
+	 * @return the current item in possession
+	 */
 	public Item getCurrentItem ()
 	{
 		return currentItem;
@@ -42,10 +52,13 @@ public class Player extends MoveableObject
 		currentItem = i;
 	}
 	
-	public boolean isAlive ()
+	public void useItem ()
 	{
-		if (hp <=0)
-			return false;
-		return true;
+		String itemName = currentItem.getName();
+		this.setItem(null);
+		
+		// FINISH ITEMS
 	}
+	
+
 }

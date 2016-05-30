@@ -5,16 +5,14 @@ import java.awt.Image;
 
 public class MoveableObject extends GameObject
 {
-	private int dmg, hp, speed;
-	private int xPos, yPos;
-	private Image image;
-	private Dimension size;
+	private int dmg, hp, speed, maxHP;
 	
-	public MoveableObject (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size)
+	public MoveableObject (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP)
 	{
 		super(xPos, yPos, image, size);
 		this.dmg = dmg;
 		this.hp = hp;
+		this.maxHP = maxHP;
 		this.speed = speed;
 	}
 	
@@ -33,6 +31,16 @@ public class MoveableObject extends GameObject
 		return hp;
 	}
 	
+	public int getMaxHP ()
+	{
+		return maxHP;
+	}
+	
+	public void setMaxHP (int newMaxHP)
+	{
+		maxHP = newMaxHP;
+	}
+	
 	public void takeDamage (int amount)
 	{
 		if (amount >= 0)
@@ -42,7 +50,15 @@ public class MoveableObject extends GameObject
 	public void heal (int amount)
 	{
 		if (amount >= 0)
-			hp += amount;
+			if (amount > maxHP)
+				hp = maxHP;
+			else
+				hp += amount;
+	}
+	
+	public int getSpeed ()
+	{
+		return speed;
 	}
 	
 	public void setSpeed (int speed)
@@ -50,10 +66,18 @@ public class MoveableObject extends GameObject
 		this.speed = speed;
 	}
 	
+	
 	public void move (int x, int y)
 	{
-		xPos = x;
-		yPos = y;
+		this.setX(x);
+		this.setY(y);
+	}
+	
+	public boolean isAlive ()
+	{
+		if (hp <=0)
+			return false;
+		return true;
 	}
 	
 	

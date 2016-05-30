@@ -34,6 +34,11 @@ public class GameObject
 		size = d;
 	}
 	
+	public Dimension getSize ()
+	{
+		return size;
+	}
+	
 	public Rectangle2D getHitBox()
 	{
 		return new Rectangle (xPos, yPos, (int)size.getWidth(), (int)size.getHeight());
