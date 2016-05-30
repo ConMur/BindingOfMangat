@@ -4,6 +4,8 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import states.GameStateManager;
+
 /**
  * The panel that displays what is happening in the program
  * @author Connor Murphy
@@ -11,6 +13,11 @@ import javax.swing.JPanel;
  */
 public class GamePanel extends JPanel
 {
+	/**
+	 * A generated serialVersionUID so eclipse does not yell at me
+	 */
+	private static final long serialVersionUID = -7906909062119976256L;
+
 	private boolean running;
 
 	private long lastTime;
@@ -21,7 +28,6 @@ public class GamePanel extends JPanel
 		running = true;
 
 		lastTime = System.nanoTime();
-
 	}
 
 	/**
@@ -29,17 +35,18 @@ public class GamePanel extends JPanel
 	 */
 	public void go()
 	{
+		GameStateManager.init();
 		while (running)
 		{
-			//Calculate the time between frames
+			// Calculate the time between frames
 			long currentTime = System.nanoTime();
 			double deltaTime = (lastTime - currentTime) / 1000000000.0;
-			
-			//Update the simulation
+
+			// Update the simulation
 			update(deltaTime);
-			//Draw the updates
+			// Draw the updates
 			draw();
-			
+
 			lastTime = currentTime;
 		}
 	}
@@ -50,7 +57,7 @@ public class GamePanel extends JPanel
 	 */
 	private void update(double deltaTime)
 	{
-		
+		GameStateManager.update(deltaTime);
 	}
 
 	/**
@@ -64,7 +71,7 @@ public class GamePanel extends JPanel
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		gsm.draw();
+		GameStateManager.draw(g);
 	}
 
 	/**

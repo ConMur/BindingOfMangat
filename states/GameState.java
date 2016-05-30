@@ -2,6 +2,11 @@ package states;
 
 import java.awt.Graphics;
 
+/**
+ * An interface for each game state
+ * @author Connor Murphy
+ *
+ */
 public interface GameState
 {
 	// Initialize the game state

@@ -12,26 +12,49 @@ import javax.swing.JFrame;
  */
 public class GameFrame extends JFrame
 {
+	/**
+	 * A generated serialVersionUID so eclipse does not yell at me
+	 */
+	private static final long serialVersionUID = -891368853245353471L;
+
+	/**
+	 * The entry point to the program
+	 * @param args command line arguments (unused)
+	 */
 	public static void main(String[] args)
 	{
-		// Initiate panel here:
-		final JFrame frame = new JFrame("Binding of Mangat");
+		// Ensure not using command line args
+		if (args.length > 0)
+		{
+			System.err.println("USAGE: no command line arguments");
+			System.exit(0);
+		}
+		new GameFrame();
+	}
+
+	public GameFrame()
+	{
+		super("Binding of Mangat");
+		// Initiate frame and panel
+
 		final GamePanel panel = new GamePanel();
-		frame.add(panel);
-		frame.pack();
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		frame.addWindowListener(new WindowAdapter()
+		add(panel);
+		pack();
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		// Add a listener to close resources before closing the window
+		addWindowListener(new WindowAdapter()
 		{
 			@Override
 			public void windowClosing(WindowEvent e)
 			{
 				panel.stop();
-				frame.dispose();
+				dispose();
 			}
 		});
-		
-		frame.setVisible(true);
-		panel.go();
 
+		setVisible(true);
+		panel.go();
 	}
+
 }
