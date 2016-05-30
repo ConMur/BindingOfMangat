@@ -6,9 +6,6 @@ import thingsthatmove.GameObject;
 public class Item extends GameObject
 {
 	private String name;
-	private Image image;
-	private int xPos, yPos;
-	private Dimension size;
 	private boolean onGround;
 	
 	public Item (String name, int x, int y, Image image, Dimension size, boolean oG)
