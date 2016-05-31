@@ -74,6 +74,28 @@ public class Room
 		}
 	}
 	
+	public Player getPlayer()
+	{
+		return player;
+	}
+	
+	public void setPlayer(Player p)
+	{
+		this.player = p;
+	}
+	
+	public void removePlayer()
+	{
+		this.player = null;
+	}
+	
+	public boolean hasPlayer()
+	{
+		if (player == null)
+			return false;
+		return true;
+	}
+	
 	public boolean setNorth (Room r)
 	{
 		if (north != null)
