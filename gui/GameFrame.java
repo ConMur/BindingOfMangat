@@ -16,27 +16,16 @@ public class GameFrame extends JFrame
 	 * A generated serialVersionUID so eclipse does not yell at me
 	 */
 	private static final long serialVersionUID = -891368853245353471L;
-
 	/**
 	 * The entry point to the program
 	 * @param args command line arguments (unused)
 	 */
-	public static void main(String[] args)
-	{
-		// Ensure not using command line args
-		if (args.length > 0)
-		{
-			System.err.println("USAGE: no command line arguments");
-			System.exit(0);
-		}
-		new GameFrame();
-	}
 
 	public GameFrame()
 	{
 		super("Binding of Mangat");
-		// Initiate frame and panel
-
+		
+		// Initialize frame and panel
 		final GamePanel panel = new GamePanel();
 		add(panel);
 		pack();
@@ -52,9 +41,10 @@ public class GameFrame extends JFrame
 				dispose();
 			}
 		});
-
+		
+		setLocationRelativeTo(null);
+		setResizable(false);
 		setVisible(true);
 		panel.go();
 	}
-
 }

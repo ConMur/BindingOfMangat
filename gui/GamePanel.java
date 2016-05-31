@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -26,6 +28,8 @@ public class GamePanel extends JPanel
 	{
 		super();
 		running = true;
+		
+		setPreferredSize(new Dimension(1280, 720));
 
 		lastTime = System.nanoTime();
 	}
@@ -71,7 +75,16 @@ public class GamePanel extends JPanel
 	@Override
 	public void paintComponent(Graphics g)
 	{
-		GameStateManager.draw(g);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		try
+		{
+			GameStateManager.draw(g);
+		}
+		catch (NullPointerException npe)
+		{
+			// Do nothing as trying to repaint before the game state manager has something to paint
+		}
 	}
 
 	/**
