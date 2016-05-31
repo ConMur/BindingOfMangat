@@ -66,7 +66,6 @@ public class MoveableObject extends GameObject
 		this.speed = speed;
 	}
 	
-	
 	public void move (int x, int y)
 	{
 		this.setX(x);
