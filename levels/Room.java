@@ -2,6 +2,7 @@ package levels;
 
 import item.Item;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -12,6 +13,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import thingsthatmove.Enemy;
+import thingsthatmove.GameObject;
 import thingsthatmove.Player;
 
 public class Room
@@ -19,6 +21,7 @@ public class Room
 	private ArrayList<Enemy>	enemies = new ArrayList<Enemy>();
 	private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
 	private ArrayList<Item> items = new ArrayList<Item>();
+	private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
 	private Thread moveEnemies = new Thread(new EnemyMovementThread());
 	private Player player;
 	private Image background;
@@ -32,11 +35,16 @@ public class Room
 	private final int LOWER_Y_BOUND = 0;
 	private final int UPPER_Y_BOUND = 0;
 
-	public Room (ArrayList<Enemy> e, ArrayList<Item> i, Player p, Room north, Room east, Room south, Room west)
+	public Room (ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p, Room north, Room east, Room south, Room west)
 	{
 		this.enemies = e;
 		this.items = i;
+		this.roomObjects = go;
 		this.player = p;
+		this.north = north;
+		this.east = east;
+		this.south = south;
+		this.west = west;
 		
 		try {
 			background = ImageIO.read(getClass().getResource("/images/bg.png"));
@@ -47,9 +55,10 @@ public class Room
 		}
 	}
 	
-	public Room (ArrayList<Enemy> e, ArrayList<Item> i, Player p)
+	public Room (ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p)
 	{
 		this.enemies = e;
+		this.roomObjects = go;
 		this.items = i;
 		this.player = p;
 		
@@ -140,6 +149,28 @@ public class Room
 	public boolean hasItems()
 	{
 		if (items == null)
+			return false;
+		return true;
+	}
+	
+	public ArrayList<GameObject> getRoomObjects()
+	{
+		return roomObjects;
+	}
+	
+	public void addRoomObjects(ArrayList<GameObject> go)
+	{
+		roomObjects = go;
+	}
+	
+	public void removeRoomObjects()
+	{
+		roomObjects = null;
+	}
+	
+	public boolean hasRoomObjects()
+	{
+		if (roomObjects == null)
 			return false;
 		return true;
 	}
@@ -268,12 +299,16 @@ public class Room
 					// When enemies are within aggro-range follow players
 					// Enemies cannot overlap other game objects
 					Enemy currentEnemy = enemies.get(n);
+
+					if (!currentEnemy.isAlive())
+						enemies.remove(n);
 					// Only move moveable enemies
-					if (currentEnemy.canMove())
+					else if (currentEnemy.canMove())
 					{
 						int direction;
 						Random r = new Random();
-						
+						// Enemy is of the passive type
+				
 						// No initial direction
 						if (currentEnemy.getDirection() == ' ')
 						{
@@ -306,9 +341,35 @@ public class Room
 									currentEnemy.setDirection('W');
 							}
 						}
+						
 						// Keep track of old coordinates
 						int oldX = currentEnemy.getX();
 						int oldY = currentEnemy.getY();
+						// Enemy is of the aggresive type
+						if (currentEnemy.isAngry())
+						{
+							int enemyWidth = (int) currentEnemy.getSize().getWidth();
+							int enemyHeight = (int) currentEnemy.getSize().getHeight();
+							// Make an aggro rectangle for range
+							// Aggro range is in a 5 * enemy width by 5 * enemy height box with the enemy in the centre
+							Rectangle aggroBox = new Rectangle (oldX - enemyWidth * 2, oldY - enemyHeight * 2, enemyWidth * 5, enemyHeight * 5);
+							// Player is within aggro range
+							if (aggroBox.intersects(player.getHitBox()))
+							{
+								// Change direction to run at the player AGGRESIVELY
+								if (player.getX() == currentEnemy.getX())
+								{
+									if (player.getY() > currentEnemy.getY()) 
+											currentEnemy.setDirection('S');
+									else
+										currentEnemy.setDirection('N');
+								}
+								else if (player.getX() > currentEnemy.getX())
+									currentEnemy.setDirection('E');
+								else
+									currentEnemy.setDirection('W');
+							}
+						}
 						// Move the enemy in its direction
 						currentEnemy.moveInDirection();
 						
