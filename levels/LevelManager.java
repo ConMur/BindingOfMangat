@@ -1,60 +1,201 @@
 package levels;
 
+import item.Item;
+
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
+import thingsthatmove.Enemy;
 import thingsthatmove.Player;
 
+//TODO: add a way to make obstacles (rocks, walls, etc) in the rooms
+
+/**
+ * Creates, updates and draws the levels in the game
+ * @author Connor Murphy
+ *
+ */
 public final class LevelManager
 {
-	private static final int EXTRA_ROOMS_PER_LEVEL = 1;
+	private static final int EXTRA_ROOMS_PER_LEVEL = 2;
 	private static final int NUMBER_OF_LEVELS = 4;
-	
+
+	// The percent chance that there will be a shop this level
+	private static final int SHOP_ROOM_CHANCE = 50;
+
+	// The percent chance that there will be an item in the room
+	private static final int ITEM_CHANCE = 20;
+
+	// The minimum amount of enemies in a level
+	private static final int MIN_ENEMIES = 3;
+
+	// The number of enemies more than the minimum that there can be in the
+	// level
+	private static final int ADDITIONAL_ENEMIES = 3;
+
 	private static ArrayList<Level> levels;
 	private static Level currentLevel;
-	
-	private LevelManager()	{}
-	
-	public static void init()
+
+	private static int levelNumber;
+
+	private static Random rand;
+
+	// Lists of things that can be added to a level
+	private static ArrayList<Enemy> scienceEnemyList, englishEnemyList,
+			mathEnemyList, historyEnemyList;
+	private static ArrayList<Item> itemList;
+
+	// A reference to the player
+	private static Player player;
+
+	private LevelManager()
+	{
+	}
+
+	public static void init(Player p)
 	{
 		levels = new ArrayList<Level>();
+		rand = new Random();
+		player = p;
+
+		scienceEnemyList = new ArrayList<>();
+		englishEnemyList = new ArrayList<>();
+		mathEnemyList = new ArrayList<>();
+		historyEnemyList = new ArrayList<>();
+		populateEnemyLists(scienceEnemyList, englishEnemyList, mathEnemyList,
+				historyEnemyList);
+
+		itemList = new ArrayList<>();
+		populateItemList(itemList);
+
+		// Start on the first level
+		levelNumber = 1;
+
 		generateLevels(NUMBER_OF_LEVELS);
-		
-		//Start on the first level
+
+		// Set the current level to the first level
 		currentLevel = levels.get(0);
 	}
 
+	private static void populateEnemyLists(
+			ArrayList<Enemy> science, ArrayList<Enemy> english,
+			ArrayList<Enemy> math, ArrayList<Enemy> history)
+	{
+		// TODO: update as more enemies are added
+		// Add the science enemies
+		// Add the english enemies
+		// Add the math enemies
+		// Add the history enemies
+	}
+
+	private static void populateItemList(ArrayList<Item> items)
+	{
+		// TODO: update as more items are added
+		// Add the items
+	}
+
+	/**
+	 * Creates the given number of levels
+	 * @param numLevels the number of levels to create
+	 */
 	private static void generateLevels(int numLevels)
 	{
 		/*
-		 * maybe shop
-		 * always key door
-		 * always boss room
-		 * always other rooms
+		 * maybe shop always key door always boss room always other rooms
 		 */
-		
-		for(int i = 0; i < numLevels; ++i)
+
+		for (int i = 0; i < numLevels; ++i)
 		{
-			//Create the rooms list
+			// Create the rooms list
 			ArrayList<Room> rooms = new ArrayList<Room>();
-			
-			Level level = new Level();
+
+			// Create a copy of the list of enemies for this level
+			ArrayList<Enemy> levelEnemies = new ArrayList<>();
+			if (levelNumber == 1)
+			{
+				Collections.copy(scienceEnemyList, levelEnemies);
+			}
+			else if (levelNumber == 2)
+			{
+				Collections.copy(englishEnemyList, levelEnemies);
+			}
+			else if (levelNumber == 3)
+			{
+				Collections.copy(mathEnemyList, levelEnemies);
+			}
+			else if (levelNumber == 4)
+			{
+				Collections.copy(historyEnemyList, levelEnemies);
+			}
+
+			// Create a copy of the list of items for this level
+			ArrayList<Item> levelItems = new ArrayList<>();
+			Collections.copy(itemList, levelItems);
+
+			// Create general rooms (4 rooms on 1st level increasing by
+			// EXTRA_ROOMS_PER_LEVEL each time
+			for (int j = 0; j < 3 + (levelNumber * EXTRA_ROOMS_PER_LEVEL); ++j)
+			{
+				rooms.add(createRoom(levelEnemies, levelItems));
+			}
+			// Roll for a shop and add it if successful or just add another
+			// general room
+			int roll = rand.nextInt(100);
+			if (roll < SHOP_ROOM_CHANCE)
+			{
+				// TODO add shop (room with game object with a GameObject that
+				// the player can interact with)
+			}
+			else
+			{
+				rooms.add(createRoom(levelEnemies, levelItems));
+			}
+
+			Level level = new Level(rooms);
+			levels.add(level);
 		}
 	}
-	
+
+	private static Room createRoom(ArrayList<Enemy> enemies,
+			ArrayList<Item> items)
+	{
+		// Choose the enemy for this room
+		Enemy e = enemies.remove(rand.nextInt(enemies.size()));
+
+		// Create a number of enemies
+		ArrayList<Enemy> enemyList = new ArrayList<>();
+		int numEnemies = MIN_ENEMIES + rand.nextInt(ADDITIONAL_ENEMIES);
+		for (int enemy = 0; enemy < numEnemies; ++enemy)
+		{
+			enemyList.add(new Enemy(e));
+		}
+
+		// Have a chance to have an item in the room
+		ArrayList<Item> itemList = new ArrayList<>();
+		int itemChance = rand.nextInt(100);
+		if (itemChance < ITEM_CHANCE)
+		{
+			itemList.add(items.remove(rand.nextInt(items.size())));
+		}
+
+		Room room = new Room(enemyList, itemList, player);
+		return room;
+	}
+
 	public void update()
 	{
-		//Check if the player is at a door
-		int x = Player.getX();
-		int y = Player.getY();
-		
-		//if(x > && x < && y > && y <)
+		// Check if the player is at a door
+		int x = player.getX();
+		int y = player.getY();
+
+		// if(x > && x < && y > && y <)
 	}
-	
+
 	public void draw(Graphics g)
 	{
 		currentLevel.draw(g);
 	}
-	
-	
+
 }

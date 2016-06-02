@@ -10,6 +10,9 @@ public class Level
 	private Random rand;
 	private Room currentRoom;
 
+	
+	//TODO: call start room and end room when entering and exiting a room
+	
 	// Additional room chance out of TOTAL_CHANCES
 	private final int ADDITIONAL_ROOM_CHANCE = 3;
 	private final int TOTAL_CHANCES = 10;
@@ -47,8 +50,8 @@ public class Level
 					int chanceNumber = rand.nextInt(TOTAL_CHANCES);
 					if (chanceNumber <= ADDITIONAL_ROOM_CHANCE)
 					{
-						Room additionalRoom = new Room();
-						addRoom(workingRoom, rooms.get(rand.nextInt(rooms.size())));
+						Room additionalRoom = rooms.get(rand.nextInt(rooms.size()));
+						addRoom(additionalRoom, rooms.get(rand.nextInt(rooms.size())));
 					}
 				}
 				
