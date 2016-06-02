@@ -4,6 +4,7 @@ import item.Item;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,19 +16,22 @@ import thingsthatmove.Player;
 
 public class Room
 {
-	private ArrayList<Enemy> enemies;
-	private ArrayList<Item> items;
+	private ArrayList<Enemy>	enemies = new ArrayList<Enemy>();
+	private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
+	private ArrayList<Item> items = new ArrayList<Item>();
+	private Thread moveEnemies = new Thread(new EnemyMovementThread());
 	private Player player;
 	private Image background;
 	private Room north, east, south, west;
+
+	private boolean inRoom;
 	
-	// The room bounds
+	// The room bounds (CHANGE)
 	private final int LOWER_X_BOUND = 0;
 	private final int UPPER_X_BOUND = 0;
 	private final int LOWER_Y_BOUND = 0;
 	private final int UPPER_Y_BOUND = 0;
 
-	
 	public Room (ArrayList<Enemy> e, ArrayList<Item> i, Player p, Room north, Room east, Room south, Room west)
 	{
 		this.enemies = e;
@@ -96,6 +100,50 @@ public class Room
 		return true;
 	}
 	
+	public ArrayList<Enemy> getEnemies()
+	{
+		return enemies;
+	}
+	
+	public void addEnemies(ArrayList<Enemy> e)
+	{
+		enemies = e;
+	}
+	
+	public void removeEnemies()
+	{
+		enemies = null;
+	}
+	
+	public boolean hasEnemies()
+	{
+		if (enemies == null)
+			return false;
+		return true;
+	}
+
+	public ArrayList<Item> getItems()
+	{
+		return items;
+	}
+	
+	public void addItems(ArrayList<Item> i)
+	{
+		items = i;
+	}
+	
+	public void removeItems()
+	{
+		items = null;
+	}
+	
+	public boolean hasItems()
+	{
+		if (items == null)
+			return false;
+		return true;
+	}
+
 	public boolean setNorth (Room r)
 	{
 		if (north != null)
@@ -155,11 +203,46 @@ public class Room
 		return false;
 	}
 	
-	
 	public void startRoom ()
 	{
-		Thread moveEnemies = new Thread(new EnemyMovementThread());
+		inRoom = true;
 		moveEnemies.run();
+	}
+	
+	public void endRoom()
+	{
+		inRoom = false;
+	}
+	
+	public void updateHitboxes()
+	{
+		// Remove all current hitboxes
+		for (int n = 0 ; n < hitboxes.size() ; n ++)
+			hitboxes.remove(n);
+		
+		// Add all enemy hitboxes
+		for (Enemy e : enemies)
+			hitboxes.add(e.getHitBox());
+		
+		// Add all item hitboxes
+		for (Item i : items)
+			hitboxes.add(i.getHitBox());
+	}
+	
+	public boolean enemyCollision (int enemyIndex, Rectangle enemyHitbox)
+	{
+		for (int i = 0 ; i < enemyIndex ; i ++)
+		{
+			if (enemyHitbox.intersects(hitboxes.get(i)));
+				return true;
+		}
+		
+		for (int j = enemyIndex + 1 ; j < hitboxes.size() ; j ++)
+		{
+			if (enemyHitbox.intersects(hitboxes.get(j)));
+				return true;
+		}
+		return false;
 	}
 	
 	public void draw(Graphics g) {
@@ -174,9 +257,9 @@ public class Room
 	{
 		public void run()
 		{
-			while (true)
+			while (inRoom)
 			{
-				for (Enemy currentEnemy : enemies)
+				for (int n = 0 ; n < enemies.size() ; n ++)
 				{
 					// Each enemy can go four directions (N,E,S,W)
 					// Enemies decide on which direction to take on a random basis
@@ -184,24 +267,60 @@ public class Room
 					// After hitting another game object they will decide another direction on a random basis
 					// When enemies are within aggro-range follow players
 					// Enemies cannot overlap other game objects
-					
-					if (currentEnemy.getMoveState())
+					Enemy currentEnemy = enemies.get(n);
+					// Only move moveable enemies
+					if (currentEnemy.canMove())
 					{
-						int playerX = player.getX();
-						int playerY = player.getY();
 						int direction;
 						Random r = new Random();
 						
 						// No initial direction
 						if (currentEnemy.getDirection() == ' ')
 						{
+							// Get and assign a random direction
 							direction = r.nextInt(4);
-							
+							if (direction == 0)
+								currentEnemy.setDirection('N');
+							else if (direction == 1)
+								currentEnemy.setDirection('E');
+							else if (direction == 2)
+								currentEnemy.setDirection('S');
+							else
+								currentEnemy.setDirection('W');
 						}
-					}
+						// Already moving in a direction
+						else
+						{
+							// Set a 20% chance to change direction
+							if (r.nextInt(100) >= 80)
+							{
+								// Get and assign a random direction
+								direction = r.nextInt(4);
+								if (direction == 0)
+									currentEnemy.setDirection('N');
+								else if (direction == 1)
+									currentEnemy.setDirection('E');
+								else if (direction == 2)
+									currentEnemy.setDirection('S');
+								else
+									currentEnemy.setDirection('W');
+							}
+						}
+						// Keep track of old coordinates
+						int oldX = currentEnemy.getX();
+						int oldY = currentEnemy.getY();
+						// Move the enemy in its direction
+						currentEnemy.moveInDirection();
 						
-					
+						// There is a collision with another ENEMY or ITEM (not player) so move back
+						if (enemyCollision(n, currentEnemy.getHitBox()))
+							currentEnemy.move(oldX, oldY);
+					}
 				}
+	   		   try {
+    			   Thread.sleep(20);
+    		   }catch (Exception exc) {}
+    		   draw();
 			}
 		}
 		
