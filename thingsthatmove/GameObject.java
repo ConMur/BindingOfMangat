@@ -39,7 +39,7 @@ public class GameObject
 		return size;
 	}
 	
-	public Rectangle2D getHitBox()
+	public Rectangle getHitBox()
 	{
 		return new Rectangle (xPos, yPos, (int)size.getWidth(), (int)size.getHeight());
 	}

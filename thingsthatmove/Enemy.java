@@ -11,19 +11,35 @@ public class Enemy extends MoveableObject
 	private final int UPPER_Y_BOUND = 0;
 	private char currentDirection = ' ';
 	private boolean shouldMove;
+	private boolean anger;
 	
-	public Enemy (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP, boolean shouldMove)
+	public Enemy (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP, boolean shouldMove, boolean anger)
 	{
 		super (dmg, hp, speed, xPos ,yPos, image, size, maxHP);
 		this.shouldMove = shouldMove;
+		this.anger = anger;
 	}
 	
-	public boolean getMoveState()
+	public boolean isAngry()
 	{
-		if (shouldMove)
-			return true;
-		return false;
+		return anger;
 	}
+	
+	public void setAnger(boolean b)
+	{
+		anger = b;
+	}
+	
+	public boolean canMove()
+	{
+		return shouldMove;
+	}
+	
+	public void setMoveState(boolean b)
+	{
+		shouldMove = b;
+	}
+	
 	
 	public void moveEast ()
 	{
@@ -47,6 +63,18 @@ public class Enemy extends MoveableObject
 	{
 		if (getY() < UPPER_Y_BOUND)
 			setY(getY() + getSpeed());
+	}
+	
+	public void moveInDirection()
+	{
+		if (currentDirection == 0)
+			moveNorth();
+		else if (currentDirection == 1)
+			moveEast();
+		else if (currentDirection == 2)
+			moveSouth();
+		else
+			moveWest();
 	}
 	
 	public void setDirection(char c)
