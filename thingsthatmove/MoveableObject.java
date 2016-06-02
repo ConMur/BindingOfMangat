@@ -5,6 +5,10 @@ import java.awt.Image;
 
 public class MoveableObject extends GameObject
 {
+	private final int LOWER_X_BOUND = 0;
+	private final int UPPER_X_BOUND = 0;
+	private final int LOWER_Y_BOUND = 0;
+	private final int UPPER_Y_BOUND = 0;
 	private int dmg, hp, speed, maxHP;
 	
 	public MoveableObject (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP)
@@ -77,6 +81,30 @@ public class MoveableObject extends GameObject
 		if (hp <=0)
 			return false;
 		return true;
+	}
+	
+	public void moveEast ()
+	{
+		if ((getX() + getSize().getWidth()) < UPPER_X_BOUND)
+			setX(getX() + getSpeed());
+	}
+	
+	public void moveWest()
+	{
+		if (getX() > LOWER_X_BOUND)
+			setX(getX() - getSpeed());
+	}
+	
+	public void moveNorth()
+	{
+		if (getY() > LOWER_Y_BOUND)
+			setY(getY() - getSpeed());
+	}
+	
+	public void moveSouth()
+	{
+		if ((getY() + getSize().getHeight()) < UPPER_Y_BOUND)
+			setY(getY() + getSpeed());
 	}
 	
 	
