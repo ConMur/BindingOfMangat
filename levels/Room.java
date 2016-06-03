@@ -381,7 +381,6 @@ public class Room
 	   		   try {
     			   Thread.sleep(20);
     		   }catch (Exception exc) {}
-    		   draw();
 			}
 		}
 		

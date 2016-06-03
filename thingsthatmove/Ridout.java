@@ -7,9 +7,9 @@ public class Ridout extends Enemy
 {
 	private int numLives;
 	
-	public Ridout (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP, int numLives)
+	public Ridout (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP, int numLives,boolean shouldMove, boolean anger)
 	{
-		super (dmg, hp, speed, xPos ,yPos, image, size, maxHP);
+		super (dmg, hp, speed, xPos ,yPos, image, size, maxHP, shouldMove, anger);
 		this.numLives = numLives;
 	}
 	
