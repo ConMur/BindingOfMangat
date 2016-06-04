@@ -26,7 +26,6 @@ public class Level
 	{
 		rand = new Random();
 		setRooms(rooms);
-		System.out.println("returning");
 	}
 
 	public void setRooms(ArrayList<Room> roomList)

@@ -89,7 +89,7 @@ public final class LevelManager
 		// TODO: update as more enemies are added
 		// Add the science enemies
 		try {
-			science.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+			science.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(100, 100), 2, true, false));
 		}
 		catch(IOException ioe)
@@ -99,7 +99,7 @@ public final class LevelManager
 		}
 		// Add the english enemies
 		try {
-			english.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+			english.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(100, 100), 2, true, false));
 		}
 		catch(IOException ioe)
@@ -109,7 +109,7 @@ public final class LevelManager
 		}
 		// Add the math enemies
 		try {
-			math.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+			math.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(100, 100), 2, true, false));
 		}
 		catch(IOException ioe)
@@ -119,7 +119,7 @@ public final class LevelManager
 		}
 		// Add the history enemies
 		try {
-			history.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+			history.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(100, 100), 2, true, false));
 		}
 		catch(IOException ioe)
@@ -134,7 +134,7 @@ public final class LevelManager
 		// TODO: update as more items are added
 		// Add the items
 		try {
-			items.add(new Item("Test", 300, 300, ImageIO.read(LevelManager.class.getResourceAsStream("/images/item/ItemTest.png")), new Dimension(100, 100), true));
+			items.add(new Item("Test", 300, 300, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/pifront.png")), new Dimension(100, 100), true));
 		}
 		catch(IOException ioe)
 		{

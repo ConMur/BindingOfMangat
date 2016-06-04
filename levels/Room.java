@@ -48,7 +48,7 @@ public class Room
 		this.west = west;
 		
 		try {
-			background = ImageIO.read(getClass().getResource("/images/bg.png"));
+			background = ImageIO.read(getClass().getResource("/images/emptyroom.png"));
 		}
 		catch(IOException ioe)
 		{
@@ -64,7 +64,7 @@ public class Room
 		this.player = p;
 		
 		try {
-			background = ImageIO.read(getClass().getResource("/images/room/bgTest.png"));
+			background = ImageIO.read(getClass().getResource("/images/emptyroom.png"));
 		}
 		catch(IOException ioe)
 		{
