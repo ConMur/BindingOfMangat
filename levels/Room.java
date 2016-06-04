@@ -27,6 +27,7 @@ public class Room
 	private Player player;
 	private Image background;
 	private Room north, east, south, west;
+	private boolean northOpen, southOpen, eastOpen, westOpen;
 
 	private boolean inRoom;
 	
@@ -85,6 +86,46 @@ public class Room
 		catch(IOException ioe)
 		{
 			ioe.printStackTrace();
+		}
+	}
+	
+	public boolean isNorthOpen()
+	{
+		return northOpen;
+	}
+
+	public boolean isSouthOpen()
+	{
+		return southOpen;
+	}
+	
+	public boolean isEastOpen()
+	{
+		return eastOpen;
+	}
+	
+	public boolean isWestOpen()
+	{
+		return westOpen;
+	}
+	
+	public void updateDoorStatus()
+	{
+		// Keep all doors closed if there are enemies
+		if (hasEnemies())
+		{
+			northOpen = false;
+			southOpen = false;
+			eastOpen = false;
+			westOpen = false;
+		}
+		// No enemies, open all doors
+		else
+		{
+			northOpen = true;
+			southOpen = true;
+			eastOpen = true;
+			westOpen = true;
 		}
 	}
 	
