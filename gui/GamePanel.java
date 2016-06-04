@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import states.GameStateManager;
 
@@ -24,6 +24,8 @@ public class GamePanel extends JPanel
 
 	private long lastTime;
 
+	private JLabel fpsLabel;
+
 	public GamePanel()
 	{
 		super();
@@ -32,6 +34,9 @@ public class GamePanel extends JPanel
 		setPreferredSize(new Dimension(1280, 720));
 
 		lastTime = System.nanoTime();
+
+		fpsLabel = new JLabel();
+		add(fpsLabel);
 	}
 
 	/**
@@ -44,7 +49,7 @@ public class GamePanel extends JPanel
 		{
 			// Calculate the time between frames
 			long currentTime = System.nanoTime();
-			double deltaTime = (lastTime - currentTime) / 1000000000.0;
+			double deltaTime = (currentTime - lastTime) / 1000000000.0;
 
 			// Update the simulation
 			update(deltaTime);
@@ -52,6 +57,7 @@ public class GamePanel extends JPanel
 			draw();
 
 			lastTime = currentTime;
+			fpsLabel.setText("fps: " + Integer.toString((int)(1 / deltaTime)));
 		}
 	}
 

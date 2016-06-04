@@ -26,7 +26,7 @@ public final class GameStateManager
 	 */
 	public static void init()
 	{
-		states = new ArrayList<GameState>();
+		states = new ArrayList<>();
 		states.add(new PlayState());
 		// states.add(new MenuState());
 		// states.add(new CreditsState());

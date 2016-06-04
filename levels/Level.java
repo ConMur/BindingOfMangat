@@ -26,6 +26,7 @@ public class Level
 	{
 		rand = new Random();
 		setRooms(rooms);
+		System.out.println("returning");
 	}
 
 	public void setRooms(ArrayList<Room> roomList)
@@ -40,7 +41,7 @@ public class Level
 			if (!workingRoom.isFull())
 			{
 				// Always connect to one room
-				Room room = rooms.get(rand.nextInt(rooms.size()));
+				Room room = rooms.remove(rand.nextInt(rooms.size()));
 				addRoom(workingRoom, room);
 
 				// Have a chance to add additional rooms if the room is not
@@ -50,8 +51,8 @@ public class Level
 					int chanceNumber = rand.nextInt(TOTAL_CHANCES);
 					if (chanceNumber <= ADDITIONAL_ROOM_CHANCE)
 					{
-						Room additionalRoom = rooms.get(rand.nextInt(rooms.size()));
-						addRoom(additionalRoom, rooms.get(rand.nextInt(rooms.size())));
+						Room additionalRoom = rooms.remove(rand.nextInt(rooms.size()));
+						addRoom(workingRoom, additionalRoom);
 					}
 				}
 				

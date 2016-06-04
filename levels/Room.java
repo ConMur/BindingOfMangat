@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import thingsthatmove.Enemy;
 import thingsthatmove.GameObject;
 import thingsthatmove.Player;
+import util.Util;
 
 public class Room
 {
@@ -63,7 +64,7 @@ public class Room
 		this.player = p;
 		
 		try {
-			background = ImageIO.read(getClass().getResource("/images/bg.png"));
+			background = ImageIO.read(getClass().getResource("/images/room/bgTest.png"));
 		}
 		catch(IOException ioe)
 		{
@@ -278,7 +279,7 @@ public class Room
 	
 	public void draw(Graphics g) {
 		g.drawImage(background, 0, 0, null);
-		
+
 		for (Enemy currentEnemy : enemies)
 			g.drawImage(currentEnemy.getImage(), currentEnemy.getX(), currentEnemy.getY(), null);
 		

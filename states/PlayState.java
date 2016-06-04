@@ -1,11 +1,30 @@
 package states;
 
 import gui.GameFrame;
+import levels.LevelManager;
+import thingsthatmove.Player;
 
-import java.awt.Graphics;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.io.IOException;
 
 public class PlayState implements GameState
 {
+	private Player player;
+
+	public PlayState()
+	{
+		try {
+			player = new Player(10, 10, 2, 0, 0, ImageIO.read(getClass().getResourceAsStream("/images/player/PlayerTest.png")),
+					new Dimension(100, 100), 10, 0, null);
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("Unable to read player image file");
+			ioe.printStackTrace();
+		}
+		LevelManager.init(player);
+	}
 
 	@Override
 	public void init()
@@ -16,14 +35,13 @@ public class PlayState implements GameState
 	@Override
 	public void update(double deltaTime)
 	{
-		// TODO Auto-generated method stub
-		
+		LevelManager.update();
 	}
 
 	@Override
 	public void draw(Graphics g)
 	{
-		g.fillRect(0, 0, 600, 400);
+		LevelManager.draw(g);
 	}
 
 	@Override

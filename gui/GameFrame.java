@@ -23,7 +23,9 @@ public class GameFrame extends JFrame
 
 	public GameFrame()
 	{
-		super("Binding of Mangat");
+		super();
+
+		setTitle("Binding of Mangat");
 		
 		// Initialize frame and panel
 		final GamePanel panel = new GamePanel();
@@ -39,6 +41,7 @@ public class GameFrame extends JFrame
 			{
 				panel.stop();
 				dispose();
+				System.exit(0);
 			}
 		});
 		

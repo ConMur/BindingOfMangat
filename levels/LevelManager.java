@@ -2,13 +2,16 @@ package levels;
 
 import item.Item;
 
-import java.awt.Graphics;
+import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 import thingsthatmove.Enemy;
 import thingsthatmove.Player;
+
+import javax.imageio.ImageIO;
 
 //TODO: add a way to make obstacles (rocks, walls, etc) in the rooms
 
@@ -85,15 +88,59 @@ public final class LevelManager
 	{
 		// TODO: update as more enemies are added
 		// Add the science enemies
+		try {
+			science.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+					new Dimension(100, 100), 2, true, false));
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("Unable to load science enemies");
+			ioe.printStackTrace();
+		}
 		// Add the english enemies
+		try {
+			english.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+					new Dimension(100, 100), 2, true, false));
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("Unable to load english enemies");
+			ioe.printStackTrace();
+		}
 		// Add the math enemies
+		try {
+			math.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+					new Dimension(100, 100), 2, true, false));
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("Unable to load math enemies");
+			ioe.printStackTrace();
+		}
 		// Add the history enemies
+		try {
+			history.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemy/EnemyTest.png")),
+					new Dimension(100, 100), 2, true, false));
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("Unable to load history enemies");
+			ioe.printStackTrace();
+		}
 	}
 
 	private static void populateItemList(ArrayList<Item> items)
 	{
 		// TODO: update as more items are added
 		// Add the items
+		try {
+			items.add(new Item("Test", 300, 300, ImageIO.read(LevelManager.class.getResourceAsStream("/images/item/ItemTest.png")), new Dimension(100, 100), true));
+		}
+		catch(IOException ioe)
+		{
+			System.err.println("Error loading items");
+			ioe.printStackTrace();
+		}
 	}
 
 	/**
@@ -109,30 +156,34 @@ public final class LevelManager
 		for (int i = 0; i < numLevels; ++i)
 		{
 			// Create the rooms list
-			ArrayList<Room> rooms = new ArrayList<Room>();
+			ArrayList<Room> rooms = new ArrayList<>();
 
 			// Create a copy of the list of enemies for this level
-			ArrayList<Enemy> levelEnemies = new ArrayList<>();
+			ArrayList<Enemy> levelEnemies;
 			if (levelNumber == 1)
 			{
-				Collections.copy(scienceEnemyList, levelEnemies);
+				levelEnemies = new ArrayList<>(scienceEnemyList);
 			}
 			else if (levelNumber == 2)
 			{
-				Collections.copy(englishEnemyList, levelEnemies);
+				levelEnemies = new ArrayList<>(englishEnemyList);
 			}
 			else if (levelNumber == 3)
 			{
-				Collections.copy(mathEnemyList, levelEnemies);
+				levelEnemies = new ArrayList<>(mathEnemyList);
 			}
 			else if (levelNumber == 4)
 			{
-				Collections.copy(historyEnemyList, levelEnemies);
+				levelEnemies = new ArrayList<>(historyEnemyList);
+			}
+			else
+			{
+				System.err.println("Invalid level value: " + levelNumber);
+				levelEnemies = null;
 			}
 
 			// Create a copy of the list of items for this level
-			ArrayList<Item> levelItems = new ArrayList<>();
-			Collections.copy(itemList, levelItems);
+			ArrayList<Item> levelItems = new ArrayList<>(itemList);
 
 			// Create general rooms (4 rooms on 1st level increasing by
 			// EXTRA_ROOMS_PER_LEVEL each time
@@ -162,7 +213,9 @@ public final class LevelManager
 			ArrayList<Item> items)
 	{
 		// Choose the enemy for this room
-		Enemy e = enemies.remove(rand.nextInt(enemies.size()));
+		//TODO: uncomment when have enough enemies
+		//Enemy e = enemies.remove(rand.nextInt(enemies.size()));
+		Enemy e = enemies.get(rand.nextInt(enemies.size()));
 
 		// Create a number of enemies
 		ArrayList<Enemy> enemyList = new ArrayList<>();
@@ -177,14 +230,16 @@ public final class LevelManager
 		int itemChance = rand.nextInt(100);
 		if (itemChance < ITEM_CHANCE)
 		{
-			itemList.add(items.remove(rand.nextInt(items.size())));
+			//TODO: uncomment when have enough items
+			//itemList.add(items.remove(rand.nextInt(items.size())));
+			itemList.add(items.get(rand.nextInt(items.size())));
 		}
 
-		Room room = new Room(enemyList, itemList, player);
+		Room room = new Room(enemyList, itemList, new ArrayList<>(), player);
 		return room;
 	}
 
-	public void update()
+	public static void update()
 	{
 		// Check if the player is at a door
 		int x = player.getX();
@@ -193,7 +248,7 @@ public final class LevelManager
 		// if(x > && x < && y > && y <)
 	}
 
-	public void draw(Graphics g)
+	public static void draw(Graphics g)
 	{
 		currentLevel.draw(g);
 	}
