@@ -27,10 +27,9 @@ public class Room
 	private Player player;
 	private Image background;
 	private Room north, east, south, west;
-	private boolean northOpen, southOpen, eastOpen, westOpen;
 
 	private boolean inRoom;
-	
+
 	// The room bounds (CHANGE)
 	private final int LOWER_X_BOUND = 0;
 	private final int UPPER_X_BOUND = 0;
@@ -47,7 +46,7 @@ public class Room
 		this.east = east;
 		this.south = south;
 		this.west = west;
-		
+
 		try {
 			background = ImageIO.read(getClass().getResource("/images/emptyroom.png"));
 		}
@@ -56,14 +55,14 @@ public class Room
 			ioe.printStackTrace();
 		}
 	}
-	
+
 	public Room (ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p)
 	{
 		this.enemies = e;
 		this.roomObjects = go;
 		this.items = i;
 		this.player = p;
-		
+
 		try {
 			background = ImageIO.read(getClass().getResource("/images/emptyroom.png"));
 		}
@@ -72,60 +71,20 @@ public class Room
 			ioe.printStackTrace();
 		}
 	}
-	
+
 	public Room (Room north, Room east, Room south, Room west)
 	{
 		this.north = north;
 		this.east = east;
 		this.south = south;
 		this.west = west;
-		
+
 		try {
 			background = ImageIO.read(getClass().getResource("/images/bg.png"));
 		}
 		catch(IOException ioe)
 		{
 			ioe.printStackTrace();
-		}
-	}
-	
-	public boolean isNorthOpen()
-	{
-		return northOpen;
-	}
-
-	public boolean isSouthOpen()
-	{
-		return southOpen;
-	}
-	
-	public boolean isEastOpen()
-	{
-		return eastOpen;
-	}
-	
-	public boolean isWestOpen()
-	{
-		return westOpen;
-	}
-	
-	public void updateDoorStatus()
-	{
-		// Keep all doors closed if there are enemies
-		if (hasEnemies())
-		{
-			northOpen = false;
-			southOpen = false;
-			eastOpen = false;
-			westOpen = false;
-		}
-		// No enemies, open all doors
-		else
-		{
-			northOpen = true;
-			southOpen = true;
-			eastOpen = true;
-			westOpen = true;
 		}
 	}
 	
