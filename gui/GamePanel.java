@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import javax.swing.*;
 
 import states.GameStateManager;
+import util.Util;
 
 /**
  * The panel that displays what is happening in the program
@@ -57,7 +58,7 @@ public class GamePanel extends JPanel
 			draw();
 
 			lastTime = currentTime;
-			fpsLabel.setText("fps: " + Integer.toString((int)(1 / deltaTime)));
+			fpsLabel.setText("fps: " + (int)Util.calcFPS(deltaTime));
 		}
 	}
 
