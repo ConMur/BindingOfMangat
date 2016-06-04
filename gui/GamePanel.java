@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import javax.swing.*;
 
 import states.GameStateManager;
+import util.ImageManager;
 import util.Util;
 
 /**
@@ -27,6 +28,8 @@ public class GamePanel extends JPanel
 
 	private JLabel fpsLabel;
 
+	private int oldWidth, oldHeight;
+
 	public GamePanel()
 	{
 		super();
@@ -38,6 +41,9 @@ public class GamePanel extends JPanel
 
 		fpsLabel = new JLabel();
 		add(fpsLabel);
+
+		oldWidth = getWidth();
+		oldHeight = getHeight();
 	}
 
 	/**
@@ -45,7 +51,11 @@ public class GamePanel extends JPanel
 	 */
 	public void go()
 	{
+		//Initialize static classes
+		ImageManager.init();
 		GameStateManager.init();
+
+		//Program loop
 		while (running)
 		{
 			// Calculate the time between frames
@@ -54,6 +64,17 @@ public class GamePanel extends JPanel
 
 			// Update the simulation
 			update(deltaTime);
+
+			//Check if the window was resized
+
+			int height = getHeight();
+			int width = getWidth();
+			if(width != oldWidth || height != oldHeight )
+			{
+				ImageManager.resizeImages(width, height);
+				oldWidth = width;
+				oldHeight = height;
+			}
 			// Draw the updates
 			draw();
 

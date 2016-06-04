@@ -36,6 +36,29 @@ public final class Util {
     }
 
     /**
+     * Rescales the given image to the desired width and height
+     * @param i the image to rescale
+     * @param width the width of the new image
+     * @param height the height of the new image
+     * @return the rescaled image
+     */
+    public static BufferedImage resizeImage(String key, BufferedImage i, int width, int height)
+    {
+        System.out.println("width " + width + " height " + height);
+        Image tempImage = i.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage image = new BufferedImage(width, height,BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D graphics = image.createGraphics();
+        graphics.drawImage(tempImage, 0,0,null);
+        graphics.dispose();
+
+        ImageManager.removeOldRescaledImage(key);
+        ImageManager.addNewRescaledImage(key, image);
+
+        return image;
+    }
+
+    /**
      * Calculates the average fps using the delta time
      * @param dt the delta time (time elapsed between frames)
      * @return

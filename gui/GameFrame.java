@@ -7,47 +7,43 @@ import javax.swing.JFrame;
 
 /**
  * The entry point for the program. Creates a frame and displays it
- * @author Connor Murphy
  *
+ * @author Connor Murphy
  */
-public class GameFrame extends JFrame
-{
-	/**
-	 * A generated serialVersionUID so eclipse does not yell at me
-	 */
-	private static final long serialVersionUID = -891368853245353471L;
-	/**
-	 * The entry point to the program
-	 * @param args command line arguments (unused)
-	 */
+public class GameFrame extends JFrame {
+    /**
+     * A generated serialVersionUID so eclipse does not yell at me
+     */
+    private static final long serialVersionUID = -891368853245353471L;
 
-	public GameFrame()
-	{
-		super();
+    /**
+     * Creates the frame that displays the panel which displays the game
+     */
 
-		setTitle("Binding of Mangat");
-		
-		// Initialize frame and panel
-		final GamePanel panel = new GamePanel();
-		add(panel);
-		pack();
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    public GameFrame() {
+        super();
 
-		// Add a listener to close resources before closing the window
-		addWindowListener(new WindowAdapter()
-		{
-			@Override
-			public void windowClosing(WindowEvent e)
-			{
-				panel.stop();
-				dispose();
-				System.exit(0);
-			}
-		});
-		
-		setLocationRelativeTo(null);
-		setResizable(false);
-		setVisible(true);
-		panel.go();
-	}
+        setTitle("Binding of Mangat");
+
+        // Initialize frame and panel
+        final GamePanel panel = new GamePanel();
+        add(panel);
+        pack();
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+        // Add a listener to close resources before closing the window
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                panel.stop();
+                dispose();
+                System.exit(0);
+            }
+        });
+
+        setLocationRelativeTo(null);
+        setResizable(true);
+        setVisible(true);
+        panel.go();
+    }
 }
