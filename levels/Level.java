@@ -60,7 +60,44 @@ public class Level
 			}
 		}
 	}
-	
+
+	public void update()
+	{
+		currentRoom.update();
+
+		checkPlayerAtDoor();
+	}
+
+	/**
+	 * Checks if the player is at a door and moves them to the next room if so
+	 */
+	private void checkPlayerAtDoor() {
+		if(currentRoom.isPlayerAtNorthDoor())
+		{
+			currentRoom.endRoom();
+			currentRoom = currentRoom.getNorth();
+			currentRoom.startRoom();
+		}
+		else if(currentRoom.isPlayerAtSouthDoor())
+		{
+			currentRoom.endRoom();
+			currentRoom = currentRoom.getSouth();
+			currentRoom.startRoom();
+		}
+		else if(currentRoom.isPlayerAtEastDoor())
+		{
+			currentRoom.endRoom();
+			currentRoom = currentRoom.getEast();
+			currentRoom.startRoom();
+		}
+		else if(currentRoom.isPlayerAtWestDoor())
+		{
+			currentRoom.endRoom();
+			currentRoom = currentRoom.getWest();
+			currentRoom.startRoom();
+		}
+	}
+
 	public void draw(Graphics g)
 	{
 		currentRoom.draw(g);

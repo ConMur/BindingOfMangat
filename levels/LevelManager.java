@@ -134,7 +134,7 @@ public final class LevelManager
 		// TODO: update as more items are added
 		// Add the items
 		try {
-			items.add(new Item("Test", 300, 300, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/pifront.png")), new Dimension(100, 100), true));
+			items.add(new Item("Test", 600, 300, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/pifront.png")), new Dimension(100, 100), true));
 		}
 		catch(IOException ioe)
 		{
@@ -228,10 +228,11 @@ public final class LevelManager
 		// Have a chance to have an item in the room
 		ArrayList<Item> itemList = new ArrayList<>();
 		int itemChance = rand.nextInt(100);
-		if (itemChance < ITEM_CHANCE)
+		if (itemChance < 100/*ITEM_CHANCE*/)
 		{
 			//TODO: uncomment when have enough items
 			//itemList.add(items.remove(rand.nextInt(items.size())));
+			System.out.println("added tiem");
 			itemList.add(items.get(rand.nextInt(items.size())));
 		}
 
@@ -241,6 +242,7 @@ public final class LevelManager
 
 	public static void update()
 	{
+		currentLevel.update();
 		// Check if the player is at a door
 		int x = player.getX();
 		int y = player.getY();

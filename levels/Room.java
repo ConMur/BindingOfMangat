@@ -27,6 +27,7 @@ public class Room {
     private Image background;
     private Room north, east, south, west;
     private boolean northOpen, southOpen, eastOpen, westOpen;
+    private boolean atNorthDoor, atSouthDoor, atEastDoor, atWestDoor;
 
     private boolean inRoom;
 
@@ -47,10 +48,15 @@ public class Room {
         this.west = west;
 
         try {
-            background = ImageIO.read(getClass().getResource("/images/emptyroom.png"));
+            background = ImageIO.read(getClass().getResource("/images/emptyroomSCALED.png"));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
+        atNorthDoor = false;
+        atSouthDoor = false;
+        atEastDoor = false;
+        atWestDoor = false;
     }
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p) {
@@ -60,10 +66,15 @@ public class Room {
         this.player = p;
 
         try {
-            background = ImageIO.read(getClass().getResource("/images/emptyroom.png"));
+            background = ImageIO.read(getClass().getResource("/images/emptyroomSCALED.png"));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
+        atNorthDoor = false;
+        atSouthDoor = false;
+        atEastDoor = false;
+        atWestDoor = false;
     }
 
     public Room(Room north, Room east, Room south, Room west) {
@@ -77,6 +88,11 @@ public class Room {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+
+        atNorthDoor = false;
+        atSouthDoor = false;
+        atEastDoor = false;
+        atWestDoor = false;
     }
 
     public boolean isNorthOpen() {
@@ -110,6 +126,48 @@ public class Room {
             eastOpen = true;
             westOpen = true;
         }
+    }
+
+    public void update() {
+        updateDoorStatus();
+        updateHitboxes();
+        checkIfPlayerAtDoor();
+    }
+
+    /**
+     * Checks if a player is at one of the doors and sets booleans if it is
+     */
+    private void checkIfPlayerAtDoor() {
+        //Check if player is at a door
+        int x = player.getX();
+        int y = player.getY();
+
+        //North door
+        if (north != null && x > 466 && x < 566 && y > 110 && y < 120) {
+            atNorthDoor = true;
+        } else if (south != null && x > 466 && x < 566 && y > 610 && y < 620) {
+            atSouthDoor = true;
+        } else if (east != null && x > 120 && x < 130 && y > 190 && y < 290) {
+            atEastDoor = true;
+        } else if (west != null && x > 1160 && x < 1170 && y > 190 && y < 290) {
+            atWestDoor = true;
+        }
+    }
+
+    public boolean isPlayerAtNorthDoor() {
+        return atNorthDoor;
+    }
+
+    public boolean isPlayerAtSouthDoor() {
+        return atSouthDoor;
+    }
+
+    public boolean isPlayerAtEastDoor() {
+        return atEastDoor;
+    }
+
+    public boolean isPlayerAtWestDoor() {
+        return atWestDoor;
     }
 
     public Player getPlayer() {
@@ -245,8 +303,7 @@ public class Room {
 
     public void updateHitboxes() {
         // Remove all current hitboxes
-        for (int n = 0; n < hitboxes.size(); n++)
-            hitboxes.remove(n);
+        hitboxes.clear();
 
         // Add all enemy hitboxes
         for (Enemy e : enemies)
@@ -275,6 +332,16 @@ public class Room {
 
         for (Enemy currentEnemy : enemies)
             g.drawImage(currentEnemy.getImage(), currentEnemy.getX(), currentEnemy.getY(), null);
+
+        for(Item currentItem : items)
+        {
+            g.drawImage(currentItem.getImage(), currentItem.getX(), currentItem.getY(), null);
+        }
+
+        for(GameObject currentRoomObject : roomObjects)
+        {
+            g.drawImage(currentRoomObject.getImage(),currentRoomObject.getX(),currentRoomObject.getY(), null);
+        }
 
     }
 
