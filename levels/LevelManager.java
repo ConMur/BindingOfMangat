@@ -228,11 +228,10 @@ public final class LevelManager
 		// Have a chance to have an item in the room
 		ArrayList<Item> itemList = new ArrayList<>();
 		int itemChance = rand.nextInt(100);
-		if (itemChance < 100/*ITEM_CHANCE*/)
+		if (itemChance < ITEM_CHANCE)
 		{
 			//TODO: uncomment when have enough items
 			//itemList.add(items.remove(rand.nextInt(items.size())));
-			System.out.println("added tiem");
 			itemList.add(items.get(rand.nextInt(items.size())));
 		}
 

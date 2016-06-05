@@ -25,6 +25,8 @@ public class Room {
     private Thread moveEnemies = new Thread(new EnemyMovementThread());
     private Player player;
     private Image background;
+    private Image northClosedDoor, southClosedDoor, eastClosedDoor, westClosedDoor;
+    private Image northOpenDoor, southOpenDoor, eastOpenDoor, westOpenDoor;
     private Room north, east, south, west;
     private boolean northOpen, southOpen, eastOpen, westOpen;
     private boolean atNorthDoor, atSouthDoor, atEastDoor, atWestDoor;
@@ -36,6 +38,27 @@ public class Room {
     private final int UPPER_X_BOUND = 0;
     private final int LOWER_Y_BOUND = 0;
     private final int UPPER_Y_BOUND = 0;
+
+    //Door locations
+    /*if (north != null && x > 466 && x < 566 && y > 110 && y < 120) {
+        atNorthDoor = true;
+    } else if (south != null && x > 466 && x < 566 && y > 610 && y < 620) {
+        atSouthDoor = true;
+    } else if (east != null && x > 120 && x < 130 && y > 190 && y < 290) {
+        atEastDoor = true;
+    } else if (west != null && x > 1160 && x < 1170 && y > 190 && y < 290) {
+        atWestDoor = true;
+    }*/
+
+    private final int NORTH_DOOR_X = 516;
+    private final int NORTH_DOOR_Y = 120;
+    private final int SOUTH_DOOR_X = 516;
+    private final int SOUTH_DOOR_Y = 610;
+    private final int EAST_DOOR_X = 1160;
+    private final int EAST_DOOR_Y = 190;
+    private final int WEST_DOOR_X = 120;
+    private final int WEST_DOOR_Y = 190;
+
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p, Room north, Room east, Room south, Room west) {
         this.enemies = e;
@@ -49,6 +72,17 @@ public class Room {
 
         try {
             background = ImageIO.read(getClass().getResource("/images/emptyroomSCALED.png"));
+            //Closed doors
+            northClosedDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/closeddoornorth.png"));
+            southClosedDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/closeddoorsouth.png"));
+            eastClosedDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/closeddooreast.png"));
+            westClosedDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/closeddoorwest.png"));
+            //Open doors
+            northOpenDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/opendoornorth.png"));
+            southOpenDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/opendoorsouth.png"));
+            eastOpenDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/opendooreast.png"));
+            westOpenDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/opendoorwest.png"));
+
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -60,39 +94,11 @@ public class Room {
     }
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p) {
-        this.enemies = e;
-        this.roomObjects = go;
-        this.items = i;
-        this.player = p;
-
-        try {
-            background = ImageIO.read(getClass().getResource("/images/emptyroomSCALED.png"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        atNorthDoor = false;
-        atSouthDoor = false;
-        atEastDoor = false;
-        atWestDoor = false;
+        this(e, i, go, p, null, null, null, null);
     }
 
     public Room(Room north, Room east, Room south, Room west) {
-        this.north = north;
-        this.east = east;
-        this.south = south;
-        this.west = west;
-
-        try {
-            background = ImageIO.read(getClass().getResource("/images/bg.png"));
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-
-        atNorthDoor = false;
-        atSouthDoor = false;
-        atEastDoor = false;
-        atWestDoor = false;
+        this(null, null, null, null, north, east, south, west);
     }
 
     public boolean isNorthOpen() {
@@ -333,16 +339,49 @@ public class Room {
         for (Enemy currentEnemy : enemies)
             g.drawImage(currentEnemy.getImage(), currentEnemy.getX(), currentEnemy.getY(), null);
 
-        for(Item currentItem : items)
-        {
+        for (Item currentItem : items) {
             g.drawImage(currentItem.getImage(), currentItem.getX(), currentItem.getY(), null);
         }
 
-        for(GameObject currentRoomObject : roomObjects)
-        {
-            g.drawImage(currentRoomObject.getImage(),currentRoomObject.getX(),currentRoomObject.getY(), null);
+        for (GameObject currentRoomObject : roomObjects) {
+            g.drawImage(currentRoomObject.getImage(), currentRoomObject.getX(), currentRoomObject.getY(), null);
         }
 
+        drawDoors(g);
+
+    }
+
+    /**
+     * Draws the doors of the room to the given graphics
+     *
+     * @param g the graphics to draw to
+     */
+    private void drawDoors(Graphics g) {
+        //Draw doors
+        if (north != null) {
+            if (northOpen)
+                g.drawImage(northOpenDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100, null);
+            else
+                g.drawImage(northClosedDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100, null);
+        }
+        if (south != null) {
+            if (southOpen)
+                g.drawImage(southOpenDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
+            else
+                g.drawImage(southClosedDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
+        }
+        if (east != null) {
+            if (eastOpen)
+                g.drawImage(eastOpenDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+            else
+                g.drawImage(eastClosedDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+        }
+        if (west != null) {
+            if (westOpen)
+                g.drawImage(westOpenDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
+            else
+                g.drawImage(westClosedDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
+        }
     }
 
     private class EnemyMovementThread implements Runnable {
