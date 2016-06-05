@@ -24,7 +24,7 @@ public class Room {
     private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
     private Thread moveEnemies = new Thread(new EnemyMovementThread());
     private Player player;
-    private Image background;
+    private Image background, hud;
     private Image northClosedDoor, southClosedDoor, eastClosedDoor, westClosedDoor;
     private Image northOpenDoor, southOpenDoor, eastOpenDoor, westOpenDoor;
     private Room north, east, south, west;
@@ -71,6 +71,7 @@ public class Room {
         this.west = west;
 
         try {
+        	hud = ImageIO.read(getClass().getResource("/images/hud.png"));
             background = ImageIO.read(getClass().getResource("/images/emptyroomSCALED.png"));
             //Closed doors
             northClosedDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/closeddoornorth.png"));
@@ -334,7 +335,8 @@ public class Room {
     }
 
     public void draw(Graphics g) {
-        g.drawImage(background, 0, 0, null);
+    	g.drawImage(hud, 0, 0, null);
+        g.drawImage(background, 0, 198, null);
 
         for (Enemy currentEnemy : enemies)
             g.drawImage(currentEnemy.getImage(), currentEnemy.getX(), currentEnemy.getY(), null);
