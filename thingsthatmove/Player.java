@@ -6,6 +6,11 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class Player extends MoveableObject
 {
@@ -15,19 +20,50 @@ public class Player extends MoveableObject
 	private boolean movingWest;
 	private boolean movingEast;
 	private boolean movingSouth;
-
+	private ArrayList<Projectile> currentProjectiles;
+	private Thread pThread;
+	private boolean isShooting;
+	
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
 			Dimension s, int maxHP, int projectile, Item item)
 	{
 		super(dmg, hp, speed, x, y, i, s, maxHP);
+		currentProjectiles = new ArrayList<Projectile>();
 		this.projectile = projectile;
 		this.currentItem = item;
 		boolean movingNorth = false;
 		boolean movingWest = false;
 		boolean movingEast = false;
 		boolean movingSouth = false;
+		pThread = new Thread(new ProjectileFiringThread());
+		pThread.run();
+	}
+	
+
+	private class ProjectileFiringThread implements Runnable {
+		public void run()
+		{
+			while (true)
+			{
+				for (int p = 0 ; p < currentProjectiles.size() ; p ++)
+				{
+					
+				}
+			}
+			
+		}
 	}
 
+	public ArrayList<Projectile> getAllPlayerProjectiles()
+	{
+		return currentProjectiles;
+	}
+	
+	public void setCurrentProjectiles(ArrayList<Projectile> p)
+	{
+		currentProjectiles = p;
+	}
+	
 	/**
 	 * Sets the projectile number of the player
 	 * @param projectileNumber the projectile number
@@ -35,6 +71,14 @@ public class Player extends MoveableObject
 	public void setProjectile(int projectileNumber)
 	{
 		projectile = projectileNumber;
+	}
+	
+	public void shootProjectile(char direction)
+	{
+		Projectile p = new Projectile(getProjectile(), direction);
+		p.setX(getX());
+		p.setY(getY());
+		currentProjectiles.add(p);
 	}
 
 	/**
@@ -88,37 +132,41 @@ public class Player extends MoveableObject
 	public void draw(Graphics g)
 	{
 		g.drawImage(getImage(), getX(), getY(), null);
+		
+		for (Projectile p : currentProjectiles)
+			g.drawImage(p.getImage(), p.getX(), p.getY(), null);
 	}
 
 	public void keyPressed(int key)
 	{
 		if (key == KeyEvent.VK_W)
-		{
 			movingNorth = true;
-			movingSouth = false;
-			movingWest = false;
-			movingEast = false;
-		}
 		else if (key == KeyEvent.VK_A)
-		{
-			movingNorth = false;
-			movingSouth = false;
 			movingWest = true;
-			movingEast = false;
-		}
 		else if (key == KeyEvent.VK_S)
-		{
-			movingNorth = false;
 			movingSouth = true;
-			movingWest = false;
-			movingEast = false;
-		}
 		else if (key == KeyEvent.VK_D)
-		{
-			movingNorth = false;
-			movingSouth = false;
-			movingWest = false;
 			movingEast = true;
+
+		if (key == KeyEvent.VK_SPACE)
+		{
+			isShooting = true;
+			if (movingNorth && movingEast)
+				shootProjectile('1');
+			else if (movingSouth && movingEast)
+				shootProjectile('2');
+			else if (movingSouth && movingWest)
+				shootProjectile('3');
+			else if (movingNorth && movingWest)
+				shootProjectile('4');
+			else if (movingNorth)
+				shootProjectile('N');
+			else if (movingEast)
+				shootProjectile('E');
+			else if (movingSouth)
+				shootProjectile('S');
+			else if (movingWest)
+				shootProjectile('W');
 		}
 	}
 

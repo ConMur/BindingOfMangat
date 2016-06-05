@@ -9,6 +9,7 @@ public class MoveableObject extends GameObject
 	private final int UPPER_X_BOUND = 0;
 	private final int LOWER_Y_BOUND = 0;
 	private final int UPPER_Y_BOUND = 0;
+	private final double ROOT_TWO = Math.sqrt(2);
 	private int dmg, hp, speed, maxHP;
 	
 	public MoveableObject (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP)
@@ -95,6 +96,24 @@ public class MoveableObject extends GameObject
 			setX(getX() - getSpeed());
 	}
 	
+	public void moveNorthWest()
+	{
+		if (getX() > LOWER_X_BOUND && getY() > LOWER_Y_BOUND)
+		{
+			setX(getX() - (int)(getSpeed()/ROOT_TWO));
+			setY(getY() - (int)(getSpeed()/ROOT_TWO));
+		}
+	}
+	
+	public void moveNorthEast()
+	{
+		if ((getX() + getSize().getWidth()) < UPPER_X_BOUND && getY() > LOWER_Y_BOUND)
+		{
+			setX(getX() + (int)(getSpeed()/ROOT_TWO));
+			setY(getY() - (int)(getSpeed()/ROOT_TWO));
+		}
+	}
+	
 	public void moveNorth()
 	{
 		if (getY() > LOWER_Y_BOUND)
@@ -105,6 +124,24 @@ public class MoveableObject extends GameObject
 	{
 		if ((getY() + getSize().getHeight()) < UPPER_Y_BOUND)
 			setY(getY() + getSpeed());
+	}
+	
+	public void moveSouthEast()
+	{
+		if ((getX() + getSize().getWidth()) < UPPER_X_BOUND && (getY() + getSize().getHeight()) < UPPER_Y_BOUND)
+		{
+			setX(getX() + (int)(getSpeed()/ROOT_TWO));
+			setY(getY() + (int)(getSpeed()/ROOT_TWO));
+		}
+	}
+	
+	public void moveSouthWest()
+	{
+		if (getX() > LOWER_X_BOUND && (getY() + getSize().getHeight()) < UPPER_Y_BOUND)
+		{
+			setX(getX() - (int)(getSpeed()/ROOT_TWO));
+			setY(getY() + (int)(getSpeed()/ROOT_TWO));
+		}
 	}
 	
 	
