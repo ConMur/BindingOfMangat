@@ -36,7 +36,7 @@ public class Player extends MoveableObject
 		boolean movingEast = false;
 		boolean movingSouth = false;
 		pThread = new Thread(new ProjectileFiringThread());
-		pThread.run();
+		pThread.start();
 	}
 	
 

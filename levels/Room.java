@@ -71,7 +71,7 @@ public class Room {
         this.west = west;
 
         try {
-        	hud = ImageIO.read(getClass().getResource("/images/hud.png"));
+            hud = ImageIO.read(getClass().getResource("/images/hud.png"));
             background = ImageIO.read(getClass().getResource("/images/emptyroomSCALED.png"));
             //Closed doors
             northClosedDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/closeddoornorth.png"));
@@ -335,7 +335,7 @@ public class Room {
     }
 
     public void draw(Graphics g) {
-    	g.drawImage(hud, 0, 0, null);
+        g.drawImage(hud, 0, 0, null);
         g.drawImage(background, 0, 198, null);
 
         for (Enemy currentEnemy : enemies)
