@@ -119,7 +119,6 @@ public class Player extends MoveableObject {
             p.update();
             if(p.isDeadProjectile())
             {
-                System.out.println("removed projectile");
                 currentProjectiles.remove(i - removedProjectiles);
                 ++removedProjectiles;
             }
@@ -194,4 +193,7 @@ public class Player extends MoveableObject {
             movingEast = false;
     }
 
+    public void clearProjectiles() {
+        currentProjectiles.clear();
+    }
 }

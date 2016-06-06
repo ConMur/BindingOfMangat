@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import thingsthatmove.Enemy;
 import thingsthatmove.GameObject;
 import thingsthatmove.Player;
+import thingsthatmove.Projectile;
 
 public class Room {
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -127,6 +128,24 @@ public class Room {
         updateHitboxes();
         updateDoorStatus();
         checkIfPlayerAtDoor();
+        checkProjectileCollision();
+    }
+
+    /**
+     * Checks collisions between all the projectiles and the enemies in this room
+     */
+    private void checkProjectileCollision() {
+        ArrayList<Projectile> projectiles = player.getAllPlayerProjectiles();
+        for(Projectile p : projectiles)
+        {
+            for(Enemy e : enemies) {
+                if (p.getHitBox().intersects(e.getHitBox()))
+                {
+                    e.takeDamage(p.getDamage());
+                    p.killProjectile();
+                }
+            }
+        }
     }
 
     /**
@@ -307,6 +326,8 @@ public class Room {
     public void endRoom() {
     	System.out.println("ENDING ROOM");
         inRoom = false;
+        //Clear all projectiles
+        player.clearProjectiles();
     }
 
 

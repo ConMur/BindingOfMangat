@@ -33,7 +33,7 @@ public class Projectile extends GameObject {
             image = new ImageIcon("images/projectiles/player/projectile1.png").getImage();
             this.setImage(image);
             this.setSize(new Dimension(50, 50));
-            this.speed = 50;
+            this.speed = 300;
             this.dmg = 5;
             lifeSpan = 500;
         }
@@ -43,7 +43,7 @@ public class Projectile extends GameObject {
             this.setImage(image);
             this.setSize(new Dimension(50, 50));
             this.speed = 10;
-            this.dmg = 80;
+            this.dmg = 400;
             lifeSpan = 500;
         }
         // Bombs (slower travel speed, explosion on impact)
@@ -52,7 +52,7 @@ public class Projectile extends GameObject {
             this.setImage(image);
             this.setSize(new Dimension(50, 50));
             this.speed = 2;
-            this.dmg = 150;
+            this.dmg = 500;
             lifeSpan = 500;
         }
         // Mario's fire flower (greater speed, dmg, fire rate)
@@ -60,7 +60,7 @@ public class Projectile extends GameObject {
             image = new ImageIcon("images/projectiles/player/projectile4.png").getImage();
             this.setImage(image);
             this.setSize(new Dimension(50, 50));
-            this.speed = 150;
+            this.speed = 600;
             this.dmg = 10;
             lifeSpan = 500;
         }
@@ -69,7 +69,7 @@ public class Projectile extends GameObject {
             image = new ImageIcon("images/projectiles/player/projectile5.png").getImage();
             this.setImage(image);
             this.setSize(new Dimension(50, 50));
-            this.speed = 25;
+            this.speed = 1000;
             this.dmg = 3;
             lifeSpan = 1500;
         }
@@ -110,6 +110,19 @@ public class Projectile extends GameObject {
 
     public void setVisibility(boolean b) {
         visible = b;
+    }
+
+    public int getDamage()
+    {
+        //Make sure that there is no damage if the projectile is dead
+        if(isDead)
+            return 0;
+        return dmg;
+    }
+
+    public void killProjectile()
+    {
+        isDead = true;
     }
 
     public void update() {
