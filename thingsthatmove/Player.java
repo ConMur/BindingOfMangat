@@ -141,55 +141,67 @@ public class Player extends MoveableObject
 	{
 		if (key == KeyEvent.VK_W)
 		{
+			if (!movingNorth)
+			{
+				try
+				{
+					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatback.png")));
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			movingNorth = true;
-			try
-			{
-				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatback.png")));
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		else if (key == KeyEvent.VK_A)
 		{
+			if (!movingWest)
+			{
+				try
+				{
+					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatleft.png")));
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			movingWest = true;
-			try
-			{
-				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatleft.png")));
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		else if (key == KeyEvent.VK_S)
 		{
+			if (!movingSouth)
+			{
+				try
+				{
+					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")));
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			movingSouth = true;
-			try
-			{
-				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")));
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		else if (key == KeyEvent.VK_D)
 		{
+			if (!movingEast)
+			{
+				try
+				{
+					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatright.png")));
+				}
+				catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			movingEast = true;
-			try
-			{
-				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatright.png")));
-			}
-			catch (IOException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 
 		if (key == KeyEvent.VK_SPACE)
