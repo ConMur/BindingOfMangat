@@ -15,7 +15,7 @@ public class PlayState implements GameState
 	public PlayState()
 	{
 		try {
-			player = new Player(10, 10, 2, 0, 0, ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")),
+			player = new Player(10, 10, 50, 500, 500, ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")),
 					new Dimension(100, 100), 10, 0, null);
 		}
 		catch(IOException ioe)
@@ -33,15 +33,17 @@ public class PlayState implements GameState
 	}
 
 	@Override
-	public void update(double deltaTime)
+	public void update()
 	{
 		LevelManager.update();
+		player.updatePosition();
 	}
 
 	@Override
 	public void draw(Graphics g)
 	{
 		LevelManager.draw(g);
+		player.draw(g);
 	}
 
 	@Override
@@ -54,15 +56,13 @@ public class PlayState implements GameState
 	@Override
 	public void keyPressed(int key)
 	{
-		// TODO Auto-generated method stub
-		
+		player.keyPressed(key);
 	}
 
 	@Override
 	public void keyReleased(int key)
 	{
-		// TODO Auto-generated method stub
-		
+		player.keyReleased(key);
 	}
 
 	@Override

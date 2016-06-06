@@ -21,8 +21,8 @@ public class Enemy extends MoveableObject
 	public Enemy(Enemy connorBeingLazy)
 	{
 		super(connorBeingLazy.getDamage(), connorBeingLazy.getCurrentHP(),
-				connorBeingLazy.getSpeed(), connorBeingLazy.getX(),
-				connorBeingLazy.getY(), connorBeingLazy.getImage(),
+				connorBeingLazy.getSpeed(), (int)connorBeingLazy.getX(),
+				(int)connorBeingLazy.getY(), connorBeingLazy.getImage(),
 				connorBeingLazy.getSize(), connorBeingLazy.getMaxHP());
 		this.shouldMove = connorBeingLazy.canMove();
 		this.anger = connorBeingLazy.isAngry();

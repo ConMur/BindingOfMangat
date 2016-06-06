@@ -5,112 +5,114 @@ import java.util.ArrayList;
 
 /**
  * Manages the updating, drawing and switching of game states in the game
- * @author Connor Murphy
  *
+ * @author Connor Murphy
  */
-public final class GameStateManager
-{
-	private static ArrayList<GameState> states;
-	private static State currentStateValue;
-	private static GameState currentState;
+public final class GameStateManager {
+    private static ArrayList<GameState> states;
+    private static State currentStateValue;
+    private static GameState currentState;
 
-	/**
-	 * Prevent instantiation of this class
-	 */
-	private GameStateManager()
-	{
-	}
+    /**
+     * Prevent instantiation of this class
+     */
+    private GameStateManager() {
+    }
 
-	/**
-	 * Initializes any resources used by this object
-	 */
-	public static void init()
-	{
-		states = new ArrayList<>();
-		states.add(new PlayState());
-		// states.add(new MenuState());
-		// states.add(new CreditsState());
-		// states.add(new InstructionsState());
-		
-		//TODO: remove when have a menu
-		currentState = states.get(State.PLAY.ordinal());
-	}
+    /**
+     * Initializes any resources used by this object
+     */
+    public static void init() {
+        states = new ArrayList<>();
+        states.add(new PlayState());
+        // states.add(new MenuState());
+        // states.add(new CreditsState());
+        // states.add(new InstructionsState());
 
-	/**
-	 * Sets the current state to the given state
-	 * @param state the state to change to
-	 */
-	public static void setState(State state)
-	{
-		// Ensure that the state is not the one currently in use
-		if (state == currentStateValue)
-			return;
+        //TODO: remove when have a menu
+        currentState = states.get(State.PLAY.ordinal());
+    }
 
-		// Clean up the old state
-		states.get(currentStateValue.ordinal()).cleanUp();
+    /**
+     * Sets the current state to the given state
+     *
+     * @param state the state to change to
+     */
+    public static void setState(State state) {
+        // Ensure that the state is not the one currently in use
+        if (state == currentStateValue)
+            return;
 
-		// TODO: consider a loading screen
+        // Clean up the old state
+        states.get(currentStateValue.ordinal()).cleanUp();
 
-		// Load in the new state
-		currentState = states.get(state.ordinal());
-		currentState.init();
-		currentStateValue = state;
-	}
+        // TODO: consider a loading screen
 
-	/**
-	 * Updates the current state
-	 * @param deltaTime the time that passes between frames
-	 */
-	public static void update(double deltaTime)
-	{
-		currentState.update(deltaTime);
-	}
+        // Load in the new state
+        currentState = states.get(state.ordinal());
+        currentState.init();
+        currentStateValue = state;
+    }
 
-	/**
-	 * Draws the current state to the screen
-	 * @param g the graphics to draw to
-	 */
-	public static void draw(Graphics g)
-	{
-		currentState.draw(g);
-	}
+    /**
+     * Updates the current state
+     *
+     */
+    public static void update() {
+        if (currentState != null)
+            currentState.update();
+    }
 
-	/**
-	 * Sends the key press to the current state
-	 * @param key the key code of the key pressed
-	 */
-	public static void keyPressed(int key)
-	{
-		currentState.keyPressed(key);
-	}
+    /**
+     * Draws the current state to the screen
+     *
+     * @param g the graphics to draw to
+     */
+    public static void draw(Graphics g) {
+        if (currentState != null)
+            currentState.draw(g);
+    }
 
-	/**
-	 * Sends the key release to the current state
-	 * @param key the key code of the key released
-	 */
-	public static void keyReleased(int key)
-	{
-		currentState.keyReleased(key);
-	}
+    /**
+     * Sends the key press to the current state
+     *
+     * @param key the key code of the key pressed
+     */
+    public static void keyPressed(int key) {
+        if (currentState != null)
+            currentState.keyPressed(key);
+    }
 
-	/**
-	 * Sends the mouse press to the current state
-	 * @param x the x coordinate of the mouse press 
-	 * @param y the y coordinate of the mouse press
-	 */
-	public static void mousePressed(int x, int y)
-	{
-		currentState.mousePressed(x, y);
-	}
-	
-	/**
-	 * Sends the mouse move to the current state
-	 * @param x the x coordinate of the mouse move 
-	 * @param y the y coordinate of the mouse move
-	 */
-	public static void mouseMoved(int x, int y)
-	{
-		currentState.mouseMoved(x, y);
-	}
+    /**
+     * Sends the key release to the current state
+     *
+     * @param key the key code of the key released
+     */
+    public static void keyReleased(int key) {
+        if (currentState != null)
+            currentState.keyReleased(key);
+    }
+
+    /**
+     * Sends the mouse press to the current state
+     *
+     * @param x the x coordinate of the mouse press
+     * @param y the y coordinate of the mouse press
+     */
+    public static void mousePressed(int x, int y) {
+        if (currentState != null)
+            currentState.mousePressed(x, y);
+    }
+
+    /**
+     * Sends the mouse move to the current state
+     *
+     * @param x the x coordinate of the mouse move
+     * @param y the y coordinate of the mouse move
+     */
+    public static void mouseMoved(int x, int y) {
+        if (currentState != null)
+            currentState.mouseMoved(x, y);
+    }
 
 }

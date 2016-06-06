@@ -146,8 +146,8 @@ public class Room {
      */
     private void checkIfPlayerAtDoor() {
         //Check if player is at a door
-        int x = player.getX();
-        int y = player.getY();
+        double x = player.getX();
+        double y = player.getY();
 
         //North door
         if (north != null && x > 466 && x < 566 && y > 110 && y < 120) {
@@ -339,14 +339,14 @@ public class Room {
         g.drawImage(background, 0, 198, null);
 
         for (Enemy currentEnemy : enemies)
-            g.drawImage(currentEnemy.getImage(), currentEnemy.getX(), currentEnemy.getY(), null);
+            g.drawImage(currentEnemy.getImage(), (int)currentEnemy.getX(), (int)currentEnemy.getY(), null);
 
         for (Item currentItem : items) {
-            g.drawImage(currentItem.getImage(), currentItem.getX(), currentItem.getY(), null);
+            g.drawImage(currentItem.getImage(), (int)currentItem.getX(), (int)currentItem.getY(), null);
         }
 
         for (GameObject currentRoomObject : roomObjects) {
-            g.drawImage(currentRoomObject.getImage(), currentRoomObject.getX(), currentRoomObject.getY(), null);
+            g.drawImage(currentRoomObject.getImage(), (int)currentRoomObject.getX(), (int)currentRoomObject.getY(), null);
         }
 
         drawDoors(g);
@@ -437,8 +437,8 @@ public class Room {
                         }
 
                         // Keep track of old coordinates
-                        int oldX = currentEnemy.getX();
-                        int oldY = currentEnemy.getY();
+                        int oldX = (int)currentEnemy.getX();
+                        int oldY = (int)currentEnemy.getY();
                         // Enemy is of the aggresive type
                         if (currentEnemy.isAngry()) {
                             int enemyWidth = (int) currentEnemy.getSize().getWidth();

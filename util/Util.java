@@ -11,6 +11,8 @@ public final class Util {
     //Fps calculation
     private static double oldFPS = 0;
 
+    private static double deltaTime = 0;
+
     private Util(){}
 
     public static BufferedImage createCompatibleImage(Image image)
@@ -68,6 +70,16 @@ public final class Util {
         //Change the fps by 10% of the new fps for a smoother display
         oldFPS = oldFPS * 0.9 + (1/dt) * 0.1;
         return oldFPS;
+    }
+
+    public static double getDeltaTime()
+    {
+        return deltaTime;
+    }
+
+    public static void setDeltaTime(double dt)
+    {
+        deltaTime = dt;
     }
 
 }

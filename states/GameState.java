@@ -12,7 +12,7 @@ public interface GameState
 	// Initialize the game state
 	public void init();
 	//Updates the game simulation
-	public void update(double deltaTime);
+	public void update();
 	// Draws this state to given graphics
 	public void draw(Graphics g);
 	//Frees any resources used by this state

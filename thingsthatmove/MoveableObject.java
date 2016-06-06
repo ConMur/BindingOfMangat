@@ -1,14 +1,16 @@
 package thingsthatmove;
 
+import util.Util;
+
 import java.awt.Dimension;
 import java.awt.Image;
 
 public class MoveableObject extends GameObject
 {
 	private final int LOWER_X_BOUND = 0;
-	private final int UPPER_X_BOUND = 0;
+	private final int UPPER_X_BOUND = 720;
 	private final int LOWER_Y_BOUND = 0;
-	private final int UPPER_Y_BOUND = 0;
+	private final int UPPER_Y_BOUND = 1280;
 	private final double ROOT_TWO = Math.sqrt(2);
 	private int dmg, hp, speed, maxHP;
 	
@@ -87,21 +89,21 @@ public class MoveableObject extends GameObject
 	public void moveEast ()
 	{
 		if ((getX() + getSize().getWidth()) < UPPER_X_BOUND)
-			setX(getX() + getSpeed());
+			setX(getX() + getSpeed() * Util.getDeltaTime());
 	}
 	
 	public void moveWest()
 	{
 		if (getX() > LOWER_X_BOUND)
-			setX(getX() - getSpeed());
+			setX(getX() - getSpeed() * Util.getDeltaTime());
 	}
 	
 	public void moveNorthWest()
 	{
 		if (getX() > LOWER_X_BOUND && getY() > LOWER_Y_BOUND)
 		{
-			setX(getX() - (int)(getSpeed()/ROOT_TWO));
-			setY(getY() - (int)(getSpeed()/ROOT_TWO));
+			setX(getX() - (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
+			setY(getY() - (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
 		}
 	}
 	
@@ -109,29 +111,29 @@ public class MoveableObject extends GameObject
 	{
 		if ((getX() + getSize().getWidth()) < UPPER_X_BOUND && getY() > LOWER_Y_BOUND)
 		{
-			setX(getX() + (int)(getSpeed()/ROOT_TWO));
-			setY(getY() - (int)(getSpeed()/ROOT_TWO));
+			setX(getX() + (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
+			setY(getY() - (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
 		}
 	}
 	
 	public void moveNorth()
 	{
 		if (getY() > LOWER_Y_BOUND)
-			setY(getY() - getSpeed());
+			setY(getY() - getSpeed() * Util.getDeltaTime());
 	}
 	
 	public void moveSouth()
 	{
 		if ((getY() + getSize().getHeight()) < UPPER_Y_BOUND)
-			setY(getY() + getSpeed());
+			setY(getY() + getSpeed() * Util.getDeltaTime());
 	}
 	
 	public void moveSouthEast()
 	{
 		if ((getX() + getSize().getWidth()) < UPPER_X_BOUND && (getY() + getSize().getHeight()) < UPPER_Y_BOUND)
 		{
-			setX(getX() + (int)(getSpeed()/ROOT_TWO));
-			setY(getY() + (int)(getSpeed()/ROOT_TWO));
+			setX(getX() + (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
+			setY(getY() + (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
 		}
 	}
 	
@@ -139,8 +141,8 @@ public class MoveableObject extends GameObject
 	{
 		if (getX() > LOWER_X_BOUND && (getY() + getSize().getHeight()) < UPPER_Y_BOUND)
 		{
-			setX(getX() - (int)(getSpeed()/ROOT_TWO));
-			setY(getY() + (int)(getSpeed()/ROOT_TWO));
+			setX(getX() - (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
+			setY(getY() + (getSpeed() * Util.getDeltaTime())/ROOT_TWO);
 		}
 	}
 	

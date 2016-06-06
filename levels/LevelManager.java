@@ -242,11 +242,6 @@ public final class LevelManager
 	public static void update()
 	{
 		currentLevel.update();
-		// Check if the player is at a door
-		int x = player.getX();
-		int y = player.getY();
-
-		// if(x > && x < && y > && y <)
 	}
 
 	public static void draw(Graphics g)

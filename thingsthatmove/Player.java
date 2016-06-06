@@ -131,10 +131,10 @@ public class Player extends MoveableObject
 
 	public void draw(Graphics g)
 	{
-		g.drawImage(getImage(), getX(), getY(), null);
+		g.drawImage(getImage(), (int)getX(), (int)getY(), null);
 		
 		for (Projectile p : currentProjectiles)
-			g.drawImage(p.getImage(), p.getX(), p.getY(), null);
+			g.drawImage(p.getImage(), (int)p.getX(), (int)p.getY(), null);
 	}
 
 	public void keyPressed(int key)

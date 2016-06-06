@@ -3,9 +3,11 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.*;
 
 import javax.swing.*;
 
+import states.GameState;
 import states.GameStateManager;
 import util.ImageManager;
 import util.Util;
@@ -15,7 +17,7 @@ import util.Util;
  * @author Connor Murphy
  *
  */
-public class GamePanel extends JPanel
+public class GamePanel extends JPanel implements KeyListener, MouseListener, MouseMotionListener
 {
 	/**
 	 * A generated serialVersionUID so eclipse does not yell at me
@@ -44,6 +46,12 @@ public class GamePanel extends JPanel
 
 		oldWidth = getWidth();
 		oldHeight = getHeight();
+
+		setFocusable(true);
+		requestFocus();
+		addKeyListener(this);
+		addMouseListener(this);
+		addMouseMotionListener(this);
 	}
 
 	/**
@@ -61,9 +69,9 @@ public class GamePanel extends JPanel
 			// Calculate the time between frames
 			long currentTime = System.nanoTime();
 			double deltaTime = (currentTime - lastTime) / 1000000000.0;
-
+			Util.setDeltaTime(deltaTime);
 			// Update the simulation
-			update(deltaTime);
+			update();
 
 			//Check if the window was resized
 
@@ -85,11 +93,10 @@ public class GamePanel extends JPanel
 
 	/**
 	 * Updates the program
-	 * @param deltaTime the time between this frame and the last
 	 */
-	private void update(double deltaTime)
+	private void update()
 	{
-		GameStateManager.update(deltaTime);
+		GameStateManager.update();
 	}
 
 	/**
@@ -121,5 +128,53 @@ public class GamePanel extends JPanel
 	public void stop()
 	{
 		running = false;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		GameStateManager.keyPressed(e.getKeyCode());
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		GameStateManager.keyReleased(e.getKeyCode());
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		GameStateManager.mousePressed(e.getX(), e.getY());
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		GameStateManager.mousePressed(e.getX(), e.getY());
 	}
 }

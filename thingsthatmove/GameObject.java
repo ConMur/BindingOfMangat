@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
 public class GameObject
 {
 	private Dimension size;
-	private int xPos, yPos;
+	private double xPos, yPos;
 	private Image image;
 	
 	public GameObject (int x, int y, Image image, Dimension size)
@@ -41,25 +41,25 @@ public class GameObject
 	
 	public Rectangle getHitBox()
 	{
-		return new Rectangle (xPos, yPos, (int)size.getWidth(), (int)size.getHeight());
+		return new Rectangle ((int)xPos, (int)yPos, (int)size.getWidth(), (int)size.getHeight());
 	}
 	
-	public int getX ()
+	public double getX ()
 	{
 		return xPos;
 	}
 	
-	public int getY ()
+	public double getY ()
 	{
 		return yPos;
 	}
 	
-	public void setX (int x)
+	public void setX (double x)
 	{
 		xPos = x;
 	}
 	
-	public void setY (int y)
+	public void setY (double y)
 	{
 		yPos = y;
 	}
