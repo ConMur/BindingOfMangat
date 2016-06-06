@@ -88,6 +88,15 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
 			lastTime = currentTime;
 			fpsLabel.setText("fps: " + (int)Util.calcFPS(deltaTime));
+			try
+			{
+				Thread.sleep(16);
+			}
+			catch (InterruptedException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
