@@ -34,10 +34,10 @@ public class Room {
     private boolean inRoom;
 
     // The room bounds (CHANGE)
-    private final int LOWER_X_BOUND = 0;
-    private final int UPPER_X_BOUND = 0;
-    private final int LOWER_Y_BOUND = 0;
-    private final int UPPER_Y_BOUND = 0;
+	private final int LOWER_X_BOUND = 90;
+	private final int UPPER_X_BOUND = 960;
+	private final int LOWER_Y_BOUND = 200;
+	private final int UPPER_Y_BOUND = 672;
 
     //Door locations
     /*if (north != null && x > 466 && x < 566 && y > 110 && y < 120) {
@@ -50,14 +50,14 @@ public class Room {
         atWestDoor = true;
     }*/
 
-    private final int NORTH_DOOR_X = 516;
-    private final int NORTH_DOOR_Y = 120;
-    private final int SOUTH_DOOR_X = 516;
-    private final int SOUTH_DOOR_Y = 610;
-    private final int EAST_DOOR_X = 1160;
-    private final int EAST_DOOR_Y = 190;
-    private final int WEST_DOOR_X = 120;
-    private final int WEST_DOOR_Y = 190;
+    private final int NORTH_DOOR_X = 450;
+    private final int NORTH_DOOR_Y = 335;
+    private final int SOUTH_DOOR_X = 450;
+    private final int SOUTH_DOOR_Y = 681;
+    private final int EAST_DOOR_X = 926;
+    private final int EAST_DOOR_Y = 420;
+    private final int WEST_DOOR_X = 140;
+    private final int WEST_DOOR_Y = 420;
 
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p, Room north, Room east, Room south, Room west) {
