@@ -1,8 +1,8 @@
 package thingsthatmove;
 
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Image;
+import java.util.Random;
 
 public class Enemy extends MoveableObject
 {
@@ -68,5 +68,19 @@ public class Enemy extends MoveableObject
 	public char getDirection()
 	{
 		return currentDirection;
+	}
+	
+	public void setRandomDirection()
+	{
+		Random r = new Random();
+		int direction = r.nextInt(4);
+		if (direction == 0)
+			currentDirection = 'N';
+        else if (direction == 1)
+        	currentDirection = 'E';
+        else if (direction == 2)
+        	currentDirection = 'S';
+        else
+        	currentDirection = 'W';
 	}
 }
