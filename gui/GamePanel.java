@@ -37,7 +37,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 		super();
 		running = true;
 		
-		setPreferredSize(new Dimension(1280, 720));
+		setPreferredSize(new Dimension(1024, 768));
 
 		lastTime = System.nanoTime();
 
