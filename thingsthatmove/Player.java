@@ -140,13 +140,57 @@ public class Player extends MoveableObject
 	public void keyPressed(int key)
 	{
 		if (key == KeyEvent.VK_W)
+		{
 			movingNorth = true;
+			try
+			{
+				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatback.png")));
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		else if (key == KeyEvent.VK_A)
+		{
 			movingWest = true;
+			try
+			{
+				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatleft.png")));
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		else if (key == KeyEvent.VK_S)
+		{
 			movingSouth = true;
+			try
+			{
+				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")));
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		else if (key == KeyEvent.VK_D)
+		{
 			movingEast = true;
+			try
+			{
+				setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatright.png")));
+			}
+			catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 
 		if (key == KeyEvent.VK_SPACE)
 		{
