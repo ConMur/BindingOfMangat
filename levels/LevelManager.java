@@ -80,6 +80,7 @@ public final class LevelManager
 
 		// Set the current level to the first level
 		currentLevel = levels.get(0);
+		currentLevel.start();
 	}
 
 	private static void populateEnemyLists(
@@ -89,7 +90,7 @@ public final class LevelManager
 		// TODO: update as more enemies are added
 		// Add the science enemies
 		try {
-			science.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+			science.add(new Enemy(2, 2, 1, 300,500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(100, 100), 2, true, false));
 		}
 		catch(IOException ioe)
