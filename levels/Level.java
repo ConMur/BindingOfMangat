@@ -13,9 +13,9 @@ public class Level
 	
 	//TODO: call start room and end room when entering and exiting a room
 	
-	// Additional room chance out of TOTAL_CHANCES
-	private final int ADDITIONAL_ROOM_CHANCE = 3;
-	private final int TOTAL_CHANCES = 10;
+	// Additional room chance out of 100
+	private final int ADDITIONAL_ROOM_CHANCE = 30;
+	private final int TOTAL_CHANCES = 100;
 
 	/**
 	 * Creates the level with the given rooms
@@ -60,6 +60,11 @@ public class Level
 			}
 		}
 	}
+	
+	public void start()
+	{
+		currentRoom.startRoom();
+	}
 
 	public void update()
 	{
@@ -74,27 +79,31 @@ public class Level
 	private void checkPlayerAtDoor() {
 		if(currentRoom.isPlayerAtNorthDoor())
 		{
-			currentRoom.endRoom();
+			Room oldRoom = currentRoom;
 			currentRoom = currentRoom.getNorth();
 			currentRoom.startRoom();
+			oldRoom.endRoom();
 		}
 		else if(currentRoom.isPlayerAtSouthDoor())
 		{
-			currentRoom.endRoom();
+			Room oldRoom = currentRoom;
 			currentRoom = currentRoom.getSouth();
 			currentRoom.startRoom();
+			oldRoom.endRoom();
 		}
 		else if(currentRoom.isPlayerAtEastDoor())
 		{
-			currentRoom.endRoom();
+			Room oldRoom = currentRoom;
 			currentRoom = currentRoom.getEast();
 			currentRoom.startRoom();
+			oldRoom.endRoom();
 		}
 		else if(currentRoom.isPlayerAtWestDoor())
 		{
-			currentRoom.endRoom();
+			Room oldRoom = currentRoom;
 			currentRoom = currentRoom.getWest();
 			currentRoom.startRoom();
+			oldRoom.endRoom();
 		}
 	}
 
@@ -118,18 +127,34 @@ public class Level
 			if (dir == 0)
 			{
 				sucessful = workingRoom.setNorth(room);
+				if(sucessful)
+				{
+					room.setSouth(workingRoom);
+				}
 			}
 			else if (dir == 1)
 			{
 				sucessful = workingRoom.setEast(room);
+				if(sucessful)
+				{
+					room.setWest(workingRoom);
+				}
 			}
 			else if (dir == 2)
 			{
 				sucessful = workingRoom.setSouth(room);
+				if(sucessful)
+				{
+					room.setNorth(workingRoom);
+				}
 			}
 			else if (dir == 3)
 			{
 				sucessful = workingRoom.setWest(room);
+				if(sucessful)
+				{
+					room.setEast(workingRoom);
+				}
 			}
 		}
 	}
