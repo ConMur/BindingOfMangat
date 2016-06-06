@@ -2,7 +2,7 @@ package levels;
 
 import item.Item;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 import thingsthatmove.Enemy;
 import thingsthatmove.GameObject;
 import thingsthatmove.Player;
-import util.Util;
 
 public class Room {
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -327,26 +326,23 @@ public class Room {
 
         for (int i = 0; i < enemyIndex; i++) {
             if (enemyHitbox.intersects(hitboxes.get(i)))
-            {
-            	System.out.println("COLLISION HAS BEEN FOUND");
             	return true;
-            }
         }
 
         for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
             if (enemyHitbox.intersects(hitboxes.get(j)))
-            {
             	return true;
-            }
         }
-    	System.out.println("NO COLLISION");
         return false;
     }
 
     public void draw(Graphics g) {
         g.drawImage(hud, 0, 0, null);
         g.drawImage(background, 0, 198, null);
-
+        g.setColor(Color.RED);
+        g.drawRect(130, 325, 780, 250);
+        g.setColor(Color.BLACK);
+        
         for (Enemy currentEnemy : enemies)
         {
         	Rectangle r = currentEnemy.getHitBox();
@@ -411,43 +407,21 @@ public class Room {
                     // When enemies are within aggro-range follow players
                     // Enemies cannot overlap other game objects
                     Enemy currentEnemy = enemies.get(n);
-                    System.out.println("MOVING ENEMY");
                     if (!currentEnemy.isAlive())
                         enemies.remove(n);
                         // Only move moveable enemies
                     else if (currentEnemy.canMove()) {
                         int direction;
                         Random r = new Random();
-                        // Enemy is of the passive type
 
                         // No initial direction
-                        if (currentEnemy.getDirection() == ' ') {
-                            // Get and assign a random direction
-                            direction = r.nextInt(4);
-                            if (direction == 0)
-                                currentEnemy.setDirection('N');
-                            else if (direction == 1)
-                                currentEnemy.setDirection('E');
-                            else if (direction == 2)
-                                currentEnemy.setDirection('S');
-                            else
-                                currentEnemy.setDirection('W');
-                        }
+                        if (currentEnemy.getDirection() == ' ') 
+                            currentEnemy.setRandomDirection();
                         // Already moving in a direction
                         else {
                             // Set a 5% chance to change direction
-                            if (r.nextInt(100) >= 95) {
-                                // Get and assign a random direction
-                                direction = r.nextInt(4);
-                                if (direction == 0)
-                                    currentEnemy.setDirection('N');
-                                else if (direction == 1)
-                                    currentEnemy.setDirection('E');
-                                else if (direction == 2)
-                                    currentEnemy.setDirection('S');
-                                else
-                                    currentEnemy.setDirection('W');
-                            }
+                            if (r.nextInt(100) >= 95) 
+                               currentEnemy.setRandomDirection();
                         }
 
                         // Keep track of old coordinates
@@ -476,13 +450,27 @@ public class Room {
                         }
                         // Move the enemy in its direction
                         currentEnemy.moveInDirection();
-                        System.out.println("MOVING ENEMY IN DIRECTION");
-                        // There is a collision with another ENEMY or ITEM (not player) so move back
+                        // There is a collision with another ENEMY or ITEM (not player) so move back and change direction
                         if (enemyCollision(n, currentEnemy.getHitBox()))
                         {
-                        	System.out.println("MOVING BACK");
                             currentEnemy.move(oldX, oldY);
+                            currentEnemy.setRandomDirection();
+                            currentEnemy.moveInDirection();
+                            
+                            // Still collision
+                            if (enemyCollision(n, currentEnemy.getHitBox()))
+                            {
+                                currentEnemy.move(oldX, oldY);
+                                currentEnemy.setRandomDirection();
+                                currentEnemy.moveInDirection();
+                                
+                                // Still collision
+                                if (enemyCollision(n, currentEnemy.getHitBox()))
+                                    currentEnemy.move(oldX, oldY);
+                            }
                         }
+                        
+                        
                     }
                 }
                 try {

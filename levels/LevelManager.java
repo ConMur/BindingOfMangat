@@ -44,6 +44,12 @@ public final class LevelManager
 	private static int levelNumber;
 
 	private static Random rand;
+	
+	// Enemy spawn boundaries
+	private final static int SPAWN_X_LOWER = 130;
+	private final static int SPAWN_Y_LOWER = 325;
+	private final static int SPAWN_X_WIDTH = 780;
+	private final static int SPAWN_Y_HEIGHT = 250;
 
 	// Lists of things that can be added to a level
 	private static ArrayList<Enemy> scienceEnemyList, englishEnemyList,
@@ -224,8 +230,8 @@ public final class LevelManager
 		for (int enemy = 0; enemy < numEnemies; ++enemy)
 		{
 			Enemy j = new Enemy (e);
-			j.setX(rand.nextInt(600) + 100);
-			j.setY(rand.nextInt(400) + 100);
+			j.setX(rand.nextInt(SPAWN_X_WIDTH) + SPAWN_X_LOWER);
+			j.setY(rand.nextInt(SPAWN_Y_HEIGHT) + SPAWN_Y_LOWER);
 			enemyList.add(j);
 
 		}
