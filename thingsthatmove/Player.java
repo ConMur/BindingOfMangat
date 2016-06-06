@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -23,6 +24,8 @@ public class Player extends MoveableObject
 	private ArrayList<Projectile> currentProjectiles;
 	private Thread pThread;
 	private boolean isShooting;
+
+	private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
 	
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
 			Dimension s, int maxHP, int projectile, Item item)
@@ -35,6 +38,18 @@ public class Player extends MoveableObject
 		boolean movingWest = false;
 		boolean movingEast = false;
 		boolean movingSouth = false;
+
+
+		try {
+			mangatFront =ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png"));
+			mangatBack = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatback.png"));
+			mangatLeft =  ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatleft.png"));
+			mangatRight = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatright.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
 		pThread = new Thread(new ProjectileFiringThread());
 		pThread.start();
 	}
@@ -143,15 +158,7 @@ public class Player extends MoveableObject
 		{
 			if (!movingNorth)
 			{
-				try
-				{
-					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatback.png")));
-				}
-				catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					setImage(mangatBack);
 			}
 			movingNorth = true;
 		}
@@ -159,15 +166,7 @@ public class Player extends MoveableObject
 		{
 			if (!movingWest)
 			{
-				try
-				{
-					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatleft.png")));
-				}
-				catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					setImage(mangatLeft);
 			}
 			movingWest = true;
 		}
@@ -175,15 +174,7 @@ public class Player extends MoveableObject
 		{
 			if (!movingSouth)
 			{
-				try
-				{
-					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")));
-				}
-				catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					setImage(mangatFront);
 			}
 			movingSouth = true;
 		}
@@ -191,15 +182,7 @@ public class Player extends MoveableObject
 		{
 			if (!movingEast)
 			{
-				try
-				{
-					setImage(ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatright.png")));
-				}
-				catch (IOException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+					setImage(mangatRight);
 			}
 			movingEast = true;
 		}
