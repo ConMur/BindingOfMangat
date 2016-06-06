@@ -1,6 +1,5 @@
 package states;
 
-import gui.GameFrame;
 import levels.LevelManager;
 import thingsthatmove.Player;
 
@@ -16,7 +15,7 @@ public class PlayState implements GameState
 	{
 		try {
 			player = new Player(10, 10, 250, 500, 500, ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")),
-					new Dimension(100, 100), 10, 0, null);
+					new Dimension(100, 100), 10, 1, null);
 		}
 		catch(IOException ioe)
 		{

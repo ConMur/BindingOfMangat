@@ -46,22 +46,6 @@ public class Player extends MoveableObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        pThread = new Thread(new ProjectileFiringThread());
-        pThread.start();
-    }
-
-
-    private class ProjectileFiringThread implements Runnable {
-        public void run() {
-            while (true) {
-                for (int p = 0; p < currentProjectiles.size(); p++) {
-
-                }
-            }
-
-        }
     }
 
     public ArrayList<Projectile> getAllPlayerProjectiles() {
@@ -128,13 +112,26 @@ public class Player extends MoveableObject {
             moveWest();
         if (movingEast)
             moveEast();
+
+        int removedProjectiles = 0;
+        for (int i = 0; i < currentProjectiles.size(); ++i) {
+            Projectile p = currentProjectiles.get(i - removedProjectiles);
+            p.update();
+            if(p.isDeadProjectile())
+            {
+                System.out.println("removed projectile");
+                currentProjectiles.remove(i - removedProjectiles);
+                ++removedProjectiles;
+            }
+        }
     }
 
     public void draw(Graphics g) {
         g.drawImage(getImage(), (int) getX(), (int) getY(), null);
 
-        for (Projectile p : currentProjectiles)
+        for (Projectile p : currentProjectiles) {
             g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
+        }
     }
 
     public void keyPressed(int key) {
@@ -181,6 +178,8 @@ public class Player extends MoveableObject {
                 shootProjectile('S');
             else if (movingWest)
                 shootProjectile('W');
+            else
+                System.err.println("no projextile added");
         }
     }
 
