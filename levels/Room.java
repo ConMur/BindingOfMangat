@@ -331,7 +331,7 @@ public class Room {
     }
 
 
-    public synchronized void updateHitboxes() {
+    public void updateHitboxes() {
         // Remove all current hitboxes
         hitboxes.clear();
 
@@ -344,13 +344,16 @@ public class Room {
     }
 
     public boolean enemyCollision(int enemyIndex, Rectangle enemyHitbox) {
-
+    	
         for (int i = 0; i < enemyIndex; i++) {
+        	updateHitboxes();
             if (enemyHitbox.intersects(hitboxes.get(i)))
             	return true;
         }
 
         for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
+        	//updateHitboxes();
+        	System.out.println("HITBOX SIZE " + hitboxes.size() + " CURRENT INDEX " + j);
             if (enemyHitbox.intersects(hitboxes.get(j)))
             	return true;
         }
@@ -363,6 +366,8 @@ public class Room {
         g.setColor(Color.RED);
         g.drawRect(130, 325, 780, 250);
         g.setColor(Color.BLACK);
+        
+        drawDoors(g);
         
         for (Enemy currentEnemy : enemies)
         {
@@ -380,7 +385,7 @@ public class Room {
             g.drawImage(currentRoomObject.getImage(), (int)currentRoomObject.getX(), (int)currentRoomObject.getY(), null);
         }
 
-        drawDoors(g);
+
 
     }
 
