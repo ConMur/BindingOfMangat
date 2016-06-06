@@ -50,13 +50,13 @@ public class Enemy extends MoveableObject
 
 	public void moveInDirection()
 	{
-		if (currentDirection == 0)
+		if (currentDirection == 'N')
 			moveNorth();
-		else if (currentDirection == 1)
+		else if (currentDirection == 'E')
 			moveEast();
-		else if (currentDirection == 2)
+		else if (currentDirection == 'S')
 			moveSouth();
-		else
+		else if (currentDirection == 'W')
 			moveWest();
 	}
 

@@ -90,8 +90,8 @@ public final class LevelManager
 		// TODO: update as more enemies are added
 		// Add the science enemies
 		try {
-			science.add(new Enemy(2, 2, 1, 300,500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-					new Dimension(100, 100), 2, true, false));
+			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+					new Dimension(75, 43), 2, true, false));
 		}
 		catch(IOException ioe)
 		{
@@ -100,7 +100,7 @@ public final class LevelManager
 		}
 		// Add the english enemies
 		try {
-			english.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+			english.add(new Enemy(2, 2, 1, 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(100, 100), 2, true, false));
 		}
 		catch(IOException ioe)
@@ -110,7 +110,7 @@ public final class LevelManager
 		}
 		// Add the math enemies
 		try {
-			math.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+			math.add(new Enemy(2, 2, 1, 400, 600, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(100, 100), 2, true, false));
 		}
 		catch(IOException ioe)
@@ -223,7 +223,11 @@ public final class LevelManager
 		int numEnemies = MIN_ENEMIES + rand.nextInt(ADDITIONAL_ENEMIES);
 		for (int enemy = 0; enemy < numEnemies; ++enemy)
 		{
-			enemyList.add(new Enemy(e));
+			Enemy j = new Enemy (e);
+			j.setX(rand.nextInt(600) + 100);
+			j.setY(rand.nextInt(400) + 100);
+			enemyList.add(j);
+
 		}
 
 		// Have a chance to have an item in the room

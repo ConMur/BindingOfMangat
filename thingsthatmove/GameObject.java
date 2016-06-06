@@ -41,7 +41,7 @@ public class GameObject
 	
 	public Rectangle getHitBox()
 	{
-		return new Rectangle ((int)xPos, (int)yPos, (int)size.getWidth(), (int)size.getHeight());
+		return new Rectangle ((int)xPos, (int)yPos + (int)(size.getHeight() * 0.5), (int)size.getWidth(), (int)size.getHeight());
 	}
 	
 	public double getX ()

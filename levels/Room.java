@@ -22,7 +22,7 @@ public class Room {
     private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
     private ArrayList<Item> items = new ArrayList<Item>();
     private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
-    private Thread moveEnemies = new Thread(new EnemyMovementThread());
+    private Thread moveEnemies;
     private Player player;
     private Image background, hud;
     private Image northClosedDoor, southClosedDoor, eastClosedDoor, westClosedDoor;
@@ -33,22 +33,11 @@ public class Room {
 
     private boolean inRoom;
 
-    // The room bounds (CHANGE)
+    // The room bounds 
 	private final int LOWER_X_BOUND = 90;
 	private final int UPPER_X_BOUND = 960;
 	private final int LOWER_Y_BOUND = 200;
 	private final int UPPER_Y_BOUND = 672;
-
-    //Door locations
-    /*if (north != null && x > 466 && x < 566 && y > 110 && y < 120) {
-        atNorthDoor = true;
-    } else if (south != null && x > 466 && x < 566 && y > 610 && y < 620) {
-        atSouthDoor = true;
-    } else if (east != null && x > 120 && x < 130 && y > 190 && y < 290) {
-        atEastDoor = true;
-    } else if (west != null && x > 1160 && x < 1170 && y > 190 && y < 290) {
-        atWestDoor = true;
-    }*/
 
     private final int NORTH_DOOR_X = 450;
     private final int NORTH_DOOR_Y = 335;
@@ -136,8 +125,8 @@ public class Room {
     }
 
     public void update() {
-        updateDoorStatus();
         updateHitboxes();
+        updateDoorStatus();
         checkIfPlayerAtDoor();
     }
 
@@ -150,13 +139,13 @@ public class Room {
         double y = player.getY();
 
         //North door
-        if (north != null && x > 466 && x < 566 && y > 110 && y < 120) {
+        if (north != null && x > 412 && x < 518 && y < 250) {
             atNorthDoor = true;
-        } else if (south != null && x > 466 && x < 566 && y > 610 && y < 620) {
+        } else if (south != null && x > 412 && x < 518 && y > 565) {
             atSouthDoor = true;
-        } else if (east != null && x > 120 && x < 130 && y > 190 && y < 290) {
+        } else if (east != null && x > 845 && y > 392 && y < 498) {
             atEastDoor = true;
-        } else if (west != null && x > 1160 && x < 1170 && y > 190 && y < 290) {
+        } else if (west != null && x < 210 && y > 392 && y < 498) {
             atWestDoor = true;
         }
     }
@@ -175,6 +164,14 @@ public class Room {
 
     public boolean isPlayerAtWestDoor() {
         return atWestDoor;
+    }
+    
+    public void resetAllDoors()
+    {
+    	atNorthDoor = false;
+    	atSouthDoor = false;
+    	atEastDoor = false;
+    	atWestDoor = false;
     }
 
     public Player getPlayer() {
@@ -300,37 +297,49 @@ public class Room {
     }
 
     public void startRoom() {
+    	updateHitboxes();
+    	 resetAllDoors();
         inRoom = true;
-        moveEnemies.run();
+        System.out.println("STARTING ROOM");
+        moveEnemies = new Thread(new EnemyMovementThread());
+        moveEnemies.start();
     }
 
     public void endRoom() {
+    	System.out.println("ENDING ROOM");
         inRoom = false;
     }
 
-    public void updateHitboxes() {
+
+    public synchronized void updateHitboxes() {
         // Remove all current hitboxes
         hitboxes.clear();
 
         // Add all enemy hitboxes
         for (Enemy e : enemies)
             hitboxes.add(e.getHitBox());
-
         // Add all item hitboxes
         for (Item i : items)
             hitboxes.add(i.getHitBox());
     }
 
     public boolean enemyCollision(int enemyIndex, Rectangle enemyHitbox) {
+
         for (int i = 0; i < enemyIndex; i++) {
-            if (enemyHitbox.intersects(hitboxes.get(i))) ;
-            return true;
+            if (enemyHitbox.intersects(hitboxes.get(i)))
+            {
+            	System.out.println("COLLISION HAS BEEN FOUND");
+            	return true;
+            }
         }
 
         for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
-            if (enemyHitbox.intersects(hitboxes.get(j))) ;
-            return true;
+            if (enemyHitbox.intersects(hitboxes.get(j)))
+            {
+            	return true;
+            }
         }
+    	System.out.println("NO COLLISION");
         return false;
     }
 
@@ -339,7 +348,12 @@ public class Room {
         g.drawImage(background, 0, 198, null);
 
         for (Enemy currentEnemy : enemies)
+        {
+        	Rectangle r = currentEnemy.getHitBox();
             g.drawImage(currentEnemy.getImage(), (int)currentEnemy.getX(), (int)currentEnemy.getY(), null);
+            g.drawRect((int)r.getX(), (int)r.getY(), (int)r.getWidth(), (int)r.getHeight());
+        }
+
 
         for (Item currentItem : items) {
             g.drawImage(currentItem.getImage(), (int)currentItem.getX(), (int)currentItem.getY(), null);
@@ -397,7 +411,7 @@ public class Room {
                     // When enemies are within aggro-range follow players
                     // Enemies cannot overlap other game objects
                     Enemy currentEnemy = enemies.get(n);
-
+                    System.out.println("MOVING ENEMY");
                     if (!currentEnemy.isAlive())
                         enemies.remove(n);
                         // Only move moveable enemies
@@ -421,8 +435,8 @@ public class Room {
                         }
                         // Already moving in a direction
                         else {
-                            // Set a 20% chance to change direction
-                            if (r.nextInt(100) >= 80) {
+                            // Set a 5% chance to change direction
+                            if (r.nextInt(100) >= 95) {
                                 // Get and assign a random direction
                                 direction = r.nextInt(4);
                                 if (direction == 0)
@@ -462,10 +476,13 @@ public class Room {
                         }
                         // Move the enemy in its direction
                         currentEnemy.moveInDirection();
-
+                        System.out.println("MOVING ENEMY IN DIRECTION");
                         // There is a collision with another ENEMY or ITEM (not player) so move back
                         if (enemyCollision(n, currentEnemy.getHitBox()))
+                        {
+                        	System.out.println("MOVING BACK");
                             currentEnemy.move(oldX, oldY);
+                        }
                     }
                 }
                 try {

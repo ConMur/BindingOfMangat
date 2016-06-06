@@ -13,9 +13,9 @@ public class Level
 	
 	//TODO: call start room and end room when entering and exiting a room
 	
-	// Additional room chance out of 100
-	private final int ADDITIONAL_ROOM_CHANCE = 30;
-	private final int TOTAL_CHANCES = 100;
+	// Additional room chance out of TOTAL_CHANCES
+	private final int ADDITIONAL_ROOM_CHANCE = 3;
+	private final int TOTAL_CHANCES = 10;
 
 	/**
 	 * Creates the level with the given rooms
@@ -59,9 +59,10 @@ public class Level
 				workingRoom = room;
 			}
 		}
+		
 	}
 	
-	public void start()
+	public void start ()
 	{
 		currentRoom.startRoom();
 	}
@@ -79,31 +80,31 @@ public class Level
 	private void checkPlayerAtDoor() {
 		if(currentRoom.isPlayerAtNorthDoor())
 		{
-			Room oldRoom = currentRoom;
+			System.out.println("AT NORTH");
+			currentRoom.endRoom();
 			currentRoom = currentRoom.getNorth();
 			currentRoom.startRoom();
-			oldRoom.endRoom();
 		}
 		else if(currentRoom.isPlayerAtSouthDoor())
 		{
-			Room oldRoom = currentRoom;
+			System.out.println("AT SOUTH");
+			currentRoom.endRoom();
 			currentRoom = currentRoom.getSouth();
 			currentRoom.startRoom();
-			oldRoom.endRoom();
 		}
 		else if(currentRoom.isPlayerAtEastDoor())
 		{
-			Room oldRoom = currentRoom;
+			System.out.println("AT EAST");
+			currentRoom.endRoom();
 			currentRoom = currentRoom.getEast();
 			currentRoom.startRoom();
-			oldRoom.endRoom();
 		}
 		else if(currentRoom.isPlayerAtWestDoor())
 		{
-			Room oldRoom = currentRoom;
+			System.out.println("AT WEST");
+			currentRoom.endRoom();
 			currentRoom = currentRoom.getWest();
 			currentRoom.startRoom();
-			oldRoom.endRoom();
 		}
 	}
 
