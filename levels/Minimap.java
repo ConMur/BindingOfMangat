@@ -2,6 +2,7 @@ package levels;
 
 import java.awt.*;
 import java.util.ArrayList;
+import levels.Room.RoomType;
 
 /**
  * @author Connor Murphy
@@ -67,13 +68,22 @@ public class Minimap {
     public void draw(Graphics g) {
         for(MinimapRoom r: minimapRooms)
         {
+            RoomType type = r.getRoom().getRoomType();
             if(r.getX() == playerRoomX && r.getY() == playerRoomY)
             {
                 g.setColor(Color.WHITE);
             }
-            else
+            else if(type == RoomType.NORMAL)
             {
                 g.setColor(Color.BLACK);
+            }
+            else if(type == RoomType.BOSS)
+            {
+                g.setColor(Color.RED);
+            }
+            else if(type == RoomType.SHOP)
+            {
+                g.setColor(Color.YELLOW);
             }
             g.fillRect(r.getX() * 11 + 150, r.getY() * 11 + 75, 10,10);
         }

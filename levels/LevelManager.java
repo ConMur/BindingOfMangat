@@ -269,7 +269,7 @@ public final class LevelManager {
             System.err.println("Invalid level value: " + levelNumber);
         }
 
-        Room room = new Room(enemyList, new ArrayList<>(), new ArrayList<>(), player, false);
+        Room room = new Room(enemyList, new ArrayList<>(), new ArrayList<>(), player, false, Room.RoomType.BOSS);
         return room;
     }
 
@@ -282,7 +282,7 @@ public final class LevelManager {
             //itemList.add(items.remove(rand.nextInt(items.size())));
             itemList.add(items.get(rand.nextInt(items.size())));
         }
-        return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player, false);
+        return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL);
     }
 
     private static Room createRoom(ArrayList<Enemy> enemies,
@@ -324,7 +324,7 @@ public final class LevelManager {
             itemList.add(items.get(rand.nextInt(items.size())));
         }
 
-        Room room = new Room(enemyList, itemList, new ArrayList<>(), player, false);
+        Room room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL);
         return room;
     }
 

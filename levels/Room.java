@@ -55,8 +55,15 @@ public class Room {
     private final int WEST_DOOR_X = 140;
     private final int WEST_DOOR_Y = 420;
 
+    public enum RoomType
+    {
+        NORMAL, BOSS, SHOP
+    }
+
+    private RoomType roomType;
+
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked, Room north, Room east,
+                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, Room north, Room east,
                 Room south, Room west) {
         this.enemies = e;
         this.items = i;
@@ -112,15 +119,17 @@ public class Room {
         takenDamage = false;
         visited = false;
         isLocked = locked;
+
+        this.roomType = type;
     }
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked) {
-        this(e, i, go, p, locked, null, null, null, null);
+                ArrayList<GameObject> go, Player p, boolean locked,RoomType type) {
+        this(e, i, go, p, locked, type, null, null, null, null);
     }
 
-    public Room(boolean locked, Room north, Room east, Room south, Room west) {
-        this(null, null, null, null, locked, north, east, south, west);
+    public Room(boolean locked, RoomType type, Room north, Room east, Room south, Room west) {
+        this(null, null, null, null, locked, type, north, east, south, west);
     }
 
     public boolean isNorthOpen() {
@@ -363,6 +372,10 @@ public class Room {
 
     public void setLocked(boolean locked) {
         isLocked = locked;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
     }
 
     public void startRoom() {
