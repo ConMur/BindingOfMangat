@@ -1,224 +1,312 @@
 package thingsthatmove;
 
-import util.Util;
-
 import java.awt.Dimension;
 import java.awt.Image;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
-public class Projectile extends GameObject {
-    private int speed, dmg;
-    private Image image;
-    private char direction;
-    private boolean visible;
-    private int lifeSpan;
+import util.Util;
 
-    private boolean isDead;
+public class Projectile extends GameObject
+{
+	private int speed, dmg;
+	private BufferedImage image;
+	private char direction;
+	private boolean visible;
+	private int lifeSpan;
 
-    // The room bounds
-    private final int LOWER_X_BOUND = 90;
-    private final int UPPER_X_BOUND = 960;
-    private final int LOWER_Y_BOUND = 200;
-    private final int UPPER_Y_BOUND = 672;
+	private boolean isDead;
 
+	// The room bounds
+	private final int LOWER_X_BOUND = 90;
+	private final int UPPER_X_BOUND = 960;
+	private final int LOWER_Y_BOUND = 200;
+	private final int UPPER_Y_BOUND = 672;
 
-    public Projectile(int projectileNum, char direction) {
-        super(0, 0, null, null);
-        visible = true;
-        this.direction = direction;
-        // Basic projectile
-        if (projectileNum == 1) {
-            image = new ImageIcon("images/projectiles/player/projectile1.png").getImage();
-            this.setImage(image);
-            this.setSize(new Dimension(50, 50));
-            this.speed = 300;
-            this.dmg = 5;
-            lifeSpan = 500;
-        }
-        // Broken pencils (greater speed + dmg)
-        else if (projectileNum == 2) {
-            image = new ImageIcon("images/projectiles/player/projectile2.png").getImage();
-            this.setImage(image);
-            this.setSize(new Dimension(50, 50));
-            this.speed = 10;
-            this.dmg = 400;
-            lifeSpan = 500;
-        }
-        // Bombs (slower travel speed, explosion on impact)
-        else if (projectileNum == 3) {
-            image = new ImageIcon("images/projectiles/player/projectile3.png").getImage();
-            this.setImage(image);
-            this.setSize(new Dimension(50, 50));
-            this.speed = 2;
-            this.dmg = 500;
-            lifeSpan = 500;
-        }
-        // Mario's fire flower (greater speed, dmg, fire rate)
-        else if (projectileNum == 4) {
-            image = new ImageIcon("images/projectiles/player/projectile4.png").getImage();
-            this.setImage(image);
-            this.setSize(new Dimension(50, 50));
-            this.speed = 600;
-            this.dmg = 10;
-            lifeSpan = 500;
-        }
-        // Reflective Sunglasses (instant speed, low dmg)
-        else if (projectileNum == 5) {
-            image = new ImageIcon("images/projectiles/player/projectile5.png").getImage();
-            this.setImage(image);
-            this.setSize(new Dimension(50, 50));
-            this.speed = 1000;
-            this.dmg = 3;
-            lifeSpan = 1500;
-        }
-        isDead = false;
-    }
+	public Projectile(int projectileNum, char direction)
+	{
+		super(0, 0, null, null);
+		visible = true;
+		this.direction = direction;
+		// Basic projectile
+		if (projectileNum == 1)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/player/projectile1.png"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 1");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(50, 50));
+			this.speed = 300;
+			this.dmg = 5;
+			lifeSpan = 500;
+		}
+		// Broken pencils (greater speed + dmg)
+		else if (projectileNum == 2)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/player/projectile2.png"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 2");
+				ioe.printStackTrace();
+			}
 
-    /**
-     * @param speed     the speed of the projectile in pixels/sec
-     * @param dmg       the damage the projectile does
-     * @param image     the image for the projectile
-     * @param startX    the x coordinate where the projectile starts
-     * @param startY    the y coordinate where the projectile starts
-     * @param size      the size of the projectile
-     * @param direction the direction the projectile is headed in
-     * @param lifeSpan  the number of pixels the projectile should travel before expiring
-     */
-    public Projectile(int speed, int dmg, Image image, int startX, int startY, Dimension size, char direction, int lifeSpan) {
-        super(startX, startY, image, size);
-        this.speed = speed;
-        this.dmg = dmg;
-        this.direction = direction;
-        visible = true;
-        isDead = false;
-        this.lifeSpan = lifeSpan;
-    }
+			this.setImage(image);
+			this.setSize(new Dimension(50, 50));
+			this.speed = 10;
+			this.dmg = 400;
+			lifeSpan = 500;
+		}
+		// Bombs (slower travel speed, explosion on impact)
+		else if (projectileNum == 3)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/player/projectile3.png"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 3");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(50, 50));
+			this.speed = 2;
+			this.dmg = 500;
+			lifeSpan = 500;
+		}
+		// Mario's fire flower (greater speed, dmg, fire rate)
+		else if (projectileNum == 4)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/player/projectile4.png"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 4");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(50, 50));
+			this.speed = 600;
+			this.dmg = 10;
+			lifeSpan = 500;
+		}
+		// Reflective Sunglasses (instant speed, low dmg)
+		else if (projectileNum == 5)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/player/projectile5.png"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 5");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(50, 50));
+			this.speed = 1000;
+			this.dmg = 3;
+			lifeSpan = 1500;
+		}
+		isDead = false;
+	}
 
-    public char getDirection() {
-        return direction;
-    }
+	/**
+	 * @param speed the speed of the projectile in pixels/sec
+	 * @param dmg the damage the projectile does
+	 * @param image the image for the projectile
+	 * @param startX the x coordinate where the projectile starts
+	 * @param startY the y coordinate where the projectile starts
+	 * @param size the size of the projectile
+	 * @param direction the direction the projectile is headed in
+	 * @param lifeSpan the number of pixels the projectile should travel before
+	 *            expiring
+	 */
+	public Projectile(int speed, int dmg, Image image, int startX, int startY,
+			Dimension size, char direction, int lifeSpan)
+	{
+		super(startX, startY, image, size);
+		this.speed = speed;
+		this.dmg = dmg;
+		this.direction = direction;
+		visible = true;
+		isDead = false;
+		this.lifeSpan = lifeSpan;
+	}
 
-    public void setDirection(char c) {
-        direction = c;
-    }
+	public char getDirection()
+	{
+		return direction;
+	}
 
-    public boolean isVisible() {
-        return visible;
-    }
+	public void setDirection(char c)
+	{
+		direction = c;
+	}
 
-    public void setVisibility(boolean b) {
-        visible = b;
-    }
+	public boolean isVisible()
+	{
+		return visible;
+	}
 
-    public int getDamage()
-    {
-        //Make sure that there is no damage if the projectile is dead
-        if(isDead)
-            return 0;
-        return dmg;
-    }
+	public void setVisibility(boolean b)
+	{
+		visible = b;
+	}
 
-    public void killProjectile()
-    {
-        isDead = true;
-    }
+	public int getDamage()
+	{
+		// Make sure that there is no damage if the projectile is dead
+		if (isDead)
+			return 0;
+		return dmg;
+	}
 
-    public void update() {
-        if (direction == 'N') {
-            moveNorth();
-        } else if (direction == 'E') {
-            moveEast();
-        } else if (direction == 'W') {
-            moveWest();
-        } else if (direction == 'S') {
-            moveSouth();
-        } else if (direction == '1') {
-            moveNorthEast();
-        } else if (direction == '2') {
-            moveSouthEast();
-        } else if (direction == '3') {
-            moveSouthWest();
-        } else if (direction == '4') {
-            moveNorthWest();
-        }
+	public void killProjectile()
+	{
+		isDead = true;
+	}
 
-        //Subtract the amount travelled from the life span
-        lifeSpan -= speed * Util.getDeltaTime();
+	public void update()
+	{
+		if (direction == 'N')
+		{
+			moveNorth();
+		}
+		else if (direction == 'E')
+		{
+			moveEast();
+		}
+		else if (direction == 'W')
+		{
+			moveWest();
+		}
+		else if (direction == 'S')
+		{
+			moveSouth();
+		}
+		else if (direction == '1')
+		{
+			moveNorthEast();
+		}
+		else if (direction == '2')
+		{
+			moveSouthEast();
+		}
+		else if (direction == '3')
+		{
+			moveSouthWest();
+		}
+		else if (direction == '4')
+		{
+			moveNorthWest();
+		}
 
-        //Check if off screen
-        double x = getX();
-        double y = getY();
-        if (x < LOWER_X_BOUND || y < LOWER_Y_BOUND || x > UPPER_X_BOUND || y > UPPER_Y_BOUND) {
-            isDead = true;
-        }
+		// Subtract the amount travelled from the life span
+		lifeSpan -= speed * Util.getDeltaTime();
 
-        //Check if life span is over
-        if (lifeSpan <= 0) {
-            isDead = true;
-        }
-    }
+		// Check if off screen
+		double x = getX();
+		double y = getY();
+		if (x < LOWER_X_BOUND || y < LOWER_Y_BOUND || x > UPPER_X_BOUND
+				|| y > UPPER_Y_BOUND)
+		{
+			isDead = true;
+		}
 
-    /**
-     * Returns if this projectile is dead and should be removed
-     *
-     * @return if this projectile is dead and should be removed
-     */
-    public boolean isDeadProjectile() {
-        return isDead;
-    }
+		// Check if life span is over
+		if (lifeSpan <= 0)
+		{
+			isDead = true;
+		}
+	}
 
-    public void moveNorthWest() {
-        setX(getX() - (speed * Util.getDeltaTime()));
-        setY(getY() - (speed * Util.getDeltaTime()));
-        if (getY() < LOWER_Y_BOUND || getX() < LOWER_Y_BOUND)
-            visible = false;
-    }
+	/**
+	 * Returns if this projectile is dead and should be removed
+	 *
+	 * @return if this projectile is dead and should be removed
+	 */
+	public boolean isDeadProjectile()
+	{
+		return isDead;
+	}
 
-    public void moveNorth() {
-        setY(getY() - speed * Util.getDeltaTime());
-        if (getY() < LOWER_Y_BOUND)
-            visible = false;
-    }
+	public void moveNorthWest()
+	{
+		setX(getX() - (speed * Util.getDeltaTime()));
+		setY(getY() - (speed * Util.getDeltaTime()));
+		if (getY() < LOWER_Y_BOUND || getX() < LOWER_Y_BOUND)
+			visible = false;
+	}
 
-    public void moveNorthEast() {
-        setY(getY() - (speed * Util.getDeltaTime()));
-        setX(getX() + (speed * Util.getDeltaTime()));
-        if (getY() < LOWER_Y_BOUND || getX() > UPPER_X_BOUND)
-            visible = false;
-    }
+	public void moveNorth()
+	{
+		setY(getY() - speed * Util.getDeltaTime());
+		if (getY() < LOWER_Y_BOUND)
+			visible = false;
+	}
 
-    public void moveEast() {
-        setX(getX() + speed * Util.getDeltaTime());
-        if (getX() > UPPER_X_BOUND)
-            visible = false;
-    }
+	public void moveNorthEast()
+	{
+		setY(getY() - (speed * Util.getDeltaTime()));
+		setX(getX() + (speed * Util.getDeltaTime()));
+		if (getY() < LOWER_Y_BOUND || getX() > UPPER_X_BOUND)
+			visible = false;
+	}
 
-    public void moveSouthEast() {
-        setX(getX() + (speed * Util.getDeltaTime()));
-        setY(getY() + (speed * Util.getDeltaTime()));
-        if (getX() > UPPER_X_BOUND || getY() > UPPER_Y_BOUND)
-            visible = false;
-    }
+	public void moveEast()
+	{
+		setX(getX() + speed * Util.getDeltaTime());
+		if (getX() > UPPER_X_BOUND)
+			visible = false;
+	}
 
-    public void moveSouth() {
-        setY(getY() + speed * Util.getDeltaTime());
-        if (getY() > UPPER_Y_BOUND)
-            visible = false;
-    }
+	public void moveSouthEast()
+	{
+		setX(getX() + (speed * Util.getDeltaTime()));
+		setY(getY() + (speed * Util.getDeltaTime()));
+		if (getX() > UPPER_X_BOUND || getY() > UPPER_Y_BOUND)
+			visible = false;
+	}
 
-    public void moveSouthWest() {
-        setY(getY() + (speed * Util.getDeltaTime()));
-        setX(getX() - (speed * Util.getDeltaTime()));
-        if (getY() > UPPER_Y_BOUND || getX() < LOWER_Y_BOUND)
-            visible = false;
-    }
+	public void moveSouth()
+	{
+		setY(getY() + speed * Util.getDeltaTime());
+		if (getY() > UPPER_Y_BOUND)
+			visible = false;
+	}
 
-    public void moveWest() {
-        setX(getX() - speed * Util.getDeltaTime());
-        if (getX() < LOWER_Y_BOUND)
-            visible = false;
-    }
+	public void moveSouthWest()
+	{
+		setY(getY() + (speed * Util.getDeltaTime()));
+		setX(getX() - (speed * Util.getDeltaTime()));
+		if (getY() > UPPER_Y_BOUND || getX() < LOWER_Y_BOUND)
+			visible = false;
+	}
+
+	public void moveWest()
+	{
+		setX(getX() - speed * Util.getDeltaTime());
+		if (getX() < LOWER_Y_BOUND)
+			visible = false;
+	}
 
 }
