@@ -96,20 +96,20 @@ public final class LevelManager
 		// TODO: update as more enemies are added
 		// Add the science enemies
 		try {
-			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+			science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/einsteinfront.png")),
-					new Dimension(75, 43), 2, true, true));
-			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/cellfront.png")),
-					new Dimension(75, 43), 2, true, true));
-			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/chemfront.png")),
-					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/moleculefront.png")),
-					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
-					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentclusterfront.png")),
-					new Dimension(75, 43), 2, true, false));
+			science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/einsteinfront.png")),
+					new Dimension(130, 65), 2, true, true));
+			science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/cellfront.png")),
+					new Dimension(75, 50), 2, true, true));
+			science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/chemfront.png")),
+					new Dimension(70, 60), 2, true, false));
+			science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/moleculefront.png")),
+					new Dimension(90, 62), 2, true, false));
+			science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
+					new Dimension(75, 50), 2, true, false));
+			science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentclusterfront.png")),
+					new Dimension(115, 65), 2, true, false));
 		}
 		catch(IOException ioe)
 		{
