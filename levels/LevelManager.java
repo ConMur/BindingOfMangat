@@ -98,6 +98,18 @@ public final class LevelManager
 		try {
 			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(75, 43), 2, true, false));
+			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/einsteinfront.png")),
+					new Dimension(75, 43), 2, true, false));
+			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/cellfront.png")),
+					new Dimension(75, 43), 2, true, false));
+			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/chemfront.png")),
+					new Dimension(75, 43), 2, true, false));
+			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/moleculefront.png")),
+					new Dimension(75, 43), 2, true, false));
+			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
+					new Dimension(75, 43), 2, true, false));
+			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentclusterfront.png")),
+					new Dimension(75, 43), 2, true, false));
 		}
 		catch(IOException ioe)
 		{
