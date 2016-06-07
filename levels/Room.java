@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -290,7 +291,7 @@ public class Room
 
 	public boolean hasEnemies()
 	{
-		if (enemies == null)
+		if (enemies == null || enemies.size() == 0)
 			return false;
 		return true;
 	}
@@ -471,6 +472,30 @@ public class Room
 		// }
 		// return false;
 	}
+	
+	public void sortAllGameObjects ()
+	{
+//		roomObjects.addAll(enemies);
+//		roomObjects.addAll(items);
+		
+		// Go through all items, starting at the second
+	   for (int n = 1 ; n < enemies.size() ; n ++)
+	   {
+		   // Keep track of the current number
+		   int currentIndex = n;
+		   
+		   // Traverse backwards until spot is found
+		   while (currentIndex > 0 && enemies.get(n - 1).getY() > enemies.get(n).getY())
+		   {
+			   	// Swap current with its previous element
+			   Enemy placeholder = enemies.get(n);
+			   enemies.set(n,  enemies.get(n - 1));
+			   enemies.set(n - 1, placeholder);
+			   
+			   currentIndex --;
+		   }
+	   }
+	}
 
 	public void draw(Graphics g)
 	{
@@ -485,7 +510,7 @@ public class Room
 				UPPER_Y_BOUND - LOWER_Y_BOUND);
 
 		drawDoors(g);
-
+		 sortAllGameObjects ();
 		for (Enemy currentEnemy : enemies)
 		{
 			Rectangle r = currentEnemy.getHitBox();
@@ -501,12 +526,15 @@ public class Room
 					(int) currentItem.getY(), null);
 		}
 
-		for (GameObject currentRoomObject : roomObjects)
-		{
-			g.drawImage(currentRoomObject.getImage(),
-					(int) currentRoomObject.getX(),
-					(int) currentRoomObject.getY(), null);
-		}
+
+//		for (GameObject currentRoomObject : roomObjects)
+//		{
+//			g.drawImage(currentRoomObject.getImage(),
+//					(int) currentRoomObject.getX(),
+//					(int) currentRoomObject.getY(), null);
+//		}
+//		
+
 
 	}
 
