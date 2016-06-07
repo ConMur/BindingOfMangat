@@ -47,12 +47,12 @@ public class Room {
     private final int UPPER_Y_BOUND = 575;
 
     private final int NORTH_DOOR_X = 450;
-    private final int NORTH_DOOR_Y = 335;
+    private final int NORTH_DOOR_Y = 315;
     private final int SOUTH_DOOR_X = 450;
-    private final int SOUTH_DOOR_Y = 681;
-    private final int EAST_DOOR_X = 926;
+    private final int SOUTH_DOOR_Y = 675;
+    private final int EAST_DOOR_X = 920;
     private final int EAST_DOOR_Y = 420;
-    private final int WEST_DOOR_X = 140;
+    private final int WEST_DOOR_X = 120;
     private final int WEST_DOOR_Y = 420;
 
     public enum RoomType
