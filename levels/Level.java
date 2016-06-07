@@ -48,7 +48,7 @@ public class Level
 	{
 		rooms = roomList;
 		
-		currentRoom = rooms.get(0);
+		currentRoom = rooms.remove(0);
 		// Arrange the rooms
 		Room workingRoom = currentRoom;
 		minimap.addRoom(workingRoom);
@@ -157,9 +157,14 @@ public class Level
 			// Try to set to a room
 			if (dir == 0)
 			{
+				
 				sucessful = workingRoom.setNorth(room);
 				if(sucessful)
 				{
+					if(room.getSouth() != null)
+					{
+						System.err.println("South ALREADY SEt!");
+					}
 					room.setSouth(workingRoom);
 				}
 			}
@@ -168,6 +173,10 @@ public class Level
 				sucessful = workingRoom.setEast(room);
 				if(sucessful)
 				{
+					if(room.getWest() != null)
+					{
+						System.err.println("WEST ALREADY SEt!");
+					}
 					room.setWest(workingRoom);
 				}
 			}
@@ -176,6 +185,10 @@ public class Level
 				sucessful = workingRoom.setSouth(room);
 				if(sucessful)
 				{
+					if(room.getNorth() != null)
+					{
+						System.err.println("NORTH ALREADY SEt!");
+					}
 					room.setNorth(workingRoom);
 				}
 			}
@@ -184,6 +197,10 @@ public class Level
 				sucessful = workingRoom.setWest(room);
 				if(sucessful)
 				{
+					if(room.getEast() != null)
+					{
+						System.err.println("EAST ALREADY SEt!");
+					}
 					room.setEast(workingRoom);
 				}
 			}
