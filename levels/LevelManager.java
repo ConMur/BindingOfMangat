@@ -48,7 +48,7 @@ public final class LevelManager
 	// Enemy spawn boundaries
 	private final static int SPAWN_X_LOWER = 130;
 	private final static int SPAWN_Y_LOWER = 325;
-	private final static int SPAWN_X_WIDTH = 780;
+	private final static int SPAWN_X_WIDTH = 720;
 	private final static int SPAWN_Y_HEIGHT = 250;
 
 	// Lists of things that can be added to a level
@@ -96,19 +96,19 @@ public final class LevelManager
 		// TODO: update as more enemies are added
 		// Add the science enemies
 		try {
-			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
 					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/einsteinfront.png")),
+			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/einsteinfront.png")),
+					new Dimension(75, 43), 2, true, true));
+			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/cellfront.png")),
+					new Dimension(75, 43), 2, true, true));
+			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/chemfront.png")),
 					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/cellfront.png")),
+			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/moleculefront.png")),
 					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/chemfront.png")),
+			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
 					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/moleculefront.png")),
-					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
-					new Dimension(75, 43), 2, true, false));
-			science.add(new Enemy(2, 2, 250, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentclusterfront.png")),
+			science.add(new Enemy(2, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentclusterfront.png")),
 					new Dimension(75, 43), 2, true, false));
 		}
 		catch(IOException ioe)
@@ -242,10 +242,24 @@ public final class LevelManager
 		for (int enemy = 0; enemy < numEnemies; ++enemy)
 		{
 			Enemy j = new Enemy (e);
-			j.setX(rand.nextInt(SPAWN_X_WIDTH) + SPAWN_X_LOWER);
-			j.setY(rand.nextInt(SPAWN_Y_HEIGHT) + SPAWN_Y_LOWER);
+			boolean overlap = true;
+			// Make sure enemies don't spawn on top of each other
+			while (overlap) {
+				overlap = false;
+				j.setX(rand.nextInt(SPAWN_X_WIDTH) + SPAWN_X_LOWER);
+				j.setY(rand.nextInt(SPAWN_Y_HEIGHT) + SPAWN_Y_LOWER);
+				// Go through all enemies
+				for (int n = 0 ; n < enemy ; n ++)
+				{
+					// Overlap found
+					if (j.getHitBox().intersects(enemyList.get(n).getHitBox()))
+					{
+						overlap = true;
+						break;
+					}
+				}
+			}
 			enemyList.add(j);
-
 		}
 
 		// Have a chance to have an item in the room
