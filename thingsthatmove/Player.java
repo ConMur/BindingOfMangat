@@ -23,6 +23,7 @@ public class Player extends MoveableObject {
     private ArrayList<Projectile> currentProjectiles;
     private Thread pThread;
     private boolean isShooting;
+    private boolean isInvincible; 
 
     private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
     private BufferedImage fullHeart, emptyHeart;
@@ -37,6 +38,7 @@ public class Player extends MoveableObject {
         boolean movingWest = false;
         boolean movingEast = false;
         boolean movingSouth = false;
+        isInvincible = false;
 
 
         try {
@@ -49,6 +51,17 @@ public class Player extends MoveableObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void takeDamage (int dmg)
+    {
+    	if (!isInvincible)
+    	{
+    		super.takeDamage(dmg);
+    		isInvincible = true;
+    	}
+    	else
+    		isInvincible = false;
     }
 
     public ArrayList<Projectile> getAllPlayerProjectiles() {
