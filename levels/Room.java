@@ -33,11 +33,13 @@ public class Room {
 
     private boolean inRoom;
 
-    // The room bounds 
-	private final int LOWER_X_BOUND = 90;
-	private final int UPPER_X_BOUND = 960;
-	private final int LOWER_Y_BOUND = 200;
-	private final int UPPER_Y_BOUND = 672;
+    private boolean visited;
+
+    // The room bounds
+    private final int LOWER_X_BOUND = 90;
+    private final int UPPER_X_BOUND = 960;
+    private final int LOWER_Y_BOUND = 200;
+    private final int UPPER_Y_BOUND = 672;
 
     private final int NORTH_DOOR_X = 450;
     private final int NORTH_DOOR_Y = 335;
@@ -81,6 +83,8 @@ public class Room {
         atSouthDoor = false;
         atEastDoor = false;
         atWestDoor = false;
+
+        visited = false;
     }
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i, ArrayList<GameObject> go, Player p) {
@@ -160,7 +164,7 @@ public class Room {
         atSouthDoor = false;
         atWestDoor = false;
         atEastDoor = false;
-        
+
         //North door
         if (north != null && x > 412 && x < 518 && y < 250) {
             atNorthDoor = true;
@@ -174,35 +178,35 @@ public class Room {
     }
 
     public boolean isPlayerAtNorthDoor() {
-    	if (atNorthDoor && player.isMovingNorth())
-    		return true;
-    	return false;
+        if (atNorthDoor && player.isMovingNorth())
+            return true;
+        return false;
     }
 
     public boolean isPlayerAtSouthDoor() {
-    	if (atSouthDoor && player.isMovingSouth())
-    		return true;
-    	return false;
+        if (atSouthDoor && player.isMovingSouth())
+            return true;
+        return false;
     }
 
     public boolean isPlayerAtEastDoor() {
-    	if (atEastDoor && player.isMovingEast())
-    		return true;
-    	return false;
+        if (atEastDoor && player.isMovingEast())
+            return true;
+        return false;
     }
 
     public boolean isPlayerAtWestDoor() {
-    	if (atWestDoor && player.isMovingWest())
-    		return true;
-    	return false;
+        if (atWestDoor && player.isMovingWest())
+            return true;
+        return false;
     }
-    
+
     public void resetAllDoors()
     {
-    	atNorthDoor = false;
-    	atSouthDoor = false;
-    	atEastDoor = false;
-    	atWestDoor = false;
+        atNorthDoor = false;
+        atSouthDoor = false;
+        atEastDoor = false;
+        atWestDoor = false;
     }
 
     public Player getPlayer() {
@@ -328,8 +332,8 @@ public class Room {
     }
 
     public void startRoom() {
-    	updateHitboxes();
-    	 resetAllDoors();
+        updateHitboxes();
+        resetAllDoors();
         inRoom = true;
         System.out.println("STARTING ROOM");
         moveEnemies = new Thread(new EnemyMovementThread());
@@ -337,7 +341,7 @@ public class Room {
     }
 
     public void endRoom() {
-    	System.out.println("ENDING ROOM");
+        System.out.println("ENDING ROOM");
         inRoom = false;
         //Clear all projectiles
         player.clearProjectiles();
@@ -357,17 +361,17 @@ public class Room {
     }
 
     public boolean enemyCollision(int enemyIndex, Rectangle enemyHitbox) {
-    	
+
         for (int i = 0; i < enemyIndex; i++) {
-        	updateHitboxes();
+            updateHitboxes();
             if (enemyHitbox.intersects(hitboxes.get(i)))
-            	return true;
+                return true;
         }
 
         for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
-        	//updateHitboxes();
+            //updateHitboxes();
             if (enemyHitbox.intersects(hitboxes.get(j)))
-            	return true;
+                return true;
         }
         return false;
     }
@@ -378,12 +382,12 @@ public class Room {
         g.setColor(Color.RED);
         g.drawRect(130, 325, 780, 250);
         g.setColor(Color.BLACK);
-        
+
         drawDoors(g);
-        
+
         for (Enemy currentEnemy : enemies)
         {
-        	Rectangle r = currentEnemy.getHitBox();
+            Rectangle r = currentEnemy.getHitBox();
             g.drawImage(currentEnemy.getImage(), (int)currentEnemy.getX(), (int)currentEnemy.getY(), null);
             g.drawRect((int)r.getX(), (int)r.getY(), (int)r.getWidth(), (int)r.getHeight());
         }
@@ -434,6 +438,14 @@ public class Room {
         }
     }
 
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
+    }
+
     private class EnemyMovementThread implements Runnable {
         public void run() {
             while (inRoom) {
@@ -453,13 +465,13 @@ public class Room {
                         Random r = new Random();
 
                         // No initial direction
-                        if (currentEnemy.getDirection() == ' ') 
+                        if (currentEnemy.getDirection() == ' ')
                             currentEnemy.setRandomDirection();
-                        // Already moving in a direction
+                            // Already moving in a direction
                         else {
                             // Set a 5% chance to change direction
-                            if (r.nextInt(100) >= 95) 
-                               currentEnemy.setRandomDirection();
+                            if (r.nextInt(100) >= 95)
+                                currentEnemy.setRandomDirection();
                         }
 
                         // Keep track of old coordinates
@@ -494,21 +506,21 @@ public class Room {
                             currentEnemy.move(oldX, oldY);
                             currentEnemy.setRandomDirection();
                             currentEnemy.moveInDirection();
-                            
+
                             // Still collision
                             if (enemyCollision(n, currentEnemy.getHitBox()))
                             {
                                 currentEnemy.move(oldX, oldY);
                                 currentEnemy.setRandomDirection();
                                 currentEnemy.moveInDirection();
-                                
+
                                 // Still collision
                                 if (enemyCollision(n, currentEnemy.getHitBox()))
                                     currentEnemy.move(oldX, oldY);
                             }
                         }
-                        
-                        
+
+
                     }
                 }
                 try {

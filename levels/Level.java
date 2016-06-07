@@ -9,6 +9,8 @@ public class Level
 	private ArrayList<Room> rooms;
 	private Random rand;
 	private Room currentRoom;
+
+	private Minimap minimap;
 	
 	private final int PLAYER_SOUTH_X = 465;
 	private final int PLAYER_SOUTH_Y = 565;
@@ -37,8 +39,10 @@ public class Level
 	 */
 	public Level(ArrayList<Room> rooms)
 	{
+		ArrayList<Room> roomCopy = new ArrayList<>(rooms);
 		rand = new Random();
 		setRooms(rooms);
+		minimap = new Minimap(roomCopy);
 	}
 
 	public void setRooms(ArrayList<Room> roomList)
@@ -128,6 +132,7 @@ public class Level
 	public void draw(Graphics g)
 	{
 		currentRoom.draw(g);
+		minimap.draw(g);
 	}
 
 	/**
