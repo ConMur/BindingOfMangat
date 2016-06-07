@@ -24,7 +24,7 @@ public class Room
 	private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
 	private ArrayList<Item> items = new ArrayList<Item>();
 	private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
-	private Thread moveEnemies;
+	private Thread moveEnemies, playerEnemyCollision;
 	private Player player;
 	private Image background, hud;
 	private Image northClosedDoor, southClosedDoor, eastClosedDoor,
@@ -407,6 +407,9 @@ public class Room
 		System.out.println("STARTING ROOM");
 		moveEnemies = new Thread(new EnemyMovementThread());
 		moveEnemies.start();
+		
+		playerEnemyCollision = new Thread (new EnemyPlayerCollisionThread());
+		playerEnemyCollision.start();
 	}
 
 	public void endRoom()
@@ -442,17 +445,14 @@ public class Room
 //			System.out.println("ENEMY HITTING WALL");
 //			return true;
 //		}
-
+		
 		for (int n = 0; n < hitboxes.size(); n++)
 		{
 			updateHitboxes();
 			// System.out.println("HITBOXES: " + hitboxes.size()
 			// + " CURRENT INDEX: " + n);
 			if (enemyHitbox.intersects(hitboxes.get(n)) && n != enemyIndex)
-			{
-				System.out.println("COLLISION FOUND");
 				return true;
-			}
 		}
 		return false;
 		// for (int i = 0; i < enemyIndex; i++) {
@@ -587,6 +587,19 @@ public class Room
 	public void setVisited(boolean visited)
 	{
 		this.visited = visited;
+	}
+	
+	private class EnemyPlayerCollisionThread implements Runnable {
+		public void run() {
+			while (inRoom) {
+				for (int n = 0 ; n < enemies.size() ; n ++)
+				{
+					if (enemies.get(n).getHitBox().intersects(player.getHitBox()))
+						player.takeDamage(enemies.get(n).getDamage());
+
+				}
+			}
+		} 
 	}
 	
 	private class EnemyProjectileThread implements Runnable {
