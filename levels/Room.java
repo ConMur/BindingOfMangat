@@ -36,7 +36,7 @@ public class Room {
     private boolean atNorthDoor, atSouthDoor, atEastDoor, atWestDoor;
 
     private boolean inRoom;
-
+    private boolean takenDamage;
     private boolean visited;
     private boolean isLocked;
 
@@ -109,6 +109,7 @@ public class Room {
         atEastDoor = false;
         atWestDoor = false;
 
+        takenDamage = false;
         visited = false;
         isLocked = locked;
     }
