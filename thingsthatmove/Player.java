@@ -102,6 +102,26 @@ public class Player extends MoveableObject {
 
         // FINISH ITEMS
     }
+    
+    public boolean isMovingNorth()
+    {
+    	return movingNorth;
+    }
+    
+    public boolean isMovingSouth()
+    {
+    	return movingSouth;
+    }
+    
+    public boolean isMovingEast()
+    {
+    	return movingEast;
+    }
+    
+    public boolean isMovingWest()
+    {
+    	return movingWest;
+    }
 
     public void updatePosition() {
         if (movingNorth)
@@ -129,6 +149,8 @@ public class Player extends MoveableObject {
         g.drawImage(getImage(), (int) getX(), (int) getY(), null);
 
         for (Projectile p : currentProjectiles) {
+        	if (p.getImage() == null)
+        		System.out.println("NO IMAGE");
             g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
         }
     }
