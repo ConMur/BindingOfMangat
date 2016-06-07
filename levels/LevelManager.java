@@ -31,6 +31,9 @@ public final class LevelManager
 	// The percent chance that there will be an item in the room
 	private static final int ITEM_CHANCE = 20;
 
+	//The percent chance that a room will be locked
+	private static final int LOCKED_CHANCE = 10;
+
 	// The minimum amount of enemies in a level
 	private static final int MIN_ENEMIES = 3;
 
@@ -174,6 +177,8 @@ public final class LevelManager
 
 		for (int i = 0; i < numLevels; ++i)
 		{
+			boolean createdLockedRoom = false;
+
 			// Create the rooms list
 			ArrayList<Room> rooms = new ArrayList<>();
 
@@ -210,7 +215,19 @@ public final class LevelManager
 			// EXTRA_ROOMS_PER_LEVEL each time
 			for (int j = 1; j < 3 + (levelNumber * EXTRA_ROOMS_PER_LEVEL); ++j)
 			{
-				rooms.add(createRoom(levelEnemies, levelItems));
+				Room r = createRoom(levelEnemies, levelItems);
+
+				//Potentially make this room locked
+				if(!createdLockedRoom)
+				{
+					int chance = rand.nextInt(100);
+					if(chance < LOCKED_CHANCE)
+					{
+						createdLockedRoom = true;
+						r.setLocked(true);
+					}
+				}
+				rooms.add(r);
 			}
 			// Roll for a shop and add it if successful or just add another
 			// general room
@@ -241,7 +258,7 @@ public final class LevelManager
 					//itemList.add(items.remove(rand.nextInt(items.size())));
 					itemList.add(items.get(rand.nextInt(items.size())));
 				}
-		return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player);
+		return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player, false);
 	}
 
 	private static Room createRoom(ArrayList<Enemy> enemies,
@@ -288,7 +305,7 @@ public final class LevelManager
 			itemList.add(items.get(rand.nextInt(items.size())));
 		}
 
-		Room room = new Room(enemyList, itemList, new ArrayList<>(), player);
+		Room room = new Room(enemyList, itemList, new ArrayList<>(), player,false);
 		return room;
 	}
 
