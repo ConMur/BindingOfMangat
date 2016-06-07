@@ -25,6 +25,7 @@ public class Player extends MoveableObject {
     private boolean isShooting;
 
     private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
+    private BufferedImage fullHeart, emptyHeart;
 
     public Player(int dmg, int hp, int speed, int x, int y, Image i,
                   Dimension s, int maxHP, int projectile, Item item) {
@@ -43,6 +44,8 @@ public class Player extends MoveableObject {
             mangatBack = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatback.png"));
             mangatLeft = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatleft.png"));
             mangatRight = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatright.png"));
+            fullHeart = ImageIO.read(getClass().getResourceAsStream("/images/fullheart.png"));
+            emptyHeart = ImageIO.read(getClass().getResourceAsStream("/images/emptyheart.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,15 +149,26 @@ public class Player extends MoveableObject {
     }
 
     public void draw(Graphics g) {
+    	// Draw player
         g.drawImage(getImage(), (int) getX(), (int) getY(), null);
 
+        // Draw HP level in the HUD
+        for (int n = 0; n < this.getMaxHP() ; n ++)
+        {
+        	if (n < this.getCurrentHP())
+        		g.drawImage(fullHeart, 820 + 30 * n, 70 + (n/5) * 30, null);    
+        	else
+        		g.drawImage(emptyHeart, 820 + 30 * n, 70, null);    
+        }
+        
+        // Draw all projectiles currently on the screen
         for (Projectile p : currentProjectiles) {
         	if (p.getImage() == null)
         		System.out.println("NO IMAGE");
             g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
         }
     }
-
+    
     public void keyPressed(int key) {
         if (key == KeyEvent.VK_W) {
             if (!movingNorth) {
