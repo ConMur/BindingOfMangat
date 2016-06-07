@@ -74,7 +74,7 @@ public class Minimap {
             {
                 g.setColor(Color.BLACK);
             }
-            g.fillRect(r.getX() * 11 + 200, r.getY() * 11 + 200, 10,10);
+            g.fillRect(r.getX() * 11 + 150, r.getY() * 11 + 75, 10,10);
         }
     }
 

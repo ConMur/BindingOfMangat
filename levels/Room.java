@@ -504,7 +504,7 @@ public class Room {
                 g.drawImage(northOpenDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100,
                         null);
             else if (north.isLocked())
-                g.drawImage(northLockedDoor, NORTH_DOOR_X, NORTH_DOOR_Y, null);
+                g.drawImage(northLockedDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100, null);
             else
                 g.drawImage(northClosedDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100,
                         null);
