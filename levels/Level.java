@@ -9,6 +9,19 @@ public class Level
 	private ArrayList<Room> rooms;
 	private Random rand;
 	private Room currentRoom;
+	
+	private final int PLAYER_SOUTH_X = 465;
+	private final int PLAYER_SOUTH_Y = 565;
+	
+	private final int PLAYER_NORTH_X = 465;
+	private final int PLAYER_NORTH_Y = 250;
+	
+	private final int PLAYER_EAST_X = 845;
+	private final int PLAYER_EAST_Y = 445;
+	
+	private final int PLAYER_WEST_X = 210;
+	private final int PLAYER_WEST_Y = 445;
+	
 
 	
 	//TODO: call start room and end room when entering and exiting a room
@@ -80,6 +93,8 @@ public class Level
 	private void checkPlayerAtDoor() {
 		if(currentRoom.isPlayerAtNorthDoor())
 		{
+			currentRoom.getPlayer().setX(PLAYER_SOUTH_X);
+			currentRoom.getPlayer().setY(PLAYER_SOUTH_Y);
 			System.out.println("AT NORTH");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getNorth();
@@ -87,6 +102,8 @@ public class Level
 		}
 		else if(currentRoom.isPlayerAtSouthDoor())
 		{
+			currentRoom.getPlayer().setX(PLAYER_NORTH_X);
+			currentRoom.getPlayer().setY(PLAYER_NORTH_Y);
 			System.out.println("AT SOUTH");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getSouth();
@@ -94,6 +111,8 @@ public class Level
 		}
 		else if(currentRoom.isPlayerAtEastDoor())
 		{
+			currentRoom.getPlayer().setX(PLAYER_WEST_X);
+			currentRoom.getPlayer().setY(PLAYER_WEST_Y);
 			System.out.println("AT EAST");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getEast();
@@ -101,6 +120,8 @@ public class Level
 		}
 		else if(currentRoom.isPlayerAtWestDoor())
 		{
+			currentRoom.getPlayer().setX(PLAYER_EAST_X);
+			currentRoom.getPlayer().setY(PLAYER_EAST_Y);
 			System.out.println("AT WEST");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getWest();
