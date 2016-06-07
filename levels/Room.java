@@ -169,19 +169,27 @@ public class Room {
     }
 
     public boolean isPlayerAtNorthDoor() {
-        return atNorthDoor;
+    	if (atNorthDoor && player.isMovingNorth())
+    		return true;
+    	return false;
     }
 
     public boolean isPlayerAtSouthDoor() {
-        return atSouthDoor;
+    	if (atSouthDoor && player.isMovingSouth())
+    		return true;
+    	return false;
     }
 
     public boolean isPlayerAtEastDoor() {
-        return atEastDoor;
+    	if (atEastDoor && player.isMovingEast())
+    		return true;
+    	return false;
     }
 
     public boolean isPlayerAtWestDoor() {
-        return atWestDoor;
+    	if (atWestDoor && player.isMovingWest())
+    		return true;
+    	return false;
     }
     
     public void resetAllDoors()
