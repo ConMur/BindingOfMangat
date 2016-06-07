@@ -17,10 +17,10 @@ public class Level
 	private final int PLAYER_NORTH_Y = 250;
 	
 	private final int PLAYER_EAST_X = 845;
-	private final int PLAYER_EAST_Y = 445;
+	private final int PLAYER_EAST_Y = 380;
 	
-	private final int PLAYER_WEST_X = 210;
-	private final int PLAYER_WEST_Y = 445;
+	private final int PLAYER_WEST_X = 75;
+	private final int PLAYER_WEST_Y = 380;
 	
 
 	
@@ -93,7 +93,6 @@ public class Level
 	private void checkPlayerAtDoor() {
 		if(currentRoom.isPlayerAtNorthDoor())
 		{
-			currentRoom.getPlayer().setX(PLAYER_SOUTH_X);
 			currentRoom.getPlayer().setY(PLAYER_SOUTH_Y);
 			System.out.println("AT NORTH");
 			currentRoom.endRoom();
@@ -102,7 +101,6 @@ public class Level
 		}
 		else if(currentRoom.isPlayerAtSouthDoor())
 		{
-			currentRoom.getPlayer().setX(PLAYER_NORTH_X);
 			currentRoom.getPlayer().setY(PLAYER_NORTH_Y);
 			System.out.println("AT SOUTH");
 			currentRoom.endRoom();
@@ -112,7 +110,6 @@ public class Level
 		else if(currentRoom.isPlayerAtEastDoor())
 		{
 			currentRoom.getPlayer().setX(PLAYER_WEST_X);
-			currentRoom.getPlayer().setY(PLAYER_WEST_Y);
 			System.out.println("AT EAST");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getEast();
@@ -121,7 +118,6 @@ public class Level
 		else if(currentRoom.isPlayerAtWestDoor())
 		{
 			currentRoom.getPlayer().setX(PLAYER_EAST_X);
-			currentRoom.getPlayer().setY(PLAYER_EAST_Y);
 			System.out.println("AT WEST");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getWest();

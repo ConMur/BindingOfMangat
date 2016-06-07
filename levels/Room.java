@@ -155,15 +155,20 @@ public class Room {
         //Check if player is at a door
         double x = player.getX();
         double y = player.getY();
-
+//        System.out.println("X " + x + " Y " + y);
+        atNorthDoor = false;
+        atSouthDoor = false;
+        atWestDoor = false;
+        atEastDoor = false;
+        
         //North door
         if (north != null && x > 412 && x < 518 && y < 250) {
             atNorthDoor = true;
         } else if (south != null && x > 412 && x < 518 && y > 565) {
             atSouthDoor = true;
-        } else if (east != null && x > 845 && y > 392 && y < 498) {
+        } else if (east != null && x > 845 && y > 340 && y < 405) {
             atEastDoor = true;
-        } else if (west != null && x < 210 && y > 392 && y < 498) {
+        } else if (west != null && x < 90 && y > 340 && y < 405) {
             atWestDoor = true;
         }
     }
@@ -361,7 +366,6 @@ public class Room {
 
         for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
         	//updateHitboxes();
-        	System.out.println("HITBOX SIZE " + hitboxes.size() + " CURRENT INDEX " + j);
             if (enemyHitbox.intersects(hitboxes.get(j)))
             	return true;
         }
