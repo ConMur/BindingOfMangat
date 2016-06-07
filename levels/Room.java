@@ -562,7 +562,7 @@ public class Room {
         public void run() {
             while (inRoom) {
                 for (int n = 0; n < enemies.size(); n++) {
-                    if (enemies.get(n).getHitBox().intersects(player.getHitBox()))
+                    if (n < enemies.size() && enemies.get(n).getHitBox().intersects(player.getHitBox()))
                         player.takeDamage(enemies.get(n).getDamage());
 
                 }
@@ -636,6 +636,7 @@ public class Room {
                             if (aggroBox.intersects(player.getHitBox())) {
                                 // Change direction to run at the player
                                 // AGGRESIVELY
+                            	currentEnemy.setSpeed(300);
                                 if (player.getX() < currentEnemy.getX() + 50 && player.getX() > currentEnemy.getX()) {
                                     if (player.getY() > currentEnemy.getY())
                                         currentEnemy.setDirection('S');
@@ -646,6 +647,8 @@ public class Room {
                                 else
                                     currentEnemy.setDirection('W');
                             }
+                            else
+                            	currentEnemy.setSpeed(200);
                         }
                         // Move the enemy in its direction
                         currentEnemy.moveInDirection();
