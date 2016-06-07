@@ -203,10 +203,12 @@ public final class LevelManager
 
 			// Create a copy of the list of items for this level
 			ArrayList<Item> levelItems = new ArrayList<>(itemList);
-
+			
+			//Make the first room have no enemies
+			rooms.add(createInitialRoom(levelItems));
 			// Create general rooms (4 rooms on 1st level increasing by
 			// EXTRA_ROOMS_PER_LEVEL each time
-			for (int j = 0; j < 3 + (levelNumber * EXTRA_ROOMS_PER_LEVEL); ++j)
+			for (int j = 1; j < 3 + (levelNumber * EXTRA_ROOMS_PER_LEVEL); ++j)
 			{
 				rooms.add(createRoom(levelEnemies, levelItems));
 			}
@@ -226,6 +228,20 @@ public final class LevelManager
 			Level level = new Level(rooms);
 			levels.add(level);
 		}
+	}
+
+	private static Room createInitialRoom(ArrayList<Item> items)
+	{
+		// Have a chance to have an item in the room
+				ArrayList<Item> itemList = new ArrayList<>();
+				int itemChance = rand.nextInt(100);
+				if (itemChance < ITEM_CHANCE)
+				{
+					//TODO: uncomment when have enough items
+					//itemList.add(items.remove(rand.nextInt(items.size())));
+					itemList.add(items.get(rand.nextInt(items.size())));
+				}
+		return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player);
 	}
 
 	private static Room createRoom(ArrayList<Enemy> enemies,
