@@ -5,6 +5,7 @@ import item.Item;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -24,9 +25,10 @@ public class Player extends MoveableObject
 	private ArrayList<Projectile> currentProjectiles;
 	private Thread pThread;
 	private boolean isShooting;
-
-	private long lastFireTime;
-	private int fireRate;
+	private boolean takenDMG;
+	
+	private long lastFireTime, lastDmgTime;
+	private int fireRate, invincibleTime;
 	// Miliseconds between firing
 	private final int PROJECTILE_ONE_RATE = 1000;
 	private final int PROJECTILE_TWO_RATE = 300;
@@ -35,6 +37,7 @@ public class Player extends MoveableObject
 	private final int PROJECTILE_FIVE_RATE = 3;
 
 	private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
+	private BufferedImage mangatHurtFront, mangatHurtBack, mangatHurtLeft, mangatHurtRight;
 	private BufferedImage fullHeart, emptyHeart;
 
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
@@ -45,11 +48,13 @@ public class Player extends MoveableObject
 		this.projectile = projectile;
 		this.currentItem = item;
 		fireRate = PROJECTILE_ONE_RATE;
-
+		invincibleTime = 1500;
+		
 		boolean movingNorth = false;
 		boolean movingWest = false;
 		boolean movingEast = false;
 		boolean movingSouth = false;
+		takenDMG = false;
 
 		try
 		{
@@ -61,6 +66,14 @@ public class Player extends MoveableObject
 					"/images/mangat/mangatleft.png"));
 			mangatRight = ImageIO.read(getClass().getResourceAsStream(
 					"/images/mangat/mangatright.png"));
+			mangatHurtFront = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/hurt/mangatfront.png"));
+			mangatHurtBack = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/hurt/mangatback.png"));
+			mangatHurtLeft = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/hurt/mangatleft.png"));
+			mangatHurtRight = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/hurt/mangatright.png"));
 			fullHeart = ImageIO.read(getClass().getResourceAsStream(
 					"/images/fullheart.png"));
 			emptyHeart = ImageIO.read(getClass().getResourceAsStream(
@@ -71,6 +84,34 @@ public class Player extends MoveableObject
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void takeDamage(int amount)
+	{
+//		if (System.currentTimeMillis() - lastDmgTime > fireRate)
+//		{
+//			takenDMG = false;
+//			lastFireTime = System.currentTimeMillis();
+//		}
+		
+		if (amount > 0 && !takenDMG)
+		{
+			super.takeDamage(amount);
+			takenDMG = true;
+		}
+		
+		try
+		{
+			Thread.sleep(2000);
+		}
+		catch (InterruptedException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		takenDMG = false;
+		
+
 	}
 
 	public ArrayList<Projectile> getAllPlayerProjectiles()
@@ -189,7 +230,11 @@ public class Player extends MoveableObject
 	{
 		// Draw player
 		g.drawImage(getImage(), (int) getX(), (int) getY(), null);
-
+		
+        Rectangle r = getHitBox();
+		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
+                (int) r.getHeight());
+		
 		// Draw HP level in the HUD
 		for (int n = 0; n < this.getMaxHP(); n++)
 		{
@@ -214,7 +259,10 @@ public class Player extends MoveableObject
 		{
 			if (!movingNorth)
 			{
-				setImage(mangatBack);
+				if (!takenDMG)
+					setImage(mangatBack);
+				else
+					setImage(mangatHurtBack);
 			}
 			movingNorth = true;
 		}
@@ -222,7 +270,10 @@ public class Player extends MoveableObject
 		{
 			if (!movingWest)
 			{
-				setImage(mangatLeft);
+				if (!takenDMG)
+					setImage(mangatLeft);
+				else
+					setImage(mangatHurtLeft);
 			}
 			movingWest = true;
 		}
@@ -230,7 +281,10 @@ public class Player extends MoveableObject
 		{
 			if (!movingSouth)
 			{
-				setImage(mangatFront);
+				if (!takenDMG) 
+					setImage(mangatFront);
+				else
+					setImage(mangatHurtFront);
 			}
 			movingSouth = true;
 		}
@@ -238,7 +292,10 @@ public class Player extends MoveableObject
 		{
 			if (!movingEast)
 			{
-				setImage(mangatRight);
+				if (!takenDMG)
+					setImage(mangatRight);
+				else
+					setImage(mangatHurtRight);
 			}
 			movingEast = true;
 		}
