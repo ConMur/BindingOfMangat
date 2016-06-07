@@ -22,6 +22,25 @@ public class Minimap {
         setUpRooms(rootRoom, 0, 0);
     }
 
+    public Minimap()
+    {
+        playerRoomX = 0;
+        playerRoomY = 0;
+        rooms = new ArrayList<>();
+        minimapRooms = new ArrayList<>();
+    }
+
+    public void addRoom(Room r)
+    {
+        rooms.add(r);
+    }
+
+    public void setUpRooms()
+    {
+        Room rootRoom = rooms.get(0);
+        setUpRooms(rootRoom, 0, 0);
+    }
+
     public void setUpRooms(Room room, int x, int y) {
         room.setVisited(true);
         minimapRooms.add(new MinimapRoom(room,x,y));

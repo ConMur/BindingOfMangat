@@ -39,10 +39,9 @@ public class Level
 	 */
 	public Level(ArrayList<Room> rooms)
 	{
-		ArrayList<Room> roomCopy = new ArrayList<>(rooms);
 		rand = new Random();
+		minimap = new Minimap();
 		setRooms(rooms);
-		minimap = new Minimap(roomCopy);
 	}
 
 	public void setRooms(ArrayList<Room> roomList)
@@ -52,6 +51,8 @@ public class Level
 		currentRoom = rooms.get(0);
 		// Arrange the rooms
 		Room workingRoom = currentRoom;
+		minimap.addRoom(workingRoom);
+
 		while (rooms.size() > 0)
 		{
 			if (!workingRoom.isFull())
@@ -59,7 +60,7 @@ public class Level
 				// Always connect to one room
 				Room room = rooms.remove(rand.nextInt(rooms.size()));
 				addRoom(workingRoom, room);
-
+				minimap.addRoom(room);
 				// Have a chance to add additional rooms if the room is not
 				// already full and there are rooms to add
 				if (!workingRoom.isFull() && rooms.size() > 0)
@@ -69,6 +70,7 @@ public class Level
 					{
 						Room additionalRoom = rooms.remove(rand.nextInt(rooms.size()));
 						addRoom(workingRoom, additionalRoom);
+						minimap.addRoom(additionalRoom);
 					}
 				}
 				
@@ -76,6 +78,8 @@ public class Level
 				workingRoom = room;
 			}
 		}
+
+		minimap.setUpRooms();
 		
 	}
 	
