@@ -53,6 +53,9 @@ public class Level
 		Room workingRoom = currentRoom;
 		minimap.addRoom(workingRoom);
 
+		//Remove the boss room from the general room connecting
+		Room bossRoom = rooms.remove(rooms.size() - 1);
+
 		while (rooms.size() > 0)
 		{
 			if (!workingRoom.isFull())
@@ -78,6 +81,10 @@ public class Level
 				workingRoom = room;
 			}
 		}
+
+		//Add the boss room to the last room added
+		addRoom(workingRoom, bossRoom);
+		minimap.addRoom(bossRoom);
 
 		minimap.setUpRooms();
 		

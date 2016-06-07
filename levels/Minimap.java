@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @author Connor Murphy
  */
 public class Minimap {
+
     private ArrayList<Room> rooms;
     private ArrayList<MinimapRoom> minimapRooms;
 
