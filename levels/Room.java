@@ -364,12 +364,14 @@ public class Room {
 
         for (int i = 0; i < enemyIndex; i++) {
             updateHitboxes();
+            System.out.println("HITBOXES 1: " + hitboxes.size());
             if (enemyHitbox.intersects(hitboxes.get(i)))
                 return true;
         }
 
         for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
-            //updateHitboxes();
+            updateHitboxes();
+            System.out.println("HITBOXES 2: " + hitboxes.size());
             if (enemyHitbox.intersects(hitboxes.get(j)))
                 return true;
         }
