@@ -362,20 +362,32 @@ public class Room {
 
     public boolean enemyCollision(int enemyIndex, Rectangle enemyHitbox) {
 
-        for (int i = 0; i < enemyIndex; i++) {
-            updateHitboxes();
-            System.out.println("HITBOXES 1: " + hitboxes.size());
-            if (enemyHitbox.intersects(hitboxes.get(i)))
-                return true;
-        }
-
-        for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
-            updateHitboxes();
-            System.out.println("HITBOXES 2: " + hitboxes.size());
-            if (enemyHitbox.intersects(hitboxes.get(j)))
-                return true;
-        }
-        return false;
+    	for (int n = 0 ; n < hitboxes.size() ; n ++)
+    	{
+    		updateHitboxes();
+    		System.out.println("HITBOXES: " + hitboxes.size() + " CURRENT INDEX: " + n);
+    		 if (enemyHitbox.intersects(hitboxes.get(n)) && n != enemyIndex)
+    		 {
+    			 System.out.println("COLLISION FOUND");
+                 return true;
+    		 }
+    	}
+    	return false;
+//        for (int i = 0; i < enemyIndex; i++) {
+//            updateHitboxes();
+//            System.out.println("HITBOXES (1): " + hitboxes.size());
+//            if (enemyHitbox.intersects(hitboxes.get(i)))
+//                return true;
+//        }
+//
+//        System.out.println("SECOND LOOP STARTS AT " + (enemyIndex + 1));
+//        for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
+//            updateHitboxes();
+//            System.out.println("HITBOXES (2): " + hitboxes.size() + " CURRENT INDEX " + j);
+//            if (enemyHitbox.intersects(hitboxes.get(j)))
+//                return true;
+//        }
+//        return false;
     }
 
     public void draw(Graphics g) {
