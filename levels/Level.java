@@ -97,6 +97,7 @@ public class Level
 	private void checkPlayerAtDoor() {
 		if(currentRoom.isPlayerAtNorthDoor())
 		{
+			minimap.setPlayerRoomY(minimap.getPlayerRoomY() - 1);
 			currentRoom.getPlayer().setY(PLAYER_SOUTH_Y);
 			System.out.println("AT NORTH");
 			currentRoom.endRoom();
@@ -105,6 +106,7 @@ public class Level
 		}
 		else if(currentRoom.isPlayerAtSouthDoor())
 		{
+			minimap.setPlayerRoomY(minimap.getPlayerRoomY() + 1);
 			currentRoom.getPlayer().setY(PLAYER_NORTH_Y);
 			System.out.println("AT SOUTH");
 			currentRoom.endRoom();
@@ -113,6 +115,7 @@ public class Level
 		}
 		else if(currentRoom.isPlayerAtEastDoor())
 		{
+			minimap.setPlayerRoomX(minimap.getPlayerRoomX() + 1);
 			currentRoom.getPlayer().setX(PLAYER_WEST_X);
 			System.out.println("AT EAST");
 			currentRoom.endRoom();
@@ -121,6 +124,7 @@ public class Level
 		}
 		else if(currentRoom.isPlayerAtWestDoor())
 		{
+			minimap.setPlayerRoomX(minimap.getPlayerRoomX() - 1);
 			currentRoom.getPlayer().setX(PLAYER_EAST_X);
 			System.out.println("AT WEST");
 			currentRoom.endRoom();
