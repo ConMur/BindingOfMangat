@@ -13,236 +13,274 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public class Player extends MoveableObject {
-    private int projectile;
-    private Item currentItem;
-    private boolean movingNorth;
-    private boolean movingWest;
-    private boolean movingEast;
-    private boolean movingSouth;
-    private ArrayList<Projectile> currentProjectiles;
-    private Thread pThread;
-    private boolean isShooting;
-    private boolean isInvincible; 
+public class Player extends MoveableObject
+{
+	private int projectile;
+	private Item currentItem;
+	private boolean movingNorth;
+	private boolean movingWest;
+	private boolean movingEast;
+	private boolean movingSouth;
+	private ArrayList<Projectile> currentProjectiles;
+	private Thread pThread;
+	private boolean isShooting;
 
-    private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
-    private BufferedImage fullHeart, emptyHeart;
+	private long lastFireTime;
+	private int fireRate;
+	// Miliseconds between firing
+	private final int PROJECTILE_ONE_RATE = 1000;
+	private final int PROJECTILE_TWO_RATE = 300;
+	private final int PROJECTILE_THREE_RATE = 30;
+	private final int PROJECTILE_FOUR_RATE = 30;
+	private final int PROJECTILE_FIVE_RATE = 3;
 
-    public Player(int dmg, int hp, int speed, int x, int y, Image i,
-                  Dimension s, int maxHP, int projectile, Item item) {
-        super(dmg, hp, speed, x, y, i, s, maxHP);
-        currentProjectiles = new ArrayList<Projectile>();
-        this.projectile = projectile;
-        this.currentItem = item;
-        boolean movingNorth = false;
-        boolean movingWest = false;
-        boolean movingEast = false;
-        boolean movingSouth = false;
-        isInvincible = false;
+	private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
+	private BufferedImage fullHeart, emptyHeart;
 
+	public Player(int dmg, int hp, int speed, int x, int y, Image i,
+			Dimension s, int maxHP, int projectile, Item item)
+	{
+		super(dmg, hp, speed, x, y, i, s, maxHP);
+		currentProjectiles = new ArrayList<Projectile>();
+		this.projectile = projectile;
+		this.currentItem = item;
+		fireRate = PROJECTILE_ONE_RATE;
 
-        try {
-            mangatFront = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png"));
-            mangatBack = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatback.png"));
-            mangatLeft = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatleft.png"));
-            mangatRight = ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatright.png"));
-            fullHeart = ImageIO.read(getClass().getResourceAsStream("/images/fullheart.png"));
-            emptyHeart = ImageIO.read(getClass().getResourceAsStream("/images/emptyheart.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void takeDamage (int dmg)
-    {
-    	if (!isInvincible)
-    	{
-    		super.takeDamage(dmg);
-    		isInvincible = true;
-    	}
-    	else
-    		isInvincible = false;
-    }
+		boolean movingNorth = false;
+		boolean movingWest = false;
+		boolean movingEast = false;
+		boolean movingSouth = false;
 
-    public ArrayList<Projectile> getAllPlayerProjectiles() {
-        return currentProjectiles;
-    }
+		try
+		{
+			mangatFront = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/mangatfront.png"));
+			mangatBack = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/mangatback.png"));
+			mangatLeft = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/mangatleft.png"));
+			mangatRight = ImageIO.read(getClass().getResourceAsStream(
+					"/images/mangat/mangatright.png"));
+			fullHeart = ImageIO.read(getClass().getResourceAsStream(
+					"/images/fullheart.png"));
+			emptyHeart = ImageIO.read(getClass().getResourceAsStream(
+					"/images/emptyheart.png"));
+			setImage(mangatFront);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-    public void setCurrentProjectiles(ArrayList<Projectile> p) {
-        currentProjectiles = p;
-    }
+	public ArrayList<Projectile> getAllPlayerProjectiles()
+	{
+		return currentProjectiles;
+	}
 
-    /**
-     * Sets the projectile number of the player
-     *
-     * @param projectileNumber the projectile number
-     */
-    public void setProjectile(int projectileNumber) {
-        projectile = projectileNumber;
-    }
+	public void setCurrentProjectiles(ArrayList<Projectile> p)
+	{
+		currentProjectiles = p;
+	}
 
-    public void shootProjectile(char direction) {
-        Projectile p = new Projectile(getProjectile(), direction);
-        p.setX(getX());
-        p.setY(getY());
-        currentProjectiles.add(p);
-    }
+	/**
+	 * Sets the projectile number of the player
+	 *
+	 * @param projectileNumber the projectile number
+	 */
+	public void setProjectile(int projectileNumber)
+	{
+		projectile = projectileNumber;
+	}
 
-    /**
-     * Returns the projectile type
-     *
-     * @return the projectile number
-     */
-    public int getProjectile() {
-        return projectile;
-    }
+	public void shootProjectile(char direction)
+	{
+		if (System.currentTimeMillis() - lastFireTime > fireRate)
+		{
+			Projectile p = new Projectile(getProjectile(), direction);
+			p.setX(getX());
+			p.setY(getY());
+			currentProjectiles.add(p);
+			lastFireTime = System.currentTimeMillis();
+		}
+	}
 
-    /**
-     * @return the current item in possession
-     */
-    public Item getCurrentItem() {
-        return currentItem;
-    }
+	/**
+	 * Returns the projectile type
+	 *
+	 * @return the projectile number
+	 */
+	public int getProjectile()
+	{
+		return projectile;
+	}
 
-    public String getCurrentItemName() {
-        return currentItem.getName();
-    }
+	/**
+	 * @return the current item in possession
+	 */
+	public Item getCurrentItem()
+	{
+		return currentItem;
+	}
 
-    public void setItem(Item i) {
-        currentItem = i;
-    }
+	public String getCurrentItemName()
+	{
+		return currentItem.getName();
+	}
 
-    public void useItem() {
-        String itemName = currentItem.getName();
-        this.setItem(null);
+	public void setItem(Item i)
+	{
+		currentItem = i;
+	}
 
-        // FINISH ITEMS
-    }
-    
-    public boolean isMovingNorth()
-    {
-    	return movingNorth;
-    }
-    
-    public boolean isMovingSouth()
-    {
-    	return movingSouth;
-    }
-    
-    public boolean isMovingEast()
-    {
-    	return movingEast;
-    }
-    
-    public boolean isMovingWest()
-    {
-    	return movingWest;
-    }
+	public void useItem()
+	{
+		String itemName = currentItem.getName();
+		this.setItem(null);
 
-    public void updatePosition() {
-        if (movingNorth)
-            moveNorth();
-        if (movingSouth)
-            moveSouth();
-        if (movingWest)
-            moveWest();
-        if (movingEast)
-            moveEast();
+		// FINISH ITEMS
+	}
 
-        int removedProjectiles = 0;
-        for (int i = 0; i < currentProjectiles.size(); ++i) {
-            Projectile p = currentProjectiles.get(i - removedProjectiles);
-            p.update();
-            if(p.isDeadProjectile())
-            {
-                currentProjectiles.remove(i - removedProjectiles);
-                ++removedProjectiles;
-            }
-        }
-    }
+	public boolean isMovingNorth()
+	{
+		return movingNorth;
+	}
 
-    public void draw(Graphics g) {
-    	// Draw player
-        g.drawImage(getImage(), (int) getX(), (int) getY(), null);
+	public boolean isMovingSouth()
+	{
+		return movingSouth;
+	}
 
-        // Draw HP level in the HUD
-        for (int n = 0; n < this.getMaxHP() ; n ++)
-        {
-        	if (n < this.getCurrentHP())
-        		g.drawImage(fullHeart, 820 + 30 * n, 70 + (n/5) * 30, null);    
-        	else
-        		g.drawImage(emptyHeart, 820 + 30 * n, 70, null);    
-        }
-        
-        // Draw all projectiles currently on the screen
-        for (Projectile p : currentProjectiles) {
-        	if (p.getImage() == null)
-        		System.out.println("NO IMAGE");
-            g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
-        }
-    }
-    
-    public void keyPressed(int key) {
-        if (key == KeyEvent.VK_W) {
-            if (!movingNorth) {
-                setImage(mangatBack);
-            }
-            movingNorth = true;
-        }
-        if (key == KeyEvent.VK_A) {
-            if (!movingWest) {
-                setImage(mangatLeft);
-            }
-            movingWest = true;
-        }
-        if (key == KeyEvent.VK_S) {
-            if (!movingSouth) {
-                setImage(mangatFront);
-            }
-            movingSouth = true;
-        }
-        if (key == KeyEvent.VK_D) {
-            if (!movingEast) {
-                setImage(mangatRight);
-            }
-            movingEast = true;
-        }
+	public boolean isMovingEast()
+	{
+		return movingEast;
+	}
 
-        if (key == KeyEvent.VK_SPACE) {
-            isShooting = true;
-            if (movingNorth && movingEast)
-                shootProjectile('1');
-            else if (movingSouth && movingEast)
-                shootProjectile('2');
-            else if (movingSouth && movingWest)
-                shootProjectile('3');
-            else if (movingNorth && movingWest)
-                shootProjectile('4');
-            else if (movingNorth)
-                shootProjectile('N');
-            else if (movingEast)
-                shootProjectile('E');
-            else if (movingSouth)
-                shootProjectile('S');
-            else if (movingWest)
-                shootProjectile('W');
-            else
-                System.err.println("no projextile added");
-        }
-    }
+	public boolean isMovingWest()
+	{
+		return movingWest;
+	}
 
-    public void keyReleased(int key) {
-        if (key == KeyEvent.VK_W)
-            movingNorth = false;
-        if (key == KeyEvent.VK_A)
-            movingWest = false;
-        if (key == KeyEvent.VK_S)
-            movingSouth = false;
-        if (key == KeyEvent.VK_D)
-            movingEast = false;
-    }
+	public void updatePosition()
+	{
+		if (movingNorth)
+			moveNorth();
+		if (movingSouth)
+			moveSouth();
+		if (movingWest)
+			moveWest();
+		if (movingEast)
+			moveEast();
 
-    public void clearProjectiles() {
-        currentProjectiles.clear();
-    }
+		int removedProjectiles = 0;
+		for (int i = 0; i < currentProjectiles.size(); ++i)
+		{
+			Projectile p = currentProjectiles.get(i - removedProjectiles);
+			p.update();
+			if (p.isDeadProjectile())
+			{
+				currentProjectiles.remove(i - removedProjectiles);
+				++removedProjectiles;
+			}
+		}
+	}
+
+	public void draw(Graphics g)
+	{
+		// Draw player
+		g.drawImage(getImage(), (int) getX(), (int) getY(), null);
+
+		// Draw HP level in the HUD
+		for (int n = 0; n < this.getMaxHP(); n++)
+		{
+			if (n < this.getCurrentHP())
+				g.drawImage(fullHeart, 820 + 30 * n, 70 + (n / 5) * 30, null);
+			else
+				g.drawImage(emptyHeart, 820 + 30 * n, 70, null);
+		}
+
+		// Draw all projectiles currently on the screen
+		for (Projectile p : currentProjectiles)
+		{
+			if (p.getImage() == null)
+				System.out.println("NO IMAGE");
+			g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
+		}
+	}
+
+	public void keyPressed(int key)
+	{
+		if (key == KeyEvent.VK_W)
+		{
+			if (!movingNorth)
+			{
+				setImage(mangatBack);
+			}
+			movingNorth = true;
+		}
+		if (key == KeyEvent.VK_A)
+		{
+			if (!movingWest)
+			{
+				setImage(mangatLeft);
+			}
+			movingWest = true;
+		}
+		if (key == KeyEvent.VK_S)
+		{
+			if (!movingSouth)
+			{
+				setImage(mangatFront);
+			}
+			movingSouth = true;
+		}
+		if (key == KeyEvent.VK_D)
+		{
+			if (!movingEast)
+			{
+				setImage(mangatRight);
+			}
+			movingEast = true;
+		}
+
+		if (key == KeyEvent.VK_SPACE)
+		{
+			isShooting = true;
+			if (movingNorth && movingEast)
+				shootProjectile('1');
+			else if (movingSouth && movingEast)
+				shootProjectile('2');
+			else if (movingSouth && movingWest)
+				shootProjectile('3');
+			else if (movingNorth && movingWest)
+				shootProjectile('4');
+			else if (getImage() == mangatFront)
+				shootProjectile('S');
+			else if (getImage() == mangatBack)
+				shootProjectile('N');
+			else if (getImage() == mangatLeft)
+				shootProjectile('W');
+			else if (getImage() == mangatRight)
+				shootProjectile('E');
+			else
+				System.err.println("no projextile added");
+		}
+	}
+
+	public void keyReleased(int key)
+	{
+		if (key == KeyEvent.VK_W)
+			movingNorth = false;
+		if (key == KeyEvent.VK_A)
+			movingWest = false;
+		if (key == KeyEvent.VK_S)
+			movingSouth = false;
+		if (key == KeyEvent.VK_D)
+			movingEast = false;
+	}
+
+	public void clearProjectiles()
+	{
+		currentProjectiles.clear();
+	}
 }
