@@ -126,6 +126,25 @@ public class Projectile extends GameObject
 			this.dmg = 3;
 			lifeSpan = 1500;
 		}
+		// ENEMY PROJECTILES
+		else if (projectileNum == 6)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/enemy/projectile1.png"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 1");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(50, 50));
+			this.speed = 300;
+			this.dmg = 5;
+			lifeSpan = 500;
+		}
 		isDead = false;
 	}
 

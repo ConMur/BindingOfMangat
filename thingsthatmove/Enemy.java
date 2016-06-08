@@ -1,17 +1,31 @@
 package thingsthatmove;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Random;
 
 import util.Util;
 
 public class Enemy extends MoveableObject
 {
+	private ArrayList<Projectile> currentProjectiles;
+	private int projectile;
+	private long lastFireTime;
+	private int fireRate;
+	
 	private final int LOWER_X_BOUND = 130;
 	private final int UPPER_X_BOUND = 850;
 	private final int LOWER_Y_BOUND = 330;
 	private final int UPPER_Y_BOUND = 575;
+	
+	private final int PROJECTILE_ONE_RATE = 100;
+	private final int PROJECTILE_TWO_RATE = 300;
+	private final int PROJECTILE_THREE_RATE = 30;
+	private final int PROJECTILE_FOUR_RATE = 30;
+	private final int PROJECTILE_FIVE_RATE = 3;
 
 	
 	private char currentDirection = ' ';
@@ -24,6 +38,8 @@ public class Enemy extends MoveableObject
 		super(dmg, hp, speed, xPos, yPos, image, size, maxHP);
 		this.shouldMove = shouldMove;
 		this.anger = anger;
+		fireRate = PROJECTILE_ONE_RATE;
+		projectile = 1;
 	}
 
 	public Enemy(Enemy connorBeingLazy)
@@ -35,7 +51,75 @@ public class Enemy extends MoveableObject
 		this.shouldMove = connorBeingLazy.canMove();
 		this.anger = connorBeingLazy.isAngry();
 	}
+	
+	public void draw (Graphics g)
+	{
+		// Draw this enemy
+		g.drawImage(getImage(), (int) getX(), (int) getY(), null);
+		
+		// Draw their hitbox
+        Rectangle r = getHitBox();
+		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
+                (int) r.getHeight());
+		
+		// Draw their set of projectiles
+		for (Projectile p : currentProjectiles)
+			g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
+	}
 
+	public ArrayList<Projectile> getAllProjectiles()
+	{
+		return currentProjectiles;
+	}
+
+	public void setCurrentProjectiles(ArrayList<Projectile> p)
+	{
+		currentProjectiles = p;
+	}
+	
+	public void setProjectile(int projectileNumber)
+	{
+		projectile = projectileNumber;
+	}
+
+	public void shootProjectile(char direction)
+	{
+		if (System.currentTimeMillis() - lastFireTime > fireRate)
+		{
+			Projectile p = new Projectile(getProjectile(), direction);
+			p.setX(getX());
+			p.setY(getY());
+			currentProjectiles.add(p);
+			lastFireTime = System.currentTimeMillis();
+		}
+	}
+	
+	public int getProjectile()
+	{
+		return projectile;
+	}
+	
+	public void clearProjectiles()
+	{
+		currentProjectiles.clear();
+	}
+	
+	public void updateProjectiles ()
+	{
+		int removedProjectiles = 0;
+		for (int i = 0; i < currentProjectiles.size(); ++i)
+		{
+			Projectile p = currentProjectiles.get(i - removedProjectiles);
+			p.update();
+			if (p.isDeadProjectile())
+			{
+				currentProjectiles.remove(i - removedProjectiles);
+				++removedProjectiles;
+			}
+		}
+	}
+
+	
 	public boolean isAngry()
 	{
 		return anger;
