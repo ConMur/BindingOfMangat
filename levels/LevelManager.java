@@ -328,6 +328,11 @@ public final class LevelManager {
         return room;
     }
 
+    public static void advanceLevel()
+    {
+    	currentLevel = levels.get(++levelNumber);
+    }
+    
     public static void update() {
         currentLevel.update();
     }
@@ -335,5 +340,5 @@ public final class LevelManager {
     public static void draw(Graphics g) {
         currentLevel.draw(g);
     }
-
+    
 }
