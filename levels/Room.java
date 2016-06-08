@@ -25,7 +25,7 @@ public class Room
 	private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
 	private ArrayList<Item> items = new ArrayList<Item>();
 	private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
-	private Thread moveEnemies, playerEnemyCollision;
+	private Thread moveEnemies, playerEnemyCollision, enemyProjectile;
 	private Player player;
 	private Image background, hud;
 	private Image northClosedDoor, southClosedDoor, eastClosedDoor,
@@ -475,6 +475,10 @@ public class Room
 
 		playerEnemyCollision = new Thread(new EnemyPlayerCollisionThread());
 		playerEnemyCollision.start();
+		
+		enemyProjectile = new Thread (new EnemyProjectileThread());
+		enemyProjectile.start();
+		
 	}
 
 	public void endRoom()
@@ -485,7 +489,7 @@ public class Room
 		player.clearProjectiles();
 	}
 
-	public synchronized void updateHitboxes()
+	public  void updateHitboxes()
 	{
 		// Remove all current hitboxes
 		hitboxes.clear();
@@ -498,7 +502,7 @@ public class Room
 			hitboxes.add(i.getHitBox());
 	}
 
-	public synchronized boolean enemyCollision(int enemyIndex,
+	public boolean enemyCollision(int enemyIndex,
 			Rectangle enemyHitbox)
 	{
 		// Enemy e = enemies.get(enemyIndex);
@@ -585,6 +589,8 @@ public class Room
 					(int) currentEnemy.getY(), null);
 			g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
 					(int) r.getHeight());
+			
+			currentEnemy.draw(g);
 		}
 
 		for (Item currentItem : items)
@@ -675,14 +681,14 @@ public class Room
 		{
 			while (inRoom)
 			{
+
 				for (int n = 0; n < enemies.size(); n++)
 				{
-					if (n < enemies.size()
-							&& enemies.get(n).getHitBox()
-									.intersects(player.getHitBox()))
+					if (enemies.get(n).getHitBox().intersects(player.getHitBox()))
 						player.takeDamage(enemies.get(n).getDamage());
 
 				}
+			
 			}
 		}
 	}
@@ -697,10 +703,14 @@ public class Room
 				{
 					Enemy currentEnemy = enemies.get(n);
 					if (currentEnemy.isAlive())
+						currentEnemy.shootProjectile(currentEnemy.getDirection());
+					
+					ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
+					for (int p = 0 ; p < currentP.size(); p ++)
 					{
-
+						if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
+							player.takeDamage(currentEnemy.getDamage());
 					}
-
 				}
 			}
 		}
