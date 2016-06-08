@@ -26,18 +26,19 @@ public class Player extends MoveableObject
 	private Thread pThread;
 	private boolean isShooting;
 	private boolean takenDMG;
-	
+
 	private long lastFireTime, lastDmgTime;
 	private int fireRate, invincibleTime;
 	// Miliseconds between firing
-	private final int PROJECTILE_ONE_RATE = 1000;
+	private final int PROJECTILE_ONE_RATE = 500;
 	private final int PROJECTILE_TWO_RATE = 300;
 	private final int PROJECTILE_THREE_RATE = 30;
 	private final int PROJECTILE_FOUR_RATE = 30;
 	private final int PROJECTILE_FIVE_RATE = 3;
 
 	private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
-	private BufferedImage mangatHurtFront, mangatHurtBack, mangatHurtLeft, mangatHurtRight;
+	private BufferedImage mangatHurtFront, mangatHurtBack, mangatHurtLeft,
+			mangatHurtRight;
 	private BufferedImage fullHeart, emptyHeart;
 
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
@@ -49,7 +50,7 @@ public class Player extends MoveableObject
 		this.currentItem = item;
 		fireRate = PROJECTILE_ONE_RATE;
 		invincibleTime = 1500;
-		
+
 		boolean movingNorth = false;
 		boolean movingWest = false;
 		boolean movingEast = false;
@@ -85,32 +86,32 @@ public class Player extends MoveableObject
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void takeDamage(int amount)
 	{
-//		if (System.currentTimeMillis() - lastDmgTime > fireRate)
-//		{
-//			takenDMG = false;
-//			lastFireTime = System.currentTimeMillis();
-//		}
-		
-		if (amount > 0 && !takenDMG)
+		if (System.currentTimeMillis() - lastDmgTime > invincibleTime)
 		{
 			super.takeDamage(amount);
+			lastDmgTime = System.currentTimeMillis();
 			takenDMG = true;
+
+			if (getImage() == mangatFront)
+			{
+				setImage(mangatHurtFront);
+			}
+			else if (getImage() == mangatBack)
+			{
+				setImage(mangatHurtBack);
+			}
+			else if (getImage() == mangatLeft)
+			{
+				setImage(mangatHurtLeft);
+			}
+			else if (getImage() == mangatRight)
+			{
+				setImage(mangatHurtRight);
+			}
 		}
-		
-		try
-		{
-			Thread.sleep(2000);
-		}
-		catch (InterruptedException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		takenDMG = false;
-		
 
 	}
 
@@ -213,6 +214,7 @@ public class Player extends MoveableObject
 		if (movingEast)
 			moveEast();
 
+		// Update projectiles
 		int removedProjectiles = 0;
 		for (int i = 0; i < currentProjectiles.size(); ++i)
 		{
@@ -224,17 +226,64 @@ public class Player extends MoveableObject
 				++removedProjectiles;
 			}
 		}
+
+		if (isShooting)
+		{
+			if (movingNorth && movingEast)
+				shootProjectile('1');
+			else if (movingSouth && movingEast)
+				shootProjectile('2');
+			else if (movingSouth && movingWest)
+				shootProjectile('3');
+			else if (movingNorth && movingWest)
+				shootProjectile('4');
+			else if (getImage() == mangatFront || getImage() == mangatHurtFront)
+				shootProjectile('S');
+			else if (getImage() == mangatBack || getImage() == mangatHurtBack)
+				shootProjectile('N');
+			else if (getImage() == mangatLeft || getImage() == mangatHurtLeft)
+				shootProjectile('W');
+			else if (getImage() == mangatRight || getImage() == mangatHurtRight)
+				shootProjectile('E');
+			else
+				System.err.println("no projextile added");
+		}
+
+		// Update invincibility if havent already
+		if (takenDMG)
+		{
+			if (System.currentTimeMillis() - lastDmgTime > invincibleTime)
+			{
+				takenDMG = false;
+				if (getImage() == mangatHurtFront)
+				{
+					setImage(mangatFront);
+				}
+				else if (getImage() == mangatHurtBack)
+				{
+					setImage(mangatBack);
+				}
+				else if (getImage() == mangatHurtLeft)
+				{
+					setImage(mangatLeft);
+				}
+				else if (getImage() == mangatHurtRight)
+				{
+					setImage(mangatRight);
+				}
+			}
+		}
 	}
 
 	public void draw(Graphics g)
 	{
 		// Draw player
 		g.drawImage(getImage(), (int) getX(), (int) getY(), null);
-		
-        Rectangle r = getHitBox();
+
+		Rectangle r = getHitBox();
 		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
-                (int) r.getHeight());
-		
+				(int) r.getHeight());
+
 		// Draw HP level in the HUD
 		for (int n = 0; n < this.getMaxHP(); n++)
 		{
@@ -281,7 +330,7 @@ public class Player extends MoveableObject
 		{
 			if (!movingSouth)
 			{
-				if (!takenDMG) 
+				if (!takenDMG)
 					setImage(mangatFront);
 				else
 					setImage(mangatHurtFront);
@@ -303,24 +352,6 @@ public class Player extends MoveableObject
 		if (key == KeyEvent.VK_SPACE)
 		{
 			isShooting = true;
-			if (movingNorth && movingEast)
-				shootProjectile('1');
-			else if (movingSouth && movingEast)
-				shootProjectile('2');
-			else if (movingSouth && movingWest)
-				shootProjectile('3');
-			else if (movingNorth && movingWest)
-				shootProjectile('4');
-			else if (getImage() == mangatFront)
-				shootProjectile('S');
-			else if (getImage() == mangatBack)
-				shootProjectile('N');
-			else if (getImage() == mangatLeft)
-				shootProjectile('W');
-			else if (getImage() == mangatRight)
-				shootProjectile('E');
-			else
-				System.err.println("no projextile added");
 		}
 	}
 
@@ -334,6 +365,8 @@ public class Player extends MoveableObject
 			movingSouth = false;
 		if (key == KeyEvent.VK_D)
 			movingEast = false;
+		if (key == KeyEvent.VK_SPACE)
+			isShooting = false;
 	}
 
 	public void clearProjectiles()
