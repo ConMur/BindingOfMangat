@@ -39,7 +39,8 @@ public class Enemy extends MoveableObject
 		this.shouldMove = shouldMove;
 		this.anger = anger;
 		fireRate = PROJECTILE_ONE_RATE;
-		projectile = 1;
+		projectile = 6;
+		currentProjectiles = new ArrayList<Projectile>();
 	}
 
 	public Enemy(Enemy connorBeingLazy)
@@ -50,21 +51,20 @@ public class Enemy extends MoveableObject
 				connorBeingLazy.getSize(), connorBeingLazy.getMaxHP());
 		this.shouldMove = connorBeingLazy.canMove();
 		this.anger = connorBeingLazy.isAngry();
+		fireRate = PROJECTILE_ONE_RATE;
+		projectile = 6;
+		currentProjectiles = new ArrayList<Projectile>();
 	}
 	
 	public void draw (Graphics g)
 	{
-		// Draw this enemy
-		g.drawImage(getImage(), (int) getX(), (int) getY(), null);
-		
-		// Draw their hitbox
-        Rectangle r = getHitBox();
-		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
-                (int) r.getHeight());
-		
+		updateProjectiles ();
 		// Draw their set of projectiles
-		for (Projectile p : currentProjectiles)
+		for (int n  = 0 ; n < currentProjectiles.size() ; n ++)
+		{
+			Projectile p = currentProjectiles.get(n);
 			g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
+		}
 	}
 
 	public ArrayList<Projectile> getAllProjectiles()

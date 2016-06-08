@@ -142,8 +142,8 @@ public class Projectile extends GameObject
 			this.setImage(image);
 			this.setSize(new Dimension(50, 50));
 			this.speed = 300;
-			this.dmg = 5;
-			lifeSpan = 500;
+			this.dmg = 1;
+			lifeSpan = 1500;
 		}
 		isDead = false;
 	}
