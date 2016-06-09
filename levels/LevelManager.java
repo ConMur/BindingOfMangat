@@ -143,7 +143,26 @@ public final class LevelManager {
         // TODO: update as more items are added
         // Add the items
         try {
-            items.add(new Item("Test", 600, 300, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/pifront.png")), new Dimension(100, 100), true));
+            items.add(new Item("ankh", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/ankh.png")), new Dimension(100, 100), true));
+            items.add(new Item("blockofwood", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/blockofwood.png")), new Dimension(100, 100), true));
+            items.add(new Item("bomb", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bomb.png")), new Dimension(100, 100), true));
+            items.add(new Item("bombguidebook", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bombguidebook.png")), new Dimension(100, 100), true));
+            items.add(new Item("brokenpencil", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/brokenpencil.png")), new Dimension(100, 100), true));
+            items.add(new Item("c++", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/c++.png")), new Dimension(100, 100), true));
+            items.add(new Item("caffood", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/caffood.png")), new Dimension(100, 100), true));
+            items.add(new Item("compscisweater", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/compscisweater.png")), new Dimension(100, 100), true));
+            items.add(new Item("fireflower", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/fireflower.png")), new Dimension(100, 100), true));
+            items.add(new Item("glasses", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/glasses.png")), new Dimension(100, 100), true));
+            items.add(new Item("goldenmushroom", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/goldenmushroom.png")), new Dimension(100, 100), true));
+            items.add(new Item("halo", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/halo.png")), new Dimension(100, 100), true));
+            items.add(new Item("icecube", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/icecube.png")), new Dimension(100, 100), true));
+            items.add(new Item("lightning", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lightning.png")), new Dimension(100, 100), true));
+            items.add(new Item("lotteryticket", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lotteryticket.png")), new Dimension(100, 100), true));
+            items.add(new Item("mariomushroom", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/mariomushroom.png")), new Dimension(100, 100), true));
+            items.add(new Item("masterkey", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/masterkey.png")), new Dimension(100, 100), true));
+            items.add(new Item("projector", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/projector.png")), new Dimension(100, 100), true));
+            items.add(new Item("usb", 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/usb.png")), new Dimension(100, 100), true));
+
         } catch (IOException ioe) {
             System.err.println("Error loading items");
             ioe.printStackTrace();

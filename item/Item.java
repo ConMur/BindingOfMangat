@@ -1,6 +1,6 @@
 package item;
-import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.*;
+
 import thingsthatmove.GameObject;
 
 public class Item extends GameObject
@@ -23,5 +23,9 @@ public class Item extends GameObject
 	public boolean isTheItemOnTheGround ()
 	{
 		return onGround;
+	}
+	public void draw(Graphics g)
+	{
+		g.drawImage(getImage(), (int)getX(), (int)getY(), null);
 	}
 }

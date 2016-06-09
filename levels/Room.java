@@ -250,9 +250,7 @@ public class Room {
     public boolean isPlayerAtNorthDoor() {
         if (atNorthDoor && player.isMovingNorth()) {
             if (north.isLocked() && player.getNumKeys() > 0) {
-                System.out.println("b4 keys " + player.getNumKeys());
                 player.setNumKeys(player.getNumKeys() - 1);
-                System.out.println("after keys " + player.getNumKeys());
                 north.setLocked(false);
                 return true;
             }
@@ -264,9 +262,7 @@ public class Room {
     public boolean isPlayerAtSouthDoor() {
         if (atSouthDoor && player.isMovingSouth()) {
             if (south.isLocked() && player.getNumKeys() > 0) {
-                System.out.println("b4 keys " + player.getNumKeys());
                 player.setNumKeys(player.getNumKeys() - 1);
-                System.out.println("after keys " + player.getNumKeys());
                 south.setLocked(false);
                 return true;
             }
@@ -278,9 +274,7 @@ public class Room {
     public boolean isPlayerAtEastDoor() {
         if (atEastDoor && player.isMovingEast()) {
             if (east.isLocked() && player.getNumKeys() > 0) {
-                System.out.println("b4 keys " + player.getNumKeys());
                 player.setNumKeys(player.getNumKeys() - 1);
-                System.out.println("after keys " + player.getNumKeys());
                 east.setLocked(false);
                 return true;
             }
@@ -292,9 +286,7 @@ public class Room {
     public boolean isPlayerAtWestDoor() {
         if (atWestDoor && player.isMovingWest()) {
             if (west.isLocked() && player.getNumKeys() > 0) {
-                System.out.println("b4 keys " + player.getNumKeys());
                 player.setNumKeys(player.getNumKeys() - 1);
-                System.out.println("after keys " + player.getNumKeys());
                 west.setLocked(false);
                 return true;
             }
@@ -538,9 +530,7 @@ public class Room {
         }
 
         for (int i = 0; i < items.size(); i++) {
-            Item currentItem = items.get(i);
-            g.drawImage(currentItem.getImage(), (int) currentItem.getX(),
-                    (int) currentItem.getY(), null);
+            items.get(i).draw(g);
         }
 
         // for (GameObject currentRoomObject : roomObjects)
