@@ -87,8 +87,8 @@ public class Enemy extends MoveableObject
 		if (System.currentTimeMillis() - lastFireTime > fireRate)
 		{
 			Projectile p = new Projectile(getProjectile(), direction);
-			p.setX(getX());
-			p.setY(getY());
+			p.setX(getX() + 20);
+			p.setY(getY() + 25);
 			currentProjectiles.add(p);
 			lastFireTime = System.currentTimeMillis();
 		}

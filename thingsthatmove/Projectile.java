@@ -1,6 +1,7 @@
 package thingsthatmove;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(50, 50));
+			this.setSize(new Dimension(30, 25));
 			this.speed = 300;
 			this.dmg = 5;
 			lifeSpan = 500;
@@ -64,7 +65,7 @@ public class Projectile extends GameObject
 			}
 
 			this.setImage(image);
-			this.setSize(new Dimension(50, 50));
+			this.setSize(new Dimension(30, 25));
 			this.speed = 10;
 			this.dmg = 400;
 			lifeSpan = 500;
@@ -83,7 +84,7 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(50, 50));
+			this.setSize(new Dimension(30, 25));
 			this.speed = 2;
 			this.dmg = 500;
 			lifeSpan = 500;
@@ -102,7 +103,7 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(50, 50));
+			this.setSize(new Dimension(30, 25));
 			this.speed = 600;
 			this.dmg = 10;
 			lifeSpan = 500;
@@ -121,7 +122,7 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(50, 50));
+			this.setSize(new Dimension(30, 25));
 			this.speed = 1000;
 			this.dmg = 3;
 			lifeSpan = 1500;
@@ -140,7 +141,7 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(50, 50));
+			this.setSize(new Dimension(30, 25));
 			this.speed = 300;
 			this.dmg = 1;
 			lifeSpan = 1500;
@@ -256,6 +257,12 @@ public class Projectile extends GameObject
 		{
 			isDead = true;
 		}
+	}
+
+	public void draw(Graphics g)
+	{
+		g.drawImage(image, (int) getX(), (int) getY(), null);
+		g.drawRect((int)getX(),(int)getY(),(int)getSize().getWidth(), (int)getSize().getHeight());
 	}
 
 	/**

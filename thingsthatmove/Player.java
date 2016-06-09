@@ -140,8 +140,20 @@ public class Player extends MoveableObject
 		if (System.currentTimeMillis() - lastFireTime > fireRate)
 		{
 			Projectile p = new Projectile(getProjectile(), direction);
-			p.setX(getX());
-			p.setY(getY());
+
+			// When facing back, put the projectile near the top of the head
+			if (getImage() == mangatBack || getImage() == mangatHurtBack)
+			{
+				p.setY(getY()); 
+			}
+			else
+			{
+				// For any other direction, have the projectile start in the
+				// centre of the player's head
+				p.setY(getY() + 25);
+			}
+			p.setX(getX() + 20);
+			
 			currentProjectiles.add(p);
 			lastFireTime = System.currentTimeMillis();
 		}
@@ -296,9 +308,7 @@ public class Player extends MoveableObject
 		// Draw all projectiles currently on the screen
 		for (Projectile p : currentProjectiles)
 		{
-			if (p.getImage() == null)
-				System.out.println("NO IMAGE");
-			g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
+			p.draw(g);
 		}
 	}
 
