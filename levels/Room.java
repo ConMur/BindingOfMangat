@@ -211,14 +211,16 @@ public class Room
 	private void checkProjectileCollision()
 	{
 		ArrayList<Projectile> projectiles = player.getAllPlayerProjectiles();
-		for (Projectile p : projectiles)
+		for (int p = 0 ; p < projectiles.size(); p ++)
 		{
-			for (Enemy e : enemies)
+			Projectile pj = projectiles.get(p);
+			for (int e = 0 ; e < enemies.size() ; e ++)
 			{
-				if (p.getHitBox().intersects(e.getHitBox()))
+				Enemy en = enemies.get(e);
+				if (pj.getHitBox().intersects(en.getHitBox()))
 				{
-					e.takeDamage(p.getDamage());
-					p.killProjectile();
+					en.takeDamage(pj.getDamage());
+					pj.killProjectile();
 				}
 			}
 		}
@@ -475,9 +477,9 @@ public class Room
 
 		playerEnemyCollision = new Thread(new EnemyPlayerCollisionThread());
 		playerEnemyCollision.start();
-		
-		enemyProjectile = new Thread (new EnemyProjectileThread());
-		enemyProjectile.start();
+//		
+//		enemyProjectile = new Thread (new EnemyProjectileThread());
+//		enemyProjectile.start();
 		
 	}
 
@@ -495,11 +497,11 @@ public class Room
 		hitboxes.clear();
 
 		// Add all enemy hitboxes
-		for (Enemy e : enemies)
-			hitboxes.add(e.getHitBox());
+		for (int e = 0 ; e < enemies.size() ; e ++)
+			hitboxes.add(enemies.get(e).getHitBox());
 		// Add all item hitboxes
-		for (Item i : items)
-			hitboxes.add(i.getHitBox());
+		for (int i = 0 ; i < items.size() ; i ++)
+			hitboxes.add(items.get(i).getHitBox());
 	}
 
 	public boolean enemyCollision(int enemyIndex,
@@ -582,8 +584,9 @@ public class Room
 
 		drawDoors(g);
 		sortAllGameObjects();
-		for (Enemy currentEnemy : enemies)
+		for (int e = 0 ; e < enemies.size() ; e ++)
 		{
+			Enemy currentEnemy = enemies.get(e);
 			Rectangle r = currentEnemy.getHitBox();
 			g.drawImage(currentEnemy.getImage(), (int) currentEnemy.getX(),
 					(int) currentEnemy.getY(), null);
@@ -593,8 +596,9 @@ public class Room
 			currentEnemy.draw(g);
 		}
 
-		for (Item currentItem : items)
+		for (int i = 0 ; i < items.size() ; i ++)
 		{
+			Item currentItem = items.get(i);
 			g.drawImage(currentItem.getImage(), (int) currentItem.getX(),
 					(int) currentItem.getY(), null);
 		}
@@ -674,6 +678,15 @@ public class Room
 	{
 		this.visited = visited;
 	}
+	
+	public void killDeadEnemies()
+	{
+		for (int n = 0 ; n < enemies.size() ; n ++)
+		{
+			if (!enemies.get(n).isAlive())
+				enemies.remove(n);
+		}
+	}
 
 	private class EnemyPlayerCollisionThread implements Runnable
 	{
@@ -681,14 +694,11 @@ public class Room
 		{
 			while (inRoom)
 			{
-
 				for (int n = 0; n < enemies.size(); n++)
 				{
 					if (enemies.get(n).getHitBox().intersects(player.getHitBox()))
 						player.takeDamage(enemies.get(n).getDamage());
-
 				}
-			
 			}
 		}
 	}
@@ -702,15 +712,7 @@ public class Room
 				for (int n = 0; n < enemies.size(); n++)
 				{
 					Enemy currentEnemy = enemies.get(n);
-					if (currentEnemy.isAlive())
-						currentEnemy.shootProjectile(currentEnemy.getDirection());
-					
-					ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
-					for (int p = 0 ; p < currentP.size(); p ++)
-					{
-						if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
-							player.takeDamage(currentEnemy.getDamage());
-					}
+			
 				}
 			}
 		}
@@ -820,9 +822,22 @@ public class Room
 									currentEnemy.move(oldX, oldY);
 							}
 						}
-
+						// Shoot projectile
+						currentEnemy.shootProjectile(currentEnemy.getDirection());
+						ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
+						for (int p = 0 ; p < currentP.size(); p ++)
+						{
+							if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
+								player.takeDamage(currentEnemy.getDamage());
+						}
 					}
+
 				}
+				
+				
+
+				
+				
 				try
 				{
 					Thread.sleep(20);
