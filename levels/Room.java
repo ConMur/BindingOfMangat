@@ -483,8 +483,8 @@ public class Room
 		playerEnemyCollision = new Thread(new EnemyPlayerCollisionThread());
 		playerEnemyCollision.start();
 		//
-		 enemyProjectile = new Thread (new EnemyProjectileThread());
-		 enemyProjectile.start();
+		// enemyProjectile = new Thread (new EnemyProjectileThread());
+		// enemyProjectile.start();
 
 	}
 
@@ -670,11 +670,6 @@ public class Room
 			}
 		}
 	}
-	
-	public void updateEnemyProjectiles ()
-	{
-		
-	}
 
 	private class EnemyPlayerCollisionThread implements Runnable
 	{
@@ -702,47 +697,10 @@ public class Room
 		{
 			while (inRoom)
 			{
-				
-				killDeadEnemies();
-				synchronized(enemies)
+				for (int n = 0; n < enemies.size(); n++)
 				{
-					for (int n = 0; n < enemies.size(); n++)
-					{
-						Enemy currentEnemy = enemies.get(n);
-						// Gissing projectile behaviour
-						if (currentEnemy instanceof Gissing)
-						{
-							currentEnemy.shootMultipleProjectiles(3,
-									currentEnemy.getDirection(),
-									currentEnemy.getBotDirection(),
-									currentEnemy.getTopDirection());
-	
-							ArrayList<Projectile> currentP = currentEnemy
-									.getAllProjectiles();
-							for (int p = 0; p < currentP.size(); p++)
-							{
-								if (currentP.get(p).getHitBox()
-										.intersects(player.getHitBox()))
-									player.takeDamage(currentEnemy
-											.getDamage());
-							}
-						}
-						// Student enemy
-						else
-						{
-							currentEnemy.shootProjectile(currentEnemy
-									.getDirection());
-							ArrayList<Projectile> currentP = currentEnemy
-									.getAllProjectiles();
-							for (int p = 0; p < currentP.size(); p++)
-							{
-								if (currentP.get(p).getHitBox()
-										.intersects(player.getHitBox()))
-									player.takeDamage(currentEnemy
-											.getDamage());
-							}
-						}
-					}
+					Enemy currentEnemy = enemies.get(n);
+
 				}
 			}
 		}
@@ -861,7 +819,39 @@ public class Room
 										currentEnemy.move(oldX, oldY);
 								}
 							}
-							
+							// Gissing projectile behaviour
+							if (currentEnemy instanceof Gissing)
+							{
+								currentEnemy.shootMultipleProjectiles(3,
+										currentEnemy.getDirection(),
+										currentEnemy.getBotDirection(),
+										currentEnemy.getTopDirection());
+
+								ArrayList<Projectile> currentP = currentEnemy
+										.getAllProjectiles();
+								for (int p = 0; p < currentP.size(); p++)
+								{
+									if (currentP.get(p).getHitBox()
+											.intersects(player.getHitBox()))
+										player.takeDamage(currentEnemy
+												.getDamage());
+								}
+							}
+							// Student enemy
+							else
+							{
+								currentEnemy.shootProjectile(currentEnemy
+										.getDirection());
+								ArrayList<Projectile> currentP = currentEnemy
+										.getAllProjectiles();
+								for (int p = 0; p < currentP.size(); p++)
+								{
+									if (currentP.get(p).getHitBox()
+											.intersects(player.getHitBox()))
+										player.takeDamage(currentEnemy
+												.getDamage());
+								}
+							}
 						}
 
 					}
