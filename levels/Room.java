@@ -192,7 +192,7 @@ public class Room
 		{
 			if (north != null && !north.isLocked())
 				northOpen = true;
-			if (south != null && south.isLocked())
+			if (south != null && !south.isLocked())
 				southOpen = true;
 			if (east != null && !east.isLocked())
 				eastOpen = true;
