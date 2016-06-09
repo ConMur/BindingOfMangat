@@ -29,6 +29,7 @@ public final class LevelManager {
 
     // The percent chance that there will be an item in the room
     private static final int ITEM_CHANCE = 20;
+    private static final int LOCKED_ROOM_ITEM_BONUS = 20;
 
     //The percent chance that a room will be locked
     private static final int LOCKED_CHANCE = 10;
@@ -44,7 +45,7 @@ public final class LevelManager {
     private static Level currentLevel;
 
     private static int levelNumber;
-
+    private static boolean createdLockedRoom = false;
     private static Random rand;
 
     // Enemy spawn boundaries
@@ -180,7 +181,7 @@ public final class LevelManager {
 		 */
 
         for (int i = 0; i < numLevels; ++i) {
-            boolean createdLockedRoom = false;
+            createdLockedRoom = false;
 
             // Create the rooms list
             ArrayList<Room> rooms = new ArrayList<>();
@@ -209,15 +210,6 @@ public final class LevelManager {
             // EXTRA_ROOMS_PER_LEVEL each time
             for (int j = 1; j < 3 + (levelNumber * EXTRA_ROOMS_PER_LEVEL); ++j) {
                 Room r = createRoom(levelEnemies, levelItems);
-
-                //Potentially make this room locked
-                if (!createdLockedRoom) {
-                    int chance = rand.nextInt(100);
-                    if (chance < LOCKED_CHANCE) {
-                        createdLockedRoom = true;
-                        r.setLocked(true);
-                    }
-                }
                 rooms.add(r);
             }
             // Roll for a shop and add it if successful or just add another
@@ -306,37 +298,57 @@ public final class LevelManager {
 
     private static Room createRoom(ArrayList<Enemy> enemies,
                                    ArrayList<Item> items) {
-        // Choose the enemy for this room
-        //TODO: uncomment when have enough enemies
-        //Enemy e = enemies.remove(rand.nextInt(enemies.size()));
-        Enemy e = enemies.get(rand.nextInt(enemies.size()));
+       boolean thisRoomLocked = false;
 
-        // Create a number of enemies
+        //Potentially make this room locked
+        if (!createdLockedRoom) {
+            int chance = rand.nextInt(100);
+            if (chance < LOCKED_CHANCE) {
+                createdLockedRoom = true;
+                thisRoomLocked = true;
+            }
+        }
+
         ArrayList<Enemy> enemyList = new ArrayList<>();
-        int numEnemies = MIN_ENEMIES + rand.nextInt(ADDITIONAL_ENEMIES);
-        for (int enemy = 0; enemy < numEnemies; ++enemy) {
-            Enemy j = new Enemy(e);
-            boolean overlap = true;
-            // Make sure enemies don't spawn on top of each other
-            while (overlap) {
-                overlap = false;
-                j.setX(rand.nextInt(SPAWN_X_WIDTH) + SPAWN_X_LOWER);
-                j.setY(rand.nextInt(SPAWN_Y_HEIGHT) + SPAWN_Y_LOWER);
-                // Go through all enemies
-                for (int n = 0; n < enemy; n++) {
-                    // Overlap found
-                    if (j.getHitBox().intersects(enemyList.get(n).getHitBox())) {
-                        overlap = true;
-                        break;
+
+        if(!thisRoomLocked) {
+            // Choose the enemy for this room
+            //TODO: uncomment when have enough enemies
+            //Enemy e = enemies.remove(rand.nextInt(enemies.size()));
+            Enemy e = enemies.get(rand.nextInt(enemies.size()));
+
+            // Create a number of enemies
+            int numEnemies = MIN_ENEMIES + rand.nextInt(ADDITIONAL_ENEMIES);
+            for (int enemy = 0; enemy < numEnemies; ++enemy) {
+                Enemy j = new Enemy(e);
+                boolean overlap = true;
+                // Make sure enemies don't spawn on top of each other
+                while (overlap) {
+                    overlap = false;
+                    j.setX(rand.nextInt(SPAWN_X_WIDTH) + SPAWN_X_LOWER);
+                    j.setY(rand.nextInt(SPAWN_Y_HEIGHT) + SPAWN_Y_LOWER);
+                    // Go through all enemies
+                    for (int n = 0; n < enemy; n++) {
+                        // Overlap found
+                        if (j.getHitBox().intersects(enemyList.get(n).getHitBox())) {
+                            overlap = true;
+                            break;
+                        }
                     }
                 }
+                enemyList.add(j);
             }
-            enemyList.add(j);
         }
 
         // Have a chance to have an item in the room
         ArrayList<Item> itemList = new ArrayList<>();
         int itemChance = rand.nextInt(100);
+
+        //Have more chance of items in a locked room
+        if(thisRoomLocked)
+        {
+            itemChance -= LOCKED_ROOM_ITEM_BONUS;
+        }
         if (itemChance < ITEM_CHANCE) {
             //TODO: uncomment when have enough items
             //itemList.add(items.remove(rand.nextInt(items.size())));
