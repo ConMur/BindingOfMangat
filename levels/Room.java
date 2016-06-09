@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 
 import thingsthatmove.Enemy;
 import thingsthatmove.GameObject;
+import thingsthatmove.Gissing;
 import thingsthatmove.Player;
 import thingsthatmove.Projectile;
 
@@ -193,16 +194,15 @@ public class Room
 				northOpen = true;
 			if (south != null && south.isLocked())
 				southOpen = true;
-			if (east != null &&  !east.isLocked())
+			if (east != null && !east.isLocked())
 				eastOpen = true;
-			if (west != null &&  !west.isLocked())
+			if (west != null && !west.isLocked())
 				westOpen = true;
 		}
 	}
 
 	public void update()
 	{
-		updateHitboxes();
 		updateDoorStatus();
 		checkIfPlayerAtDoor();
 		checkProjectileCollision();
@@ -215,10 +215,10 @@ public class Room
 	private void checkProjectileCollision()
 	{
 		ArrayList<Projectile> projectiles = player.getAllPlayerProjectiles();
-		for (int p = 0 ; p < projectiles.size(); p ++)
+		for (int p = 0; p < projectiles.size(); p++)
 		{
 			Projectile pj = projectiles.get(p);
-			for (int e = 0 ; e < enemies.size() ; e ++)
+			for (int e = 0; e < enemies.size(); e++)
 			{
 				Enemy en = enemies.get(e);
 				if (pj.getHitBox().intersects(en.getHitBox()))
@@ -261,11 +261,12 @@ public class Room
 		{
 			atWestDoor = true;
 		}
-		
-		//Check if at trapDoor
-		if(showTrapDoor)
+
+		// Check if at trapDoor
+		if (showTrapDoor)
 		{
-			if(x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 50 && y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 50)
+			if (x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 50
+					&& y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 50)
 			{
 				LevelManager.advanceLevel();
 			}
@@ -481,10 +482,10 @@ public class Room
 
 		playerEnemyCollision = new Thread(new EnemyPlayerCollisionThread());
 		playerEnemyCollision.start();
-//		
-//		enemyProjectile = new Thread (new EnemyProjectileThread());
-//		enemyProjectile.start();
-		
+		//
+		 enemyProjectile = new Thread (new EnemyProjectileThread());
+		 enemyProjectile.start();
+
 	}
 
 	public void endRoom()
@@ -495,58 +496,31 @@ public class Room
 		player.clearProjectiles();
 	}
 
-	public  void updateHitboxes()
+	public void updateHitboxes()
 	{
 		// Remove all current hitboxes
 		hitboxes.clear();
 
 		// Add all enemy hitboxes
-		for (int e = 0 ; e < enemies.size() ; e ++)
+		for (int e = 0; e < enemies.size(); e++)
 			hitboxes.add(enemies.get(e).getHitBox());
 		// Add all item hitboxes
-		for (int i = 0 ; i < items.size() ; i ++)
+		for (int i = 0; i < items.size(); i++)
 			hitboxes.add(items.get(i).getHitBox());
 	}
 
 	public boolean enemyCollision(int enemyIndex,
 			Rectangle enemyHitbox)
 	{
-		// Enemy e = enemies.get(enemyIndex);
-		// // Collision with west wall
-		// if (e.getX() < LOWER_X_BOUND
-		// || e.getX() > UPPER_X_BOUND
-		// || e.getY() < LOWER_Y_BOUND
-		// || e.getY() < UPPER_Y_BOUND)
-		// {
-		// System.out.println("ENEMY HITTING WALL");
-		// return true;
-		// }
-
 		for (int n = 0; n < hitboxes.size(); n++)
 		{
-			updateHitboxes();
+
 			// System.out.println("HITBOXES: " + hitboxes.size()
 			// + " CURRENT INDEX: " + n);
 			if (enemyHitbox.intersects(hitboxes.get(n)) && n != enemyIndex)
 				return true;
 		}
 		return false;
-		// for (int i = 0; i < enemyIndex; i++) {
-		// updateHitboxes();
-		// System.out.println("HITBOXES (1): " + hitboxes.size());
-		// if (enemyHitbox.intersects(hitboxes.get(i)))
-		// return true;
-		// }
-		//
-		// System.out.println("SECOND LOOP STARTS AT " + (enemyIndex + 1));
-		// for (int j = enemyIndex + 1; j < hitboxes.size(); j++) {
-		// updateHitboxes();
-		// System.out.println("HITBOXES (2): " + hitboxes.size() +
-		// " CURRENT INDEX " + j);
-		// if (enemyHitbox.intersects(hitboxes.get(j)))
-		// return true;
-		// }
-		// return false;
 	}
 
 	public void sortAllGameObjects()
@@ -588,7 +562,7 @@ public class Room
 
 		drawDoors(g);
 		sortAllGameObjects();
-		for (int e = 0 ; e < enemies.size() ; e ++)
+		for (int e = 0; e < enemies.size(); e++)
 		{
 			Enemy currentEnemy = enemies.get(e);
 			Rectangle r = currentEnemy.getHitBox();
@@ -596,11 +570,11 @@ public class Room
 					(int) currentEnemy.getY(), null);
 			g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
 					(int) r.getHeight());
-			
+
 			currentEnemy.draw(g);
 		}
 
-		for (int i = 0 ; i < items.size() ; i ++)
+		for (int i = 0; i < items.size(); i++)
 		{
 			Item currentItem = items.get(i);
 			g.drawImage(currentItem.getImage(), (int) currentItem.getX(),
@@ -682,14 +656,24 @@ public class Room
 	{
 		this.visited = visited;
 	}
-	
+
 	public void killDeadEnemies()
 	{
-		for (int n = 0 ; n < enemies.size() ; n ++)
+		for (int n = 0; n < enemies.size(); n++)
 		{
 			if (!enemies.get(n).isAlive())
+			{
+				if (roomType == RoomType.BOSS)
+					showTrapDoor = true;
 				enemies.remove(n);
+
+			}
 		}
+	}
+	
+	public void updateEnemyProjectiles ()
+	{
+		
 	}
 
 	private class EnemyPlayerCollisionThread implements Runnable
@@ -698,10 +682,15 @@ public class Room
 		{
 			while (inRoom)
 			{
-				for (int n = 0; n < enemies.size(); n++)
+				killDeadEnemies();
+				synchronized (enemies)
 				{
-					if (enemies.get(n).getHitBox().intersects(player.getHitBox()))
-						player.takeDamage(enemies.get(n).getDamage());
+					for (int n = 0; n < enemies.size(); n++)
+					{
+						if (enemies.get(n).getHitBox()
+								.intersects(player.getHitBox()))
+							player.takeDamage(enemies.get(n).getDamage());
+					}
 				}
 			}
 		}
@@ -713,10 +702,47 @@ public class Room
 		{
 			while (inRoom)
 			{
-				for (int n = 0; n < enemies.size(); n++)
+				
+				killDeadEnemies();
+				synchronized(enemies)
 				{
-					Enemy currentEnemy = enemies.get(n);
-			
+					for (int n = 0; n < enemies.size(); n++)
+					{
+						Enemy currentEnemy = enemies.get(n);
+						// Gissing projectile behaviour
+						if (currentEnemy instanceof Gissing)
+						{
+							currentEnemy.shootMultipleProjectiles(3,
+									currentEnemy.getDirection(),
+									currentEnemy.getBotDirection(),
+									currentEnemy.getTopDirection());
+	
+							ArrayList<Projectile> currentP = currentEnemy
+									.getAllProjectiles();
+							for (int p = 0; p < currentP.size(); p++)
+							{
+								if (currentP.get(p).getHitBox()
+										.intersects(player.getHitBox()))
+									player.takeDamage(currentEnemy
+											.getDamage());
+							}
+						}
+						// Student enemy
+						else
+						{
+							currentEnemy.shootProjectile(currentEnemy
+									.getDirection());
+							ArrayList<Projectile> currentP = currentEnemy
+									.getAllProjectiles();
+							for (int p = 0; p < currentP.size(); p++)
+							{
+								if (currentP.get(p).getHitBox()
+										.intersects(player.getHitBox()))
+									player.takeDamage(currentEnemy
+											.getDamage());
+							}
+						}
+					}
 				}
 			}
 		}
@@ -724,97 +750,96 @@ public class Room
 
 	private class EnemyMovementThread implements Runnable
 	{
-
 		public void run()
 		{
 			while (inRoom)
 			{
-				for (int n = 0; n < enemies.size(); n++)
+				killDeadEnemies();
+				synchronized (enemies)
 				{
-					// Each enemy can go four directions (N,E,S,W)
-					// Enemies decide on which direction to take on a random
-					// basis
-					// Enemies want to (more likely) to continue moving in a
-					// direction, until they hit another game object
-					// After hitting another game object they will decide
-					// another direction on a random basis
-					// When enemies are within aggro-range follow players
-					// Enemies cannot overlap other game objects
-					Enemy currentEnemy = enemies.get(n);
-					if (!currentEnemy.isAlive())
+					for (int n = 0; n < enemies.size(); n++)
 					{
-						if (roomType == RoomType.BOSS)
+						// Each enemy can go four directions (N,E,S,W)
+						// Enemies decide on which direction to take on a random
+						// basis
+						// Enemies want to (more likely) to continue moving in a
+						// direction, until they hit another game object
+						// After hitting another game object they will decide
+						// another direction on a random basis
+						// When enemies are within aggro-range follow players
+						// Enemies cannot overlap other game objects
+						Enemy currentEnemy = enemies.get(n);
+						// if (!currentEnemy.isAlive())
+						// {
+						// if (roomType == RoomType.BOSS)
+						// {
+						// showTrapDoor = true;
+						// }
+						// enemies.remove(n);
+						// }
+						// Only move moveable enemies
+						if (currentEnemy.canMove())
 						{
-							showTrapDoor = true;
-						}
-						enemies.remove(n);
-					}
-					// Only move moveable enemies
-					else if (currentEnemy.canMove())
-					{
-						int direction;
-						Random r = new Random();
+							Random r = new Random();
 
-						// No initial direction
-						if (currentEnemy.getDirection() == ' ')
-							currentEnemy.setRandomDirection();
-						// Already moving in a direction
-						else
-						{
-							// Set a 5% chance to change direction
-							if (r.nextInt(100) >= 95)
+							// No initial direction
+							if (currentEnemy.getDirection() == ' ')
 								currentEnemy.setRandomDirection();
-						}
-
-						// Keep track of old coordinates
-						int oldX = (int) currentEnemy.getX();
-						int oldY = (int) currentEnemy.getY();
-						// Enemy is of the aggresive type
-						if (currentEnemy.isAngry())
-						{
-							int enemyWidth = (int) currentEnemy.getSize()
-									.getWidth();
-							int enemyHeight = (int) currentEnemy.getSize()
-									.getHeight();
-							// Make an aggro rectangle for range
-							// Aggro range is in a 3 * enemy width by 3 * enemy
-							// height box with the enemy in the centre
-							Rectangle aggroBox = new Rectangle(oldX
-									- enemyWidth, oldY - enemyHeight,
-									enemyWidth * 3, enemyHeight * 3);
-							// Player is within aggro range
-							if (aggroBox.intersects(player.getHitBox()))
-							{
-								// Change direction to run at the player
-								// AGGRESIVELY
-								currentEnemy.setSpeed(300);
-								if (player.getX() < currentEnemy.getX() + 50
-										&& player.getX() > currentEnemy.getX())
-								{
-									if (player.getY() > currentEnemy.getY())
-										currentEnemy.setDirection('S');
-									else
-										currentEnemy.setDirection('N');
-								}
-								else if (player.getX() > currentEnemy.getX())
-									currentEnemy.setDirection('E');
-								else
-									currentEnemy.setDirection('W');
-							}
+							// Already moving in a direction
 							else
-								currentEnemy.setSpeed(200);
-						}
-						// Move the enemy in its direction
-						currentEnemy.moveInDirection();
-						// There is a collision with another ENEMY or ITEM (not
-						// player) so move back and change direction
-						if (enemyCollision(n, currentEnemy.getHitBox()))
-						{
-							currentEnemy.move(oldX, oldY);
-							currentEnemy.setRandomDirection();
-							currentEnemy.moveInDirection();
+							{
+								// Set a 5% chance to change direction
+								if (r.nextInt(100) >= 95)
+									currentEnemy.setRandomDirection();
+							}
 
-							// Still collision
+							// Keep track of old coordinates
+							int oldX = (int) currentEnemy.getX();
+							int oldY = (int) currentEnemy.getY();
+							// Enemy is of the aggresive type
+							if (currentEnemy.isAngry())
+							{
+								int enemyWidth = (int) currentEnemy.getSize()
+										.getWidth();
+								int enemyHeight = (int) currentEnemy.getSize()
+										.getHeight();
+								// Make an aggro rectangle for range
+								// Aggro range is in a 3 * enemy width by 3 *
+								// enemy
+								// height box with the enemy in the centre
+								Rectangle aggroBox = new Rectangle(oldX
+										- enemyWidth, oldY - enemyHeight,
+										enemyWidth * 3, enemyHeight * 3);
+								// Player is within aggro range
+								if (aggroBox.intersects(player.getHitBox()))
+								{
+									// Change direction to run at the player
+									// AGGRESIVELY
+									currentEnemy.setSpeed(300);
+									if (player.getX() < currentEnemy.getX() + 50
+											&& player.getX() > currentEnemy
+													.getX())
+									{
+										if (player.getY() > currentEnemy.getY())
+											currentEnemy.setDirection('S');
+										else
+											currentEnemy.setDirection('N');
+									}
+									else if (player.getX() > currentEnemy
+											.getX())
+										currentEnemy.setDirection('E');
+									else
+										currentEnemy.setDirection('W');
+								}
+								else
+									currentEnemy.setSpeed(200);
+							}
+							// Move the enemy in its direction
+							currentEnemy.moveInDirection();
+							// There is a collision with another ENEMY or ITEM
+							// (not
+							// player) so move back and change direction
+							updateHitboxes();
 							if (enemyCollision(n, currentEnemy.getHitBox()))
 							{
 								currentEnemy.move(oldX, oldY);
@@ -822,26 +847,26 @@ public class Room
 								currentEnemy.moveInDirection();
 
 								// Still collision
+								updateHitboxes();
 								if (enemyCollision(n, currentEnemy.getHitBox()))
+								{
 									currentEnemy.move(oldX, oldY);
+									currentEnemy.setRandomDirection();
+									currentEnemy.moveInDirection();
+
+									// Still collision
+									updateHitboxes();
+									if (enemyCollision(n,
+											currentEnemy.getHitBox()))
+										currentEnemy.move(oldX, oldY);
+								}
 							}
+							
 						}
-						// Shoot projectile
-						currentEnemy.shootProjectile(currentEnemy.getDirection());
-						ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
-						for (int p = 0 ; p < currentP.size(); p ++)
-						{
-							if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
-								player.takeDamage(currentEnemy.getDamage());
-						}
+
 					}
-
 				}
-				
-				
 
-				
-				
 				try
 				{
 					Thread.sleep(20);
