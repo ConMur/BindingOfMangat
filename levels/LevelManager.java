@@ -330,7 +330,7 @@ public final class LevelManager {
 
     public static void advanceLevel()
     {
-    	currentLevel = levels.get(++levelNumber);
+    	currentLevel = levels.get(++levelNumber - 1);
     }
     
     public static void update() {
