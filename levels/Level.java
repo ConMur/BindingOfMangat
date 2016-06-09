@@ -11,23 +11,21 @@ public class Level
 	private Room currentRoom;
 
 	private Minimap minimap;
-	
+
 	private final int PLAYER_SOUTH_X = 465;
 	private final int PLAYER_SOUTH_Y = 565;
-	
+
 	private final int PLAYER_NORTH_X = 465;
 	private final int PLAYER_NORTH_Y = 250;
-	
+
 	private final int PLAYER_EAST_X = 845;
 	private final int PLAYER_EAST_Y = 380;
-	
+
 	private final int PLAYER_WEST_X = 75;
 	private final int PLAYER_WEST_Y = 380;
-	
 
-	
-	//TODO: call start room and end room when entering and exiting a room
-	
+	// TODO: call start room and end room when entering and exiting a room
+
 	// Additional room chance out of TOTAL_CHANCES
 	private final int ADDITIONAL_ROOM_CHANCE = 3;
 	private final int TOTAL_CHANCES = 10;
@@ -46,51 +44,89 @@ public class Level
 
 	public void setRooms(ArrayList<Room> roomList)
 	{
-		rooms = roomList;
-		
+		rooms = new ArrayList<>(roomList);
+
 		currentRoom = rooms.remove(0);
 		// Arrange the rooms
 		Room workingRoom = currentRoom;
 		minimap.addRoom(workingRoom);
 
-		//Remove the boss room from the general room connecting
+		// Remove the boss room from the general room connecting
 		Room bossRoom = rooms.remove(rooms.size() - 1);
 
-		while (rooms.size() > 0)
+		// Check if there are any locked rooms
+		Room lockedRoom = null;
+		for (int i = 0; i < rooms.size(); ++i)
+		{
+			Room r = rooms.get(i);
+			if (r.isLocked())
+			{
+				lockedRoom = rooms.remove(i);
+				minimap.addRoom(lockedRoom);
+				break;
+			}
+		}
+
+		// Valid indices to remove from
+		ArrayList<Integer> validIndices = new ArrayList<>();
+		for (int i = 0; i < rooms.size(); ++i)
+		{
+			validIndices.add(i);
+		}
+		
+		while (validIndices.size() > 0)
 		{
 			if (!workingRoom.isFull())
 			{
 				// Always connect to one room
-				Room room = rooms.remove(rand.nextInt(rooms.size()));
+				int index = validIndices.remove(rand.nextInt(validIndices.size()));
+				Room room = rooms.get(index);
 				addRoom(workingRoom, room);
 				minimap.addRoom(room);
 				// Have a chance to add additional rooms if the room is not
 				// already full and there are rooms to add
-				if (!workingRoom.isFull() && rooms.size() > 0)
+				if (!workingRoom.isFull() && validIndices.size() > 0)
 				{
 					int chanceNumber = rand.nextInt(TOTAL_CHANCES);
 					if (chanceNumber <= ADDITIONAL_ROOM_CHANCE)
 					{
-						Room additionalRoom = rooms.remove(rand.nextInt(rooms.size()));
+						index = validIndices.remove(rand.nextInt(validIndices.size()));
+						Room additionalRoom = rooms.get(index);
 						addRoom(workingRoom, additionalRoom);
 						minimap.addRoom(additionalRoom);
 					}
 				}
-				
-				//Reassign the working room
+
+				// Reassign the working room
 				workingRoom = room;
 			}
 		}
 
-		//Add the boss room to the last room added
+		
+		// Connect the locked room in such a way that it does not lead to a room
+		if (lockedRoom != null)
+		{
+			boolean foundRoom = false;
+			while (!foundRoom)
+			{
+				Room r = rooms.get(rand.nextInt(rooms.size()));
+				if (!r.isFull())
+				{
+					addRoom(r, lockedRoom);
+					foundRoom = true;
+				}
+			}
+		}
+
+		// Add the boss room to the last room added
 		addRoom(workingRoom, bossRoom);
 		minimap.addRoom(bossRoom);
 
 		minimap.setUpRooms();
-		
+
 	}
-	
-	public void start ()
+
+	public void start()
 	{
 		currentRoom.startRoom();
 	}
@@ -105,8 +141,9 @@ public class Level
 	/**
 	 * Checks if the player is at a door and moves them to the next room if so
 	 */
-	private void checkPlayerAtDoor() {
-		if(currentRoom.isPlayerAtNorthDoor())
+	private void checkPlayerAtDoor()
+	{
+		if (currentRoom.isPlayerAtNorthDoor())
 		{
 			minimap.setPlayerRoomY(minimap.getPlayerRoomY() - 1);
 			currentRoom.getPlayer().setY(PLAYER_SOUTH_Y);
@@ -115,7 +152,7 @@ public class Level
 			currentRoom = currentRoom.getNorth();
 			currentRoom.startRoom();
 		}
-		else if(currentRoom.isPlayerAtSouthDoor())
+		else if (currentRoom.isPlayerAtSouthDoor())
 		{
 			minimap.setPlayerRoomY(minimap.getPlayerRoomY() + 1);
 			currentRoom.getPlayer().setY(PLAYER_NORTH_Y);
@@ -124,7 +161,7 @@ public class Level
 			currentRoom = currentRoom.getSouth();
 			currentRoom.startRoom();
 		}
-		else if(currentRoom.isPlayerAtEastDoor())
+		else if (currentRoom.isPlayerAtEastDoor())
 		{
 			minimap.setPlayerRoomX(minimap.getPlayerRoomX() + 1);
 			currentRoom.getPlayer().setX(PLAYER_WEST_X);
@@ -133,7 +170,7 @@ public class Level
 			currentRoom = currentRoom.getEast();
 			currentRoom.startRoom();
 		}
-		else if(currentRoom.isPlayerAtWestDoor())
+		else if (currentRoom.isPlayerAtWestDoor())
 		{
 			minimap.setPlayerRoomX(minimap.getPlayerRoomX() - 1);
 			currentRoom.getPlayer().setX(PLAYER_EAST_X);
@@ -164,11 +201,10 @@ public class Level
 			// Try to set to a room
 			if (dir == 0)
 			{
-				
 				sucessful = workingRoom.setNorth(room);
-				if(sucessful)
+				if (sucessful)
 				{
-					if(room.getSouth() != null)
+					if (room.getSouth() != null)
 					{
 						System.err.println("South ALREADY SEt!");
 					}
@@ -178,9 +214,9 @@ public class Level
 			else if (dir == 1)
 			{
 				sucessful = workingRoom.setEast(room);
-				if(sucessful)
+				if (sucessful)
 				{
-					if(room.getWest() != null)
+					if (room.getWest() != null)
 					{
 						System.err.println("WEST ALREADY SEt!");
 					}
@@ -190,9 +226,9 @@ public class Level
 			else if (dir == 2)
 			{
 				sucessful = workingRoom.setSouth(room);
-				if(sucessful)
+				if (sucessful)
 				{
-					if(room.getNorth() != null)
+					if (room.getNorth() != null)
 					{
 						System.err.println("NORTH ALREADY SEt!");
 					}
@@ -202,9 +238,9 @@ public class Level
 			else if (dir == 3)
 			{
 				sucessful = workingRoom.setWest(room);
-				if(sucessful)
+				if (sucessful)
 				{
-					if(room.getEast() != null)
+					if (room.getEast() != null)
 					{
 						System.err.println("EAST ALREADY SEt!");
 					}
