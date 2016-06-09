@@ -27,6 +27,10 @@ public class Player extends MoveableObject
 	private boolean isShooting;
 	private boolean takenDMG;
 
+	//Items
+	private int numKeys;
+
+	//Projectiles
 	private long lastFireTime, lastDmgTime;
 	private int fireRate, invincibleTime;
 	// Miliseconds between firing
@@ -56,6 +60,8 @@ public class Player extends MoveableObject
 		boolean movingEast = false;
 		boolean movingSouth = false;
 		takenDMG = false;
+
+		numKeys = 0;
 
 		try
 		{
@@ -193,6 +199,19 @@ public class Player extends MoveableObject
 		this.setItem(null);
 
 		// FINISH ITEMS
+	}
+
+	public int getNumKeys() {
+		return numKeys;
+	}
+
+	public void setNumKeys(int numKeys) {
+		this.numKeys = numKeys;
+	}
+
+	public boolean hasKeys()
+	{
+		return numKeys > 0;
 	}
 
 	public boolean isMovingNorth()
