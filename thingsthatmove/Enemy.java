@@ -94,6 +94,38 @@ public class Enemy extends MoveableObject
 		}
 	}
 	
+	
+	public void shootMultipleProjectiles (int numP, char d1, char d2, char d3)
+	{
+		if (System.currentTimeMillis() - lastFireTime > fireRate)
+		{
+			for (int n = 0 ; n < numP ; n ++)
+			{
+				Projectile p = new Projectile(getProjectile(), d1);
+				p.setX(getX() + 20);
+				p.setY(getY() + 25);
+				currentProjectiles.add(p);
+				
+				Projectile p2 = new Projectile(getProjectile(), d2);
+				p2.setX(getX() + 20);
+				p2.setY(getY() + 25);
+				currentProjectiles.add(p2);
+				
+				Projectile p3 = new Projectile(getProjectile(), d3);
+				p3.setX(getX() + 20);
+				p3.setY(getY() + 25);
+				currentProjectiles.add(p3);
+
+			}
+			lastFireTime = System.currentTimeMillis();
+		}
+	}
+	
+	public void setFireRate (int n)
+	{
+		fireRate = n;
+	}
+	
 	public int getProjectile()
 	{
 		return projectile;
@@ -163,6 +195,46 @@ public class Enemy extends MoveableObject
 	public void setDirection(char c)
 	{
 		currentDirection = c;
+	}
+	
+	public char getTopDirection ()
+	{
+		if (currentDirection == 'N')
+			return '1';
+		else if (currentDirection == 'E')
+			return '1';
+		else if (currentDirection == 'S')
+			return '2';
+		else if (currentDirection == 'W')
+			return '4';
+		else if (currentDirection == '1')
+			return 'N';
+		else if (currentDirection == '2')
+			return 'E';
+		else if (currentDirection == '3')
+			return 'W';
+		else
+			return 'N';
+	}
+	
+	public char getBotDirection ()
+	{
+		if (currentDirection == 'N')
+			return '4';
+		else if (currentDirection == 'E')
+			return '2';
+		else if (currentDirection == 'S')
+			return '3';
+		else if (currentDirection == 'W')
+			return '3';
+		else if (currentDirection == '1')
+			return 'E';
+		else if (currentDirection == '2')
+			return 'S';
+		else if (currentDirection == '3')
+			return 'S';
+		else
+			return 'W';
 	}
 
 	public char getDirection()

@@ -248,15 +248,11 @@ public class Projectile extends GameObject
 		double y = getY();
 		if (x < LOWER_X_BOUND || y < LOWER_Y_BOUND || x > UPPER_X_BOUND
 				|| y > UPPER_Y_BOUND)
-		{
 			isDead = true;
-		}
 
 		// Check if life span is over
 		if (lifeSpan <= 0)
-		{
 			isDead = true;
-		}
 	}
 
 	public void draw(Graphics g)
