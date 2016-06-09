@@ -73,6 +73,10 @@ public class Minimap {
             {
                 g.setColor(Color.WHITE);
             }
+            else if(r.getRoom().isLocked())
+            {
+                g.setColor(Color.GREEN);
+            }
             else if(type == RoomType.NORMAL)
             {
                 g.setColor(Color.BLACK);
