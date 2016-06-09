@@ -189,13 +189,13 @@ public class Room
 		// No enemies, open all doors
 		else
 		{
-			if (!north.isLocked())
+			if (north != null && !north.isLocked())
 				northOpen = true;
-			if (!south.isLocked())
+			if (south != null && south.isLocked())
 				southOpen = true;
-			if (!east.isLocked())
+			if (east != null &&  !east.isLocked())
 				eastOpen = true;
-			if (!west.isLocked())
+			if (west != null &&  !west.isLocked())
 				westOpen = true;
 		}
 	}
