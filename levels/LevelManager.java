@@ -29,10 +29,10 @@ public final class LevelManager {
 
     // The percent chance that there will be an item in the room
     private static final int ITEM_CHANCE = 20;
-    private static final int LOCKED_ROOM_ITEM_BONUS = 20;
+    private static final int LOCKED_ROOM_ITEM_BONUS = -(100 - ITEM_CHANCE);
 
     //The percent chance that a room will be locked
-    private static final int LOCKED_CHANCE = 10;
+    private static final int LOCKED_CHANCE = 100;
 
     // The minimum amount of enemies in a level
     private static final int MIN_ENEMIES = 3;
@@ -116,24 +116,29 @@ public final class LevelManager {
         }
         // Add the english enemies
         try {
-            english.add(new Enemy(2, 2, 1, 500, 500, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-                    new Dimension(100, 100), 2, true, false));
+            english.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+                    new Dimension(75, 43), 2, true, false));
+            
         } catch (IOException ioe) {
             System.err.println("Unable to load english enemies");
             ioe.printStackTrace();
         }
         // Add the math enemies
         try {
-            math.add(new Enemy(2, 2, 1, 400, 600, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-                    new Dimension(100, 100), 2, true, false));
+            math.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+                    new Dimension(75, 43), 2, true, false));
+            math.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/textbookfront.png")),
+                    new Dimension(75, 43), 2, true, false));
+            math.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/pifront.png")),
+                    new Dimension(75, 43), 2, true, false));
         } catch (IOException ioe) {
             System.err.println("Unable to load math enemies");
             ioe.printStackTrace();
         }
         // Add the history enemies
         try {
-            history.add(new Enemy(2, 2, 1, 200, 200, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-                    new Dimension(100, 100), 2, true, false));
+            history.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
+                    new Dimension(75, 43), 2, true, false));
         } catch (IOException ioe) {
             System.err.println("Unable to load history enemies");
             ioe.printStackTrace();
@@ -180,7 +185,7 @@ public final class LevelManager {
 		 * maybe shop always key door always boss room always other rooms
 		 */
 
-        for (int i = 0; i < numLevels; ++i) {
+        for (int i = 1; i < numLevels + 1; ++i) {
             createdLockedRoom = false;
 
             // Create the rooms list
@@ -188,16 +193,16 @@ public final class LevelManager {
 
             // Create a copy of the list of enemies for this level
             ArrayList<Enemy> levelEnemies;
-            if (levelNumber == 1) {
+            if (i == 1) {
                 levelEnemies = new ArrayList<>(scienceEnemyList);
-            } else if (levelNumber == 2) {
+            } else if (i == 2) {
                 levelEnemies = new ArrayList<>(englishEnemyList);
-            } else if (levelNumber == 3) {
+            } else if (i == 3) {
                 levelEnemies = new ArrayList<>(mathEnemyList);
-            } else if (levelNumber == 4) {
+            } else if (i == 4) {
                 levelEnemies = new ArrayList<>(historyEnemyList);
             } else {
-                System.err.println("Invalid level value: " + levelNumber);
+                System.err.println("Invalid level value: " + i);
                 levelEnemies = null;
             }
 
@@ -208,7 +213,7 @@ public final class LevelManager {
             rooms.add(createInitialRoom(levelItems));
             // Create general rooms (4 rooms on 1st level increasing by
             // EXTRA_ROOMS_PER_LEVEL each time
-            for (int j = 1; j < 3 + (levelNumber * EXTRA_ROOMS_PER_LEVEL); ++j) {
+            for (int j = 1; j < 3 + (i * EXTRA_ROOMS_PER_LEVEL); ++j) {
                 Room r = createRoom(levelEnemies, levelItems);
                 rooms.add(r);
             }
@@ -223,7 +228,7 @@ public final class LevelManager {
             }
 
             //Boss room
-            rooms.add(createBossRoom());
+            rooms.add(createBossRoom(i));
 
             Level level = new Level(rooms);
             levels.add(level);
@@ -233,8 +238,9 @@ public final class LevelManager {
     /**
      * Creates the boss room for the level
      * @return the boss room for the level
+     * @param levelNumber the level number to generate a boss for
      */
-    private static Room createBossRoom() {
+    private static Room createBossRoom(int levelNumber) {
         ArrayList<Enemy> enemyList = new ArrayList<>();
 
         //Find the level and create the boss for that level
@@ -267,7 +273,13 @@ public final class LevelManager {
         }
         else if(levelNumber == 4)
         {
-            //TODO: add mr mack
+        	   try {
+                   BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/macfront.png"));
+                   enemyList.add(new Mack(2, 5, 250, 500, 500, bossImage, new Dimension(87, 100), 5, true, true));
+               } catch (IOException ioe) {
+                   System.err.println("Error loading mack image file");
+                   ioe.printStackTrace();
+               }
         } else if (levelNumber == 5) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/ridoutfront.png"));
@@ -361,7 +373,8 @@ public final class LevelManager {
 
     public static void advanceLevel()
     {
-    	currentLevel = levels.get(++levelNumber - 1);
+    	++levelNumber;
+    	currentLevel = levels.get(levelNumber - 1);
     }
     
     public static void update() {
