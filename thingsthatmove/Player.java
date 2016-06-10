@@ -236,16 +236,40 @@ public class Player extends MoveableObject
 		return movingWest;
 	}
 
-	public void updatePosition()
+	public void update(ArrayList<GameObject> rocks)
 	{
 		if (movingNorth)
+		{
 			moveNorth();
+			if(collidesWithRocks(rocks))
+			{
+				moveSouth();
+			}
+		}
 		if (movingSouth)
+		{
 			moveSouth();
+			if(collidesWithRocks(rocks))
+			{
+				moveNorth();
+			}
+		}
 		if (movingWest)
+		{
 			moveWest();
+			if(collidesWithRocks(rocks))
+			{
+				moveEast();
+			}
+		}
 		if (movingEast)
+		{
 			moveEast();
+			if(collidesWithRocks(rocks))
+			{
+				moveWest();
+			}
+		}
 
 		// Update projectiles
 		int removedProjectiles = 0;
@@ -279,7 +303,7 @@ public class Player extends MoveableObject
 			else if (getImage() == mangatRight || getImage() == mangatHurtRight)
 				shootProjectile('E');
 			else
-				System.err.println("no projextile added");
+				System.err.println("no projectile added");
 		}
 
 		// Update invincibility if havent already
@@ -306,6 +330,23 @@ public class Player extends MoveableObject
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns if the player collides with a rock
+	 * @param rocks the potential rocks to collide with
+	 * @return if the player collides with a rock
+	 */
+	private boolean collidesWithRocks(ArrayList<GameObject> rocks)
+	{
+		for(GameObject rock : rocks)
+		{
+			if(getHitBox().intersects(rock.getHitBox()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void draw(Graphics g)
