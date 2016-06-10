@@ -160,12 +160,12 @@ public class Room {
         found = false;
     }
     
-    private boolean isFound ()
+    public boolean isFound ()
     {
     	return found;
     }
     
-    private void setFound (boolean b)
+    public void setFound (boolean b)
     {
     	found = b;
     }
@@ -212,17 +212,18 @@ public class Room {
     }
 
     public void update() {
-        updateDoorStatus();
+    	player.update(roomPattern.getRocks());
+    	updateDoorStatus();
         checkIfPlayerAtDoor();
         checkProjectileCollision();
     }
     
-    private void setRockPattern (RockPatterns r)
+    public void setRockPattern (RockPatterns r)
     {
     	roomPattern = r;
     }
     
-    private RockPatterns getRockPattern ()
+    public RockPatterns getRockPattern ()
     {
     	return roomPattern;
     }
@@ -546,7 +547,6 @@ public class Room {
         g.drawImage(hud, 0, 0, null);
         g.drawImage(background, 0, 198, null);
         g.setColor(Color.RED);
-
         g.drawRect(130, 325, 720, 250);
 
         
@@ -585,6 +585,8 @@ public class Room {
         // (int) currentRoomObject.getY(), null);
         // }
         //
+        
+        player.draw(g);
 
     }
 
