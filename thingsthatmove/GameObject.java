@@ -44,6 +44,11 @@ public class GameObject
 		return new Rectangle ((int)xPos, (int)yPos + (int)(size.getHeight() * 0.5), (int)size.getWidth(), (int)size.getHeight());
 	}
 	
+	public Rectangle getRockHitBox()
+	{
+		return new Rectangle ((int)xPos, (int)yPos, (int)size.getWidth(), (int)size.getHeight());
+	}
+	
 	public double getX ()
 	{
 		return xPos;
