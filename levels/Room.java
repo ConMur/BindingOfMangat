@@ -41,11 +41,12 @@ public class Room {
     private boolean takenDamage;
     private boolean visited;
     private boolean isLocked;
+    private boolean found;
 
     
 
     // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
-    private RockPatterns rp = new RockPatterns(3);
+    private RockPatterns roomPattern = new RockPatterns(1);
 
 
     
@@ -68,8 +69,8 @@ public class Room {
     private final int WEST_DOOR_X = 120;
     private final int WEST_DOOR_Y = 420;
 
-    private final int ROOM_CENTRE_X = 400;
-    private final int ROOM_CENTRE_Y = 250;
+    private final int ROOM_CENTRE_X = 450;
+    private final int ROOM_CENTRE_Y = 495;
 
     public enum RoomType {
         NORMAL, BOSS, SHOP
@@ -126,7 +127,7 @@ public class Room {
             // Trap door
             // TODO: add trap door image
             trapDoor = ImageIO.read(getClass().getResourceAsStream(
-                    "/images/doors/opendoornorth.png"));
+                    "/images/trapdoor.png"));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -140,6 +141,7 @@ public class Room {
         takenDamage = false;
         visited = false;
         isLocked = locked;
+        found = false;
 
         showTrapDoor = false;
 
@@ -149,13 +151,25 @@ public class Room {
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
                 ArrayList<GameObject> go, Player p, boolean locked, RoomType type) {
         this(e, i, go, p, locked, type, null, null, null, null);
+        found = false;
     }
 
     public Room(boolean locked, RoomType type, Room north, Room east,
                 Room south, Room west) {
         this(null, null, null, null, locked, type, north, east, south, west);
+        found = false;
     }
-
+    
+    private boolean isFound ()
+    {
+    	return found;
+    }
+    
+    private void setFound (boolean b)
+    {
+    	found = b;
+    }
+    
     public boolean isNorthOpen() {
         return northOpen;
     }
@@ -202,6 +216,17 @@ public class Room {
         checkIfPlayerAtDoor();
         checkProjectileCollision();
     }
+    
+    private void setRockPattern (RockPatterns r)
+    {
+    	roomPattern = r;
+    }
+    
+    private RockPatterns getRockPattern ()
+    {
+    	return roomPattern;
+    }
+    
 
     /**
      * Checks collisions between all the projectiles and the enemies in this
@@ -526,7 +551,7 @@ public class Room {
                 UPPER_Y_BOUND - LOWER_Y_BOUND);
 
         
-        rp.draw(g);
+        roomPattern.draw(g);
         
         drawDoors(g);
         sortAllGameObjects();
