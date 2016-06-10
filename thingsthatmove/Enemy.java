@@ -26,6 +26,7 @@ public class Enemy extends MoveableObject
 	private final int PROJECTILE_THREE_RATE = 30;
 	private final int PROJECTILE_FOUR_RATE = 30;
 	private final int PROJECTILE_FIVE_RATE = 3;
+	private Dimension movementHitbox;
 
 	
 	private char currentDirection = ' ';
@@ -33,11 +34,12 @@ public class Enemy extends MoveableObject
 	private boolean anger;
 
 	public Enemy(int dmg, int hp, int speed, int xPos, int yPos, Image image,
-			Dimension size, int maxHP, boolean shouldMove, boolean anger)
+			Dimension size, int maxHP, boolean shouldMove, boolean anger, Dimension movementHitbox)
 	{
 		super(dmg, hp, speed, xPos, yPos, image, size, maxHP);
 		this.shouldMove = shouldMove;
 		this.anger = anger;
+		this.movementHitbox = movementHitbox;
 		fireRate = PROJECTILE_ONE_RATE;
 		projectile = 6;
 		currentProjectiles = new ArrayList<Projectile>();
@@ -51,9 +53,25 @@ public class Enemy extends MoveableObject
 				connorBeingLazy.getSize(), connorBeingLazy.getMaxHP());
 		this.shouldMove = connorBeingLazy.canMove();
 		this.anger = connorBeingLazy.isAngry();
+		this.movementHitbox = connorBeingLazy.getMovementSize();
 		fireRate = PROJECTILE_ONE_RATE;
 		projectile = 6;
 		currentProjectiles = new ArrayList<Projectile>();
+	}
+	
+	public void setMovementHitbox(Dimension d)
+	{
+		movementHitbox = d;
+	}
+	
+	public Dimension getMovementSize()
+	{
+		return movementHitbox;
+	}
+	
+	public Rectangle getMovementHitbox ()
+	{
+		return new Rectangle ((int)getX(), (int)getY(), (int)movementHitbox.getWidth(), (int)movementHitbox.getHeight());
 	}
 	
 	public void draw (Graphics g)

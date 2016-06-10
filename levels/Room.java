@@ -23,6 +23,8 @@ import thingsthatmove.Projectile;
 public class Room {
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
+    private ArrayList<Rectangle> movementHitboxes = new ArrayList<Rectangle>();
+    
     private ArrayList<Item> items = new ArrayList<Item>();
     private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
     private Thread moveEnemies, playerEnemyCollision, enemyProjectile;
@@ -506,6 +508,11 @@ public class Room {
         ArrayList<GameObject> rocks = roomPattern.getRocks();
         for (int r = 0 ; r < rocks.size() ; r ++)
         	hitboxes.add(rocks.get(r).getRockHitBox());
+        
+        // Update movement hitboxes
+        movementHitboxes.clear();
+        for (int m = 0 ; m < enemies.size() ; m ++)
+        	movementHitboxes.add(enemies.get(m).getMovementHitbox());
     }
 
     public boolean enemyCollision(int enemyIndex,
@@ -571,9 +578,17 @@ public class Room {
             currentEnemy.draw(g);
         }
         
+        // Collision hitbox
+        g.setColor(Color.RED);
         for (int h = 0 ; h < hitboxes.size() ; h ++)
         	g.drawRect((int)hitboxes.get(h).getX(), (int)hitboxes.get(h).getY(), (int)hitboxes.get(h).getWidth(), (int)hitboxes.get(h).getHeight());
 
+        // Movement hitbox
+        g.setColor(Color.GREEN);
+        for (int h = 0 ; h < movementHitboxes.size() ; h ++)
+        	g.drawRect((int)movementHitboxes.get(h).getX(), (int)movementHitboxes.get(h).getY(), (int)movementHitboxes.get(h).getWidth(), (int)movementHitboxes.get(h).getHeight());
+
+        
         for (int i = 0; i < items.size(); i++) {
             items.get(i).draw(g);
         }
@@ -665,7 +680,7 @@ public class Room {
                 killDeadEnemies();
                 synchronized (enemies) {
                     for (int n = 0; n < enemies.size(); n++) {
-                        if (enemies.get(n).getHitBox()
+                        if (enemies.get(n).getMovementHitbox()
                                 .intersects(player.getHitBox()))
                             player.takeDamage(enemies.get(n).getDamage());
                     }

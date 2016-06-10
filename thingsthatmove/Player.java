@@ -2,6 +2,7 @@ package thingsthatmove;
 
 import item.Item;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -354,6 +355,8 @@ public class Player extends MoveableObject
 		// Draw player
 		g.drawImage(getImage(), (int) getX(), (int) getY(), null);
 
+		
+		g.setColor(Color.red);
 		Rectangle r = getHitBox();
 		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
 				(int) r.getHeight());
