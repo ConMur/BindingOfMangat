@@ -42,6 +42,13 @@ public class Room {
     private boolean visited;
     private boolean isLocked;
 
+    
+
+    // CHANGE THIS FOR DIFFERENT ROOM PATTERNS
+    private RockPatterns rp = new RockPatterns(3);
+
+
+    
     // The trap door shown when the player defeats the boss
     private boolean showTrapDoor;
     private BufferedImage trapDoor;
@@ -512,10 +519,15 @@ public class Room {
 
         g.drawRect(130, 325, 720, 250);
 
+        
+        
         g.setColor(Color.BLACK);
         g.drawRect(LOWER_X_BOUND, LOWER_Y_BOUND, UPPER_X_BOUND - LOWER_X_BOUND,
                 UPPER_Y_BOUND - LOWER_Y_BOUND);
 
+        
+        rp.draw(g);
+        
         drawDoors(g);
         sortAllGameObjects();
         for (int e = 0; e < enemies.size(); e++) {
