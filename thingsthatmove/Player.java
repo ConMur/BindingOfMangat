@@ -27,10 +27,10 @@ public class Player extends MoveableObject
 	private boolean isShooting;
 	private boolean takenDMG;
 
-	//Items
+	// Items
 	private int numKeys;
 
-	//Projectiles
+	// Projectiles
 	private long lastFireTime, lastDmgTime;
 	private int fireRate, invincibleTime;
 	// Miliseconds between firing
@@ -150,7 +150,7 @@ public class Player extends MoveableObject
 			// When facing back, put the projectile near the top of the head
 			if (getImage() == mangatBack || getImage() == mangatHurtBack)
 			{
-				p.setY(getY()); 
+				p.setY(getY());
 			}
 			else
 			{
@@ -159,7 +159,7 @@ public class Player extends MoveableObject
 				p.setY(getY() + 25);
 			}
 			p.setX(getX() + 20);
-			
+
 			currentProjectiles.add(p);
 			lastFireTime = System.currentTimeMillis();
 		}
@@ -201,11 +201,13 @@ public class Player extends MoveableObject
 		// FINISH ITEMS
 	}
 
-	public int getNumKeys() {
+	public int getNumKeys()
+	{
 		return numKeys;
 	}
 
-	public void setNumKeys(int numKeys) {
+	public void setNumKeys(int numKeys)
+	{
 		this.numKeys = numKeys;
 	}
 
@@ -387,15 +389,63 @@ public class Player extends MoveableObject
 	public void keyReleased(int key)
 	{
 		if (key == KeyEvent.VK_W)
+		{
 			movingNorth = false;
+			setPositionFacing();
+		}
 		if (key == KeyEvent.VK_A)
+		{
 			movingWest = false;
+			setPositionFacing();
+		}
 		if (key == KeyEvent.VK_S)
+		{
 			movingSouth = false;
+			setPositionFacing();
+		}
 		if (key == KeyEvent.VK_D)
+		{
 			movingEast = false;
+			setPositionFacing();
+		}
 		if (key == KeyEvent.VK_SPACE)
 			isShooting = false;
+	}
+
+	/**
+	 * Sets the direction that mangat is facing based on the direction he is
+	 * moving in
+	 */
+	private void setPositionFacing()
+	{
+		if (movingNorth)
+		{
+			if (!takenDMG)
+				setImage(mangatBack);
+			else
+				setImage(mangatHurtBack);
+		}
+		else if (movingSouth)
+		{
+			if (!takenDMG)
+				setImage(mangatFront);
+			else
+				setImage(mangatHurtFront);
+		}
+		else if (movingEast)
+		{
+			if (!takenDMG)
+				setImage(mangatRight);
+			else
+				setImage(mangatHurtRight);
+		}
+		else if (movingWest)
+		{
+			if (!takenDMG)
+				setImage(mangatLeft);
+			else
+				setImage(mangatHurtLeft);
+		}
 	}
 
 	public void clearProjectiles()
