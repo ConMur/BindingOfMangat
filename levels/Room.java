@@ -501,6 +501,10 @@ public class Room {
         // Add all item hitboxes
         for (int i = 0; i < items.size(); i++)
             hitboxes.add(items.get(i).getHitBox());
+        // Add all rock hitboxes
+        ArrayList<GameObject> rocks = roomPattern.getRocks();
+        for (int r = 0 ; r < rocks.size() ; r ++)
+        	hitboxes.add(rocks.get(r).getRockHitBox());
     }
 
     public boolean enemyCollision(int enemyIndex,
@@ -511,6 +515,7 @@ public class Room {
             // + " CURRENT INDEX: " + n);
             if (enemyHitbox.intersects(hitboxes.get(n)) && n != enemyIndex)
                 return true;
+            
         }
         return false;
     }
@@ -560,11 +565,14 @@ public class Room {
             Rectangle r = currentEnemy.getHitBox();
             g.drawImage(currentEnemy.getImage(), (int) currentEnemy.getX(),
                     (int) currentEnemy.getY(), null);
-            g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
-                    (int) r.getHeight());
+//            g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
+//                    (int) r.getHeight());
 
             currentEnemy.draw(g);
         }
+        
+        for (int h = 0 ; h < hitboxes.size() ; h ++)
+        	g.drawRect((int)hitboxes.get(h).getX(), (int)hitboxes.get(h).getY(), (int)hitboxes.get(h).getWidth(), (int)hitboxes.get(h).getHeight());
 
         for (int i = 0; i < items.size(); i++) {
             items.get(i).draw(g);
