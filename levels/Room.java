@@ -44,7 +44,7 @@ public class Room {
 
     
 
-    // CHANGE THIS FOR DIFFERENT ROOM PATTERNS
+    // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
     private RockPatterns rp = new RockPatterns(3);
 
 
@@ -751,10 +751,7 @@ public class Room {
                             }
                             // Gissing projectile behaviour
                             if (currentEnemy instanceof Gissing) {
-                                currentEnemy.shootMultipleProjectiles(3,
-                                        currentEnemy.getDirection(),
-                                        currentEnemy.getBotDirection(),
-                                        currentEnemy.getTopDirection());
+                            	currentEnemy.shootAllDirections();
 
                                 ArrayList<Projectile> currentP = currentEnemy
                                         .getAllProjectiles();
