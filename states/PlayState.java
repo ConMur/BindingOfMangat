@@ -35,14 +35,12 @@ public class PlayState implements GameState
 	public void update()
 	{
 		LevelManager.update();
-		player.updatePosition();
 	}
 
 	@Override
 	public void draw(Graphics g)
 	{
 		LevelManager.draw(g);
-		player.draw(g);
 	}
 
 	@Override
