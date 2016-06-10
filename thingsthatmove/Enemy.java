@@ -94,30 +94,76 @@ public class Enemy extends MoveableObject
 		}
 	}
 	
-	
-	public void shootMultipleProjectiles (int numP, char d1, char d2, char d3)
+	public void shootTripleProjectiles ()
 	{
 		if (System.currentTimeMillis() - lastFireTime > fireRate)
 		{
-			for (int n = 0 ; n < numP ; n ++)
-			{
-				Projectile p = new Projectile(getProjectile(), d1);
-				p.setX(getX() + 20);
-				p.setY(getY() + 25);
-				currentProjectiles.add(p);
-				
-				Projectile p2 = new Projectile(getProjectile(), d2);
-				p2.setX(getX() + 20);
-				p2.setY(getY() + 25);
-				currentProjectiles.add(p2);
-				
-				Projectile p3 = new Projectile(getProjectile(), d3);
-				p3.setX(getX() + 20);
-				p3.setY(getY() + 25);
-				currentProjectiles.add(p3);
+			Projectile p = new Projectile(getProjectile(), currentDirection);
+			p.setX(getX() + 20);
+			p.setY(getY() + 25);
+			currentProjectiles.add(p);
+			
+			Projectile p2 = new Projectile(getProjectile(), getTopDirection());
+			p2.setX(getX() + 20);
+			p2.setY(getY() + 25);
+			currentProjectiles.add(p2);
+			
+			Projectile p3 = new Projectile(getProjectile(), getBotDirection());
+			p3.setX(getX() + 20);
+			p3.setY(getY() + 25);
+			currentProjectiles.add(p3);
 
-			}
 			lastFireTime = System.currentTimeMillis();
+		}
+	}
+	
+	public void shootAllDirections ()
+	{
+		if (System.currentTimeMillis() - lastFireTime > fireRate)
+		{
+			Projectile p = new Projectile(getProjectile(), 'N');
+			p.setX(getX() + 20);
+			p.setY(getY() + 25);
+			currentProjectiles.add(p);
+			
+			Projectile p2 = new Projectile(getProjectile(), 'S');
+			p2.setX(getX() + 20);
+			p2.setY(getY() + 25);
+			currentProjectiles.add(p2);
+			
+			Projectile p3 = new Projectile(getProjectile(), 'W');
+			p3.setX(getX() + 20);
+			p3.setY(getY() + 25);
+			currentProjectiles.add(p3);
+
+			Projectile p4 = new Projectile(getProjectile(), 'E');
+			p4.setX(getX() + 20);
+			p4.setY(getY() + 25);
+			currentProjectiles.add(p4);
+			
+			Projectile p5 = new Projectile(getProjectile(), '1');
+			p5.setX(getX() + 20);
+			p5.setY(getY() + 25);
+			currentProjectiles.add(p5);
+			
+			Projectile p6 = new Projectile(getProjectile(), '2');
+			p6.setX(getX() + 20);
+			p6.setY(getY() + 25);
+			currentProjectiles.add(p6);
+			
+			Projectile p7 = new Projectile(getProjectile(), '3');
+			p7.setX(getX() + 20);
+			p7.setY(getY() + 25);
+			currentProjectiles.add(p7);
+			
+			Projectile p8 = new Projectile(getProjectile(), '4');
+			p8.setX(getX() + 20);
+			p8.setY(getY() + 25);
+			currentProjectiles.add(p8);
+
+
+			lastFireTime = System.currentTimeMillis();
+		
 		}
 	}
 	
