@@ -32,7 +32,7 @@ public final class LevelManager {
     private static final int LOCKED_ROOM_ITEM_BONUS = -(100 - ITEM_CHANCE);
 
     //The percent chance that a room will be locked
-    private static final int LOCKED_CHANCE = 100;
+    private static final int LOCKED_CHANCE = 20;
 
     // The minimum amount of enemies in a level
     private static final int MIN_ENEMIES = 3;
@@ -368,7 +368,15 @@ public final class LevelManager {
             itemList.add(items.get(rand.nextInt(items.size())));
         }
 
-        Room room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL);
+        Room room;
+        if(thisRoomLocked)
+        {
+            room =  new Room(enemyList, itemList, new ArrayList<>(), player, true, Room.RoomType.NORMAL);
+        }
+        else
+        {
+            room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL);
+        }
         return room;
     }
 
