@@ -372,7 +372,6 @@ public final class LevelManager {
         ArrayList<Enemy> enemyList = new ArrayList<>();
         ArrayList<Point> spawnLocations = rp.getSpawnLocations();
 
-        //TODO: set spawn spots in room
         if(!thisRoomLocked) {
             // Choose the enemy for this room
             //TODO: uncomment when have enough enemies
