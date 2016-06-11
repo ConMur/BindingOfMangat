@@ -8,9 +8,9 @@ import java.awt.Image;
 public class MoveableObject extends GameObject
 {
 	private final int LOWER_X_BOUND = 90;
-	private final int UPPER_X_BOUND = 960;
-	private final int LOWER_Y_BOUND = 200;
-	private final int UPPER_Y_BOUND = 672;
+	private final int UPPER_X_BOUND = 940;
+	private final int LOWER_Y_BOUND = 220;
+	private final int UPPER_Y_BOUND = 660;
 	private int dmg, hp, speed, maxHP;
 	private double diagonalSpeedModifier;
 	

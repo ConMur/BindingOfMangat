@@ -146,6 +146,25 @@ public class Projectile extends GameObject
 			this.dmg = 1;
 			lifeSpan = 1500;
 		}
+		// GISSING PROJECTILE
+		else if (projectileNum == 7)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/enemy/frictionlesscart.png"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 1");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(89, 48));
+			this.speed = 600;
+			this.dmg = 1;
+			lifeSpan = 1500;
+		}
 		isDead = false;
 	}
 

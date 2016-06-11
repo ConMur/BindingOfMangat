@@ -27,6 +27,7 @@ public class Player extends MoveableObject
 	private Thread pThread;
 	private boolean isShooting;
 	private boolean takenDMG;
+	private Dimension movementHitbox;
 
 	// Items
 	private int numKeys;
@@ -47,12 +48,13 @@ public class Player extends MoveableObject
 	private BufferedImage fullHeart, emptyHeart;
 
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
-			Dimension s, int maxHP, int projectile, Item item)
+			Dimension s, int maxHP, int projectile, Item item, Dimension mh)
 	{
 		super(dmg, hp, speed, x, y, i, s, maxHP);
 		currentProjectiles = new ArrayList<Projectile>();
 		this.projectile = projectile;
 		this.currentItem = item;
+		this.movementHitbox = mh;
 		fireRate = PROJECTILE_ONE_RATE;
 		invincibleTime = 1500;
 
@@ -120,6 +122,23 @@ public class Player extends MoveableObject
 			}
 		}
 
+	}
+
+	public void setMovementHitbox(Dimension d)
+	{
+		movementHitbox = d;
+	}
+
+	public Dimension getMovementSize()
+	{
+		return movementHitbox;
+	}
+
+	public Rectangle getMovementHitbox()
+	{
+		return new Rectangle((int) getX() + 10, (int) (getY() + 70),
+				(int) movementHitbox.getWidth(),
+				(int) movementHitbox.getHeight());
 	}
 
 	public ArrayList<Projectile> getAllPlayerProjectiles()
@@ -239,10 +258,10 @@ public class Player extends MoveableObject
 
 	public void update(ArrayList<GameObject> rocks)
 	{
-		if (movingNorth)
+		if (movingNorth && !collidesWithRocks(rocks))
 		{
 			moveNorth();
-			if(collidesWithRocks(rocks))
+			if (collidesWithRocks(rocks))
 			{
 				moveSouth();
 			}
@@ -250,7 +269,7 @@ public class Player extends MoveableObject
 		if (movingSouth)
 		{
 			moveSouth();
-			if(collidesWithRocks(rocks))
+			if (collidesWithRocks(rocks))
 			{
 				moveNorth();
 			}
@@ -258,7 +277,7 @@ public class Player extends MoveableObject
 		if (movingWest)
 		{
 			moveWest();
-			if(collidesWithRocks(rocks))
+			if (collidesWithRocks(rocks))
 			{
 				moveEast();
 			}
@@ -266,7 +285,7 @@ public class Player extends MoveableObject
 		if (movingEast)
 		{
 			moveEast();
-			if(collidesWithRocks(rocks))
+			if (collidesWithRocks(rocks))
 			{
 				moveWest();
 			}
@@ -340,10 +359,11 @@ public class Player extends MoveableObject
 	 */
 	private boolean collidesWithRocks(ArrayList<GameObject> rocks)
 	{
-		for(GameObject rock : rocks)
+		for (GameObject rock : rocks)
 		{
-			if(getHitBox().intersects(rock.getHitBox()))
+			if (getMovementHitbox().intersects(rock.getRockHitBox()))
 			{
+				System.out.println("PLAYER ROCK INTERSECT");
 				return true;
 			}
 		}
@@ -355,7 +375,13 @@ public class Player extends MoveableObject
 		// Draw player
 		g.drawImage(getImage(), (int) getX(), (int) getY(), null);
 
-		
+		// Movement hitbox
+		g.setColor(Color.GREEN);
+		g.drawRect((int) getMovementHitbox().getX(), (int) getMovementHitbox()
+				.getY(), (int) movementHitbox.getWidth(), (int) movementHitbox
+				.getHeight());
+
+		// Projectile collision hitbox
 		g.setColor(Color.red);
 		Rectangle r = getHitBox();
 		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
