@@ -4,6 +4,7 @@ import item.Item;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +41,12 @@ public final class LevelManager {
     // The number of enemies more than the minimum that there can be in the
     // level
     private static final int ADDITIONAL_ENEMIES = 3;
+
+    //The coordinates of the text that displays the current level
+    private static final int LEVEL_TEXT_X = 100;
+    private static final int  LEVEL_TEXT_Y = 710;
+
+    private static Font levelTextFont;
 
     private static ArrayList<Level> levels;
     private static Level currentLevel;
@@ -82,6 +89,20 @@ public final class LevelManager {
 
         // Start on the first level
         levelNumber = 1;
+
+        //Create the level text font
+        try {
+            levelTextFont = Font.createFont(Font.TRUETYPE_FONT, LevelManager.class.getResourceAsStream("/fonts/ltromatic.ttf")).deriveFont(14f);
+            GraphicsEnvironment ge =
+                    GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(levelTextFont);
+
+        } catch (IOException|FontFormatException e) {
+            System.err.println("Error loading level display font");
+            e.printStackTrace();
+        }
+
+
 
         generateLevels(NUMBER_OF_LEVELS);
 
@@ -392,6 +413,9 @@ public final class LevelManager {
 
     public static void draw(Graphics g) {
         currentLevel.draw(g);
+        g.setFont(levelTextFont);
+        g.setColor(Color.BLACK);
+        g.drawString("Current Level: " + levelNumber, LEVEL_TEXT_X, LEVEL_TEXT_Y);
     }
     
 }
