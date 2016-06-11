@@ -29,7 +29,7 @@ public final class LevelManager {
     private static final int SHOP_ROOM_CHANCE = 50;
 
     // The percent chance that there will be an item in the room
-    private static final int ITEM_CHANCE = 20;
+    private static final int ITEM_CHANCE = 10;
     private static final int LOCKED_ROOM_ITEM_BONUS = -(100 - ITEM_CHANCE);
 
     //The percent chance that a room will be locked
