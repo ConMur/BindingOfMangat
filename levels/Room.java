@@ -252,11 +252,11 @@ public class Room {
             }
             // VERY ROUGH PLAYER TO ROCK PROJECTILE COLLISION
             // DO NOT USE UNTIL PROJECTILE SHADOW HITBOX IS FINISHED
-//            for (int z = 0 ; z < roomRocks.size() ; z ++)
-//            {
-//            	if (pj.getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
-//            		pj.killProjectile();
-//            }
+            for (int z = 0 ; z < roomRocks.size() ; z ++)
+            {
+            	if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
+            		pj.killProjectile();
+            }
         }
     }
 
