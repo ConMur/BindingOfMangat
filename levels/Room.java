@@ -24,9 +24,11 @@ public class Room {
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
     private ArrayList<Rectangle> movementHitboxes = new ArrayList<Rectangle>();
-    
     private ArrayList<Item> items = new ArrayList<Item>();
     private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
+    private ArrayList<GameObject> roomRocks = new ArrayList<GameObject>();
+    
+    
     private Thread moveEnemies, playerEnemyCollision, enemyProjectile;
     private Player player;
     private Image background, hud;
@@ -48,7 +50,7 @@ public class Room {
     
 
     // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
-    private RockPatterns roomPattern = new RockPatterns(1);
+    private RockPatterns roomPattern = new RockPatterns(4);
 
 
     
@@ -148,6 +150,8 @@ public class Room {
         showTrapDoor = false;
 
         this.roomType = type;
+        
+        roomRocks = roomPattern.getRocks();
     }
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
@@ -214,7 +218,7 @@ public class Room {
     }
 
     public void update() {
-    	player.update(roomPattern.getRocks());
+    	player.update(roomRocks);
     	updateDoorStatus();
         checkIfPlayerAtDoor();
         checkProjectileCollision();
@@ -246,6 +250,13 @@ public class Room {
                     pj.killProjectile();
                 }
             }
+            // VERY ROUGH PLAYER TO ROCK PROJECTILE COLLISION
+            // DO NOT USE UNTIL PROJECTILE SHADOW HITBOX IS FINISHED
+//            for (int z = 0 ; z < roomRocks.size() ; z ++)
+//            {
+//            	if (pj.getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
+//            		pj.killProjectile();
+//            }
         }
     }
 
@@ -501,13 +512,14 @@ public class Room {
         // Add all enemy hitboxes
         for (int e = 0; e < enemies.size(); e++)
             hitboxes.add(enemies.get(e).getHitBox());
+        
         // Add all item hitboxes
         for (int i = 0; i < items.size(); i++)
             hitboxes.add(items.get(i).getHitBox());
+        
         // Add all rock hitboxes
-        ArrayList<GameObject> rocks = roomPattern.getRocks();
-        for (int r = 0 ; r < rocks.size() ; r ++)
-        	hitboxes.add(rocks.get(r).getRockHitBox());
+        for (int r = 0 ; r < roomRocks.size() ; r ++)
+        	hitboxes.add(roomRocks.get(r).getRockHitBox());
         
         // Update movement hitboxes
         movementHitboxes.clear();
@@ -780,50 +792,48 @@ public class Room {
                             // (not
                             // player) so move back and change direction
                             updateHitboxes();
-                            if (enemyCollision(n, currentEnemy.getHitBox())) {
+                            if (enemyCollision(n, currentEnemy.getMovementHitbox())) {
                                 currentEnemy.move(oldX, oldY);
                                 currentEnemy.setRandomDirection();
                                 currentEnemy.moveInDirection();
 
                                 // Still collision
                                 updateHitboxes();
-                                if (enemyCollision(n, currentEnemy.getHitBox())) {
+                                if (enemyCollision(n, currentEnemy.getMovementHitbox())) {
                                     currentEnemy.move(oldX, oldY);
                                     currentEnemy.setRandomDirection();
                                     currentEnemy.moveInDirection();
 
                                     // Still collision
                                     updateHitboxes();
-                                    if (enemyCollision(n,
-                                            currentEnemy.getHitBox()))
+                                    if (enemyCollision(n, currentEnemy.getMovementHitbox()))
                                         currentEnemy.move(oldX, oldY);
                                 }
                             }
+                            ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
                             // Gissing projectile behaviour
                             if (currentEnemy instanceof Gissing) {
+                            	// Gissing is a beast so he shoots all directions
                             	currentEnemy.shootAllDirections();
-
-                                ArrayList<Projectile> currentP = currentEnemy
-                                        .getAllProjectiles();
-                                for (int p = 0; p < currentP.size(); p++) {
-                                    if (currentP.get(p).getHitBox()
-                                            .intersects(player.getHitBox()))
-                                        player.takeDamage(currentEnemy
-                                                .getDamage());
-                                }
                             }
                             // Student enemy
                             else {
-                                currentEnemy.shootProjectile(currentEnemy
-                                        .getDirection());
-                                ArrayList<Projectile> currentP = currentEnemy
-                                        .getAllProjectiles();
-                                for (int p = 0; p < currentP.size(); p++) {
-                                    if (currentP.get(p).getHitBox()
-                                            .intersects(player.getHitBox()))
-                                        player.takeDamage(currentEnemy
-                                                .getDamage());
+                            	// Normal students shoot one direction
+                                currentEnemy.shootProjectile(currentEnemy.getDirection());
+                            }
+                            
+                            // Go through all projectiles of the current enemy
+                            for (int p = 0; p < currentP.size(); p++) {
+                            	// Hits a player
+                                if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
+                                    player.takeDamage(currentEnemy.getDamage());
+                                // Hits a rock
+                                for (int z = 0 ; z < roomRocks.size() ; z ++)
+                                {
+                                	if (currentP.get(p).getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
+                                		currentP.get(p).killProjectile();
                                 }
+                                	
                             }
                         }
 

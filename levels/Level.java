@@ -16,12 +16,12 @@ public class Level
 	private final int PLAYER_SOUTH_Y = 565;
 
 	private final int PLAYER_NORTH_X = 465;
-	private final int PLAYER_NORTH_Y = 250;
+	private final int PLAYER_NORTH_Y = 220;
 
-	private final int PLAYER_EAST_X = 845;
+	private final int PLAYER_EAST_X = 865;
 	private final int PLAYER_EAST_Y = 380;
 
-	private final int PLAYER_WEST_X = 75;
+	private final int PLAYER_WEST_X = 85;
 	private final int PLAYER_WEST_Y = 380;
 
 	// TODO: call start room and end room when entering and exiting a room
