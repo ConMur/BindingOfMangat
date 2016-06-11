@@ -827,11 +827,12 @@ public class Room {
                                 if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
                                     player.takeDamage(currentEnemy.getDamage());
                                 // Hits a rock
-                                for (int z = 0 ; z < roomRocks.size() ; z ++)
-                                {
-                                	if (currentP.get(p).getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
-                                		currentP.get(p).killProjectile();
-                                }
+                                else
+	                                for (int z = 0 ; z < roomRocks.size() ; z ++)
+	                                {
+	                                	if (currentP.get(p).getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
+	                                		currentP.get(p).killProjectile();
+	                                }
                                 	
                             }
                         }
