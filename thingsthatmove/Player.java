@@ -208,6 +208,10 @@ public class Player extends MoveableObject
 		return currentItem.getName();
 	}
 
+	/**
+	 * Sets the players current item to the given item or null if there is no item
+	 * @param i the item to give to the player
+     */
 	public void setItem(Item i)
 	{
 		currentItem = i;

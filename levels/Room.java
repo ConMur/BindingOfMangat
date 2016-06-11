@@ -215,9 +215,27 @@ public class Room {
 
     public void update() {
         player.update(roomRocks);
+        checkIfPlayerOnItem();
         updateDoorStatus();
         checkIfPlayerAtDoor();
         checkProjectileCollision();
+    }
+
+    private void checkIfPlayerOnItem() {
+        int itemsRemoved = 0;
+        for (int i = 0; i < items.size(); ++i) {
+            Item item = items.get(i - itemsRemoved);
+
+            //If there is an item, give it to the player if they have no other item
+            if (player.getHitBox().intersects(item.getHitBox())) {
+                if(player.getCurrentItem() == null) {
+                    player.setItem(item);
+                    items.remove(i - itemsRemoved);
+                    ++itemsRemoved;
+                }
+
+            }
+        }
     }
 
     public void setRockPattern(RockPatterns r) {
