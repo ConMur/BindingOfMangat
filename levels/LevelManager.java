@@ -314,7 +314,18 @@ public final class LevelManager {
             System.err.println("Invalid level value: " + levelNumber);
         }
 
-        Room room = new Room(enemyList, new ArrayList<>(), new ArrayList<>(), player, false, Room.RoomType.BOSS);
+        RockPatterns rp;
+        boolean emptyRockPattern = rand.nextBoolean();
+        if(emptyRockPattern)
+        {
+            rp = new RockPatterns(0);
+        }
+        else
+        {
+            rp = new RockPatterns(5);
+        }
+
+        Room room = new Room(enemyList, new ArrayList<>(), new ArrayList<>(), player, false, Room.RoomType.BOSS, rp);
         return room;
     }
 
@@ -327,7 +338,8 @@ public final class LevelManager {
             //itemList.add(items.remove(rand.nextInt(items.size())));
             itemList.add(items.get(rand.nextInt(items.size())));
         }
-        return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL);
+        RockPatterns rp = new RockPatterns(0);
+        return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL, rp);
     }
 
     private static Room createRoom(ArrayList<Enemy> enemies,
@@ -390,13 +402,17 @@ public final class LevelManager {
         }
 
         Room room;
+        RockPatterns rp;
         if(thisRoomLocked)
         {
-            room =  new Room(enemyList, itemList, new ArrayList<>(), player, true, Room.RoomType.NORMAL);
+            rp = new RockPatterns(1);
+            room =  new Room(enemyList, itemList, new ArrayList<>(), player, true, Room.RoomType.NORMAL, rp);
         }
         else
         {
-            room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL);
+            int pattern = rand.nextInt(RockPatterns.getNumRockPatterns());
+            rp = new RockPatterns(pattern);
+            room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL, rp);
         }
         return room;
     }

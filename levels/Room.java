@@ -51,8 +51,6 @@ public class Room {
 
     // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
     private RockPatterns roomPattern;
-    private Random rand;
-
 
     // The trap door shown when the player defeats the boss
     private boolean showTrapDoor;
@@ -83,7 +81,7 @@ public class Room {
     private RoomType roomType;
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked, RoomType type,
+                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPatterns pattern,
                 Room north, Room east,
                 Room south, Room west) {
         this.enemies = e;
@@ -150,39 +148,19 @@ public class Room {
         showTrapDoor = false;
 
         this.roomType = type;
-        rand = new Random();
-
-        //Set the rock pattern
-        //Locked rooms are pattern 1
-        if (isLocked) {
-            roomPattern = new RockPatterns(1);
-        }
-        //Boss rooms are empty or pattern 5
-        else if (roomType == RoomType.BOSS) {
-            boolean empty = rand.nextBoolean();
-            if (empty) {
-                roomPattern = new RockPatterns(0);
-            } else {
-                roomPattern = new RockPatterns(5);
-            }
-        }
-        //All other rooms are and random rock pattern
-        else {
-            int pattern = rand.nextInt(RockPatterns.getNumRockPatterns());
-            roomPattern = new RockPatterns(pattern);
-        }
+        roomPattern = pattern;
         roomRocks = roomPattern.getRocks();
     }
 
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked, RoomType type) {
-        this(e, i, go, p, locked, type, null, null, null, null);
+                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPatterns pattern) {
+        this(e, i, go, p, locked, type, pattern, null, null, null, null);
         found = false;
     }
 
-    public Room(boolean locked, RoomType type, Room north, Room east,
+    public Room(boolean locked, RoomType type, RockPatterns pattern, Room north, Room east,
                 Room south, Room west) {
-        this(null, null, null, null, locked, type, north, east, south, west);
+        this(null, null, null, null, locked, type, pattern, north, east, south, west);
         found = false;
     }
 
