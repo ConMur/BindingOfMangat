@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.TooManyListenersException;
 
 import javax.imageio.ImageIO;
 
@@ -27,8 +28,8 @@ public class Room {
     private ArrayList<Item> items = new ArrayList<Item>();
     private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
     private ArrayList<GameObject> roomRocks = new ArrayList<GameObject>();
-    
-    
+
+
     private Thread moveEnemies, playerEnemyCollision, enemyProjectile;
     private Player player;
     private Image background, hud;
@@ -47,13 +48,12 @@ public class Room {
     private boolean isLocked;
     private boolean found;
 
-    
 
     // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
-    private RockPatterns roomPattern = new RockPatterns(5);
+    private RockPatterns roomPattern;
+    private Random rand;
 
 
-    
     // The trap door shown when the player defeats the boss
     private boolean showTrapDoor;
     private BufferedImage trapDoor;
@@ -150,7 +150,27 @@ public class Room {
         showTrapDoor = false;
 
         this.roomType = type;
-        
+        rand = new Random();
+
+        //Set the rock pattern
+        //Locked rooms are pattern 1
+        if (isLocked) {
+            roomPattern = new RockPatterns(1);
+        }
+        //Boss rooms are empty or pattern 5
+        else if (roomType == RoomType.BOSS) {
+            boolean empty = rand.nextBoolean();
+            if (empty) {
+                roomPattern = new RockPatterns(0);
+            } else {
+                roomPattern = new RockPatterns(5);
+            }
+        }
+        //All other rooms are and random rock pattern
+        else {
+            int pattern = rand.nextInt(RockPatterns.getNumRockPatterns());
+            roomPattern = new RockPatterns(pattern);
+        }
         roomRocks = roomPattern.getRocks();
     }
 
@@ -165,17 +185,15 @@ public class Room {
         this(null, null, null, null, locked, type, north, east, south, west);
         found = false;
     }
-    
-    public boolean isFound ()
-    {
-    	return found;
+
+    public boolean isFound() {
+        return found;
     }
-    
-    public void setFound (boolean b)
-    {
-    	found = b;
+
+    public void setFound(boolean b) {
+        found = b;
     }
-    
+
     public boolean isNorthOpen() {
         return northOpen;
     }
@@ -218,22 +236,20 @@ public class Room {
     }
 
     public void update() {
-    	player.update(roomRocks);
-    	updateDoorStatus();
+        player.update(roomRocks);
+        updateDoorStatus();
         checkIfPlayerAtDoor();
         checkProjectileCollision();
     }
-    
-    public void setRockPattern (RockPatterns r)
-    {
-    	roomPattern = r;
+
+    public void setRockPattern(RockPatterns r) {
+        roomPattern = r;
     }
-    
-    public RockPatterns getRockPattern ()
-    {
-    	return roomPattern;
+
+    public RockPatterns getRockPattern() {
+        return roomPattern;
     }
-    
+
 
     /**
      * Checks collisions between all the projectiles and the enemies in this
@@ -252,10 +268,9 @@ public class Room {
             }
             // VERY ROUGH PLAYER TO ROCK PROJECTILE COLLISION
             // DO NOT USE UNTIL PROJECTILE SHADOW HITBOX IS FINISHED
-            for (int z = 0 ; z < roomRocks.size() ; z ++)
-            {
-            	if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
-            		pj.killProjectile();
+            for (int z = 0; z < roomRocks.size(); z++) {
+                if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
+                    pj.killProjectile();
             }
         }
     }
@@ -512,19 +527,19 @@ public class Room {
         // Add all enemy hitboxes
         for (int e = 0; e < enemies.size(); e++)
             hitboxes.add(enemies.get(e).getHitBox());
-        
+
         // Add all item hitboxes
         for (int i = 0; i < items.size(); i++)
             hitboxes.add(items.get(i).getHitBox());
-        
+
         // Add all rock hitboxes
-        for (int r = 0 ; r < roomRocks.size() ; r ++)
-        	hitboxes.add(roomRocks.get(r).getRockHitBox());
-        
+        for (int r = 0; r < roomRocks.size(); r++)
+            hitboxes.add(roomRocks.get(r).getRockHitBox());
+
         // Update movement hitboxes
         movementHitboxes.clear();
-        for (int m = 0 ; m < enemies.size() ; m ++)
-        	movementHitboxes.add(enemies.get(m).getShadowHitbox());
+        for (int m = 0; m < enemies.size(); m++)
+            movementHitboxes.add(enemies.get(m).getShadowHitbox());
     }
 
     public boolean enemyCollision(int enemyIndex,
@@ -535,7 +550,7 @@ public class Room {
             // + " CURRENT INDEX: " + n);
             if (enemyHitbox.intersects(hitboxes.get(n)) && n != enemyIndex)
                 return true;
-            
+
         }
         return false;
     }
@@ -568,15 +583,14 @@ public class Room {
         g.setColor(Color.RED);
         g.drawRect(130, 325, 720, 250);
 
-        
-        
+
         g.setColor(Color.BLACK);
         g.drawRect(LOWER_X_BOUND, LOWER_Y_BOUND, UPPER_X_BOUND - LOWER_X_BOUND,
                 UPPER_Y_BOUND - LOWER_Y_BOUND);
 
-        
+
         roomPattern.draw(g);
-        
+
         drawDoors(g);
         sortAllGameObjects();
         for (int e = 0; e < enemies.size(); e++) {
@@ -589,18 +603,18 @@ public class Room {
 
             currentEnemy.draw(g);
         }
-        
+
         // Collision hitbox
         g.setColor(Color.RED);
-        for (int h = 0 ; h < hitboxes.size() ; h ++)
-        	g.drawRect((int)hitboxes.get(h).getX(), (int)hitboxes.get(h).getY(), (int)hitboxes.get(h).getWidth(), (int)hitboxes.get(h).getHeight());
+        for (int h = 0; h < hitboxes.size(); h++)
+            g.drawRect((int) hitboxes.get(h).getX(), (int) hitboxes.get(h).getY(), (int) hitboxes.get(h).getWidth(), (int) hitboxes.get(h).getHeight());
 
         // Movement hitbox
         g.setColor(Color.GREEN);
-        for (int h = 0 ; h < movementHitboxes.size() ; h ++)
-        	g.drawRect((int)movementHitboxes.get(h).getX(), (int)movementHitboxes.get(h).getY(), (int)movementHitboxes.get(h).getWidth(), (int)movementHitboxes.get(h).getHeight());
+        for (int h = 0; h < movementHitboxes.size(); h++)
+            g.drawRect((int) movementHitboxes.get(h).getX(), (int) movementHitboxes.get(h).getY(), (int) movementHitboxes.get(h).getWidth(), (int) movementHitboxes.get(h).getHeight());
 
-        
+
         for (int i = 0; i < items.size(); i++) {
             items.get(i).draw(g);
         }
@@ -612,7 +626,7 @@ public class Room {
         // (int) currentRoomObject.getY(), null);
         // }
         //
-        
+
         player.draw(g);
 
     }
@@ -812,28 +826,27 @@ public class Room {
                             ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
                             // Gissing projectile behaviour
                             if (currentEnemy instanceof Gissing) {
-                            	// Gissing is a beast so he shoots all directions
-                            	currentEnemy.shootAllDirections();
+                                // Gissing is a beast so he shoots all directions
+                                currentEnemy.shootAllDirections();
                             }
                             // Student enemy
                             else {
-                            	// Normal students shoot one direction
+                                // Normal students shoot one direction
                                 currentEnemy.shootProjectile(currentEnemy.getDirection());
                             }
-                            
+
                             // Go through all projectiles of the current enemy
                             for (int p = 0; p < currentP.size(); p++) {
-                            	// Hits a player
+                                // Hits a player
                                 if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
                                     player.takeDamage(currentEnemy.getDamage());
-                                // Hits a rock
+                                    // Hits a rock
                                 else
-	                                for (int z = 0 ; z < roomRocks.size() ; z ++)
-	                                {
-	                                	if (currentP.get(p).getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
-	                                		currentP.get(p).killProjectile();
-	                                }
-                                	
+                                    for (int z = 0; z < roomRocks.size(); z++) {
+                                        if (currentP.get(p).getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
+                                            currentP.get(p).killProjectile();
+                                    }
+
                             }
                         }
 
