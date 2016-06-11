@@ -285,9 +285,9 @@ public class Room {
         atEastDoor = false;
 
         // North door
-        if (north != null && northOpen && x > 412 && x < 518 && y < 250) {
+        if (north != null && northOpen && x > 412 && x < 518 && y < 230) {
             atNorthDoor = true;
-        } else if (south != null && southOpen && x > 412 && x < 518 && y > 565) {
+        } else if (south != null && southOpen && x > 412 && x < 518 && y > 600) {
             atSouthDoor = true;
         } else if (east != null && eastOpen && x > 845 && y > 340 && y < 405) {
             atEastDoor = true;
@@ -297,8 +297,8 @@ public class Room {
 
         // Check if at trapDoor
         if (showTrapDoor) {
-            if (x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 50
-                    && y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 50) {
+            if (x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 70
+                    && y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 70) {
                 LevelManager.advanceLevel();
             }
         }
