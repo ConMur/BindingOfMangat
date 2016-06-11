@@ -355,8 +355,24 @@ public final class LevelManager {
             }
         }
 
-        ArrayList<Enemy> enemyList = new ArrayList<>();
+        //Set the rock pattern for this room
+        RockPatterns rp;
+        if(thisRoomLocked)
+        {
+            rp = new RockPatterns(1);
+        }
+        else
+        {
+            int pattern = rand.nextInt(RockPatterns.getNumRockPatterns());
+            rp = new RockPatterns(pattern);
+        }
 
+
+        ArrayList<GameObject> rocks = rp.getRocks();
+        ArrayList<Enemy> enemyList = new ArrayList<>();
+        ArrayList<Point> spawnLocations = rp.getSpawnLocations();
+
+        //TODO: set spawn spots in room
         if(!thisRoomLocked) {
             // Choose the enemy for this room
             //TODO: uncomment when have enough enemies
@@ -367,21 +383,9 @@ public final class LevelManager {
             int numEnemies = MIN_ENEMIES + rand.nextInt(ADDITIONAL_ENEMIES);
             for (int enemy = 0; enemy < numEnemies; ++enemy) {
                 Enemy j = new Enemy(e);
-                boolean overlap = true;
-                // Make sure enemies don't spawn on top of each other
-                while (overlap) {
-                    overlap = false;
-                    j.setX(rand.nextInt(SPAWN_X_WIDTH) + SPAWN_X_LOWER);
-                    j.setY(rand.nextInt(SPAWN_Y_HEIGHT) + SPAWN_Y_LOWER);
-                    // Go through all enemies
-                    for (int n = 0; n < enemy; n++) {
-                        // Overlap found
-                        if (j.getHitBox().intersects(enemyList.get(n).getHitBox())) {
-                            overlap = true;
-                            break;
-                        }
-                    }
-                }
+                Point spawnPoint = spawnLocations.remove(rand.nextInt(spawnLocations.size()));
+                j.setX(spawnPoint.getX());
+                j.setY(spawnPoint.getY());
                 enemyList.add(j);
             }
         }
@@ -402,16 +406,12 @@ public final class LevelManager {
         }
 
         Room room;
-        RockPatterns rp;
         if(thisRoomLocked)
         {
-            rp = new RockPatterns(1);
             room =  new Room(enemyList, itemList, new ArrayList<>(), player, true, Room.RoomType.NORMAL, rp);
         }
         else
         {
-            int pattern = rand.nextInt(RockPatterns.getNumRockPatterns());
-            rp = new RockPatterns(pattern);
             room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL, rp);
         }
         return room;

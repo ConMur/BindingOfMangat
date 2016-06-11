@@ -1,8 +1,6 @@
 package levels;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ public class RockPatterns {
     private BufferedImage rock;
     private ArrayList<GameObject> rocksInPattern;
     private Dimension rockDimension;
+    private ArrayList<Point> spawnLocations;
 
     public RockPatterns(int patternNum) {
         try {
@@ -30,7 +29,8 @@ public class RockPatterns {
             ioe.printStackTrace();
         }
         rockDimension = new Dimension(51, 58);
-        rocksInPattern = new ArrayList<GameObject>();
+        rocksInPattern = new ArrayList<>();
+        spawnLocations = new ArrayList<>();
 
         setNewPattern(patternNum);
     }
@@ -44,8 +44,16 @@ public class RockPatterns {
 
         //Empty pattern
         if (newPattern == 0) {
-            //Add nothing because there is no rocks in the pattern
-            //The reason for this if is so that there is a way to declare an empty rock pattern with out an error being thrown
+            //Spawn positions
+            spawnLocations.add(new Point(130, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(850,325));
+            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(490,450));
+            spawnLocations.add(new Point(400,450));
+            spawnLocations.add(new Point(580,450));
+            spawnLocations.add(new Point(400,388));
+            spawnLocations.add(new Point(400,513));
         }
         // Middle square pattern (KEY ROOM PATTERN)
         else if (newPattern == 1) {
@@ -68,6 +76,15 @@ public class RockPatterns {
             rocksInPattern.add(new GameObject(340, 340, rock, rockDimension, null, 0, 0));
             rocksInPattern.add(new GameObject(400, 340, rock, rockDimension, null, 0, 0));
             rocksInPattern.add(new GameObject(340, 400, rock, rockDimension, null, 0, 0));
+
+            //Spawn locations
+            spawnLocations.add(new Point(130, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(850,325));
+            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(490,450));
+            spawnLocations.add(new Point(400,388));
+            spawnLocations.add(new Point(440,513));
         }
         // Row pattern
         else if (newPattern == 2) {
@@ -76,6 +93,14 @@ public class RockPatterns {
                 for (int col = 0; col < 13; col++)
                     rocksInPattern.add(new GameObject(160 + ROCK_X * col, 340
                             + 120 * row, rock, rockDimension, null, 0, 0));
+
+            //Spawn locations
+            spawnLocations.add(new Point(130, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(490,325));
+            spawnLocations.add(new Point(490,575));
+            spawnLocations.add(new Point(850,325));
+            spawnLocations.add(new Point(850,575));
         }
         // Column pattern
         else if (newPattern == 3) {
@@ -84,6 +109,15 @@ public class RockPatterns {
                 for (int col = 0; col < 6; col++)
                     rocksInPattern.add(new GameObject(165 + 130 * col, 340
                             + ROCK_Y * row, rock, rockDimension, null, 0, 0));
+
+            //Spawn locations
+            spawnLocations.add(new Point(200, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(730,325));
+            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(470,450));
+            spawnLocations.add(new Point(340,450));
+            spawnLocations.add(new Point(600,450));
         }
         // Dotted pattern
         else if (newPattern == 4) {
@@ -92,6 +126,15 @@ public class RockPatterns {
                 for (int col = 0; col < 6; col++)
                     rocksInPattern.add(new GameObject(165 + 130 * col, 340
                             + 120 * row, rock, rockDimension, null, 0, 0));
+
+            //Spawn locations
+            spawnLocations.add(new Point(130, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(850,325));
+            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(470,450));
+            spawnLocations.add(new Point(340,450));
+            spawnLocations.add(new Point(600,450));
         }
         // Open box pattern
         else if (newPattern == 5) {
@@ -108,6 +151,14 @@ public class RockPatterns {
                 for (int row = 0; row < 4; row++)
                     rocksInPattern.add(new GameObject(160 + 660 * col, 367
                             + ROCK_Y * row, rock, rockDimension, null, 0, 0));
+
+            //Spawn locations
+            spawnLocations.add(new Point(200, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(730,325));
+            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(400,450));
+            spawnLocations.add(new Point(600,450));
         }
         // Vertical zigzag pattern
         else if (newPattern == 6) {
@@ -120,6 +171,14 @@ public class RockPatterns {
                     rocksInPattern.add(new GameObject(280 + 240 * botCol, 620
                             - ROCK_Y * row, rock, rockDimension, null, 0, 0));
             }
+
+            //Spawn locations
+            spawnLocations.add(new Point(230, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(850,325));
+            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(400,450));
+            spawnLocations.add(new Point(600,450));
         }
         // Smile pattern
         else if (newPattern == 7) {
@@ -133,6 +192,14 @@ public class RockPatterns {
             rocksInPattern.add(new GameObject(470, 540, rock, rockDimension, null, 0, 0));
             rocksInPattern.add(new GameObject(525, 520, rock, rockDimension, null, 0, 0));
             rocksInPattern.add(new GameObject(580, 500, rock, rockDimension, null, 0, 0));
+
+            //Spawn locations
+            spawnLocations.add(new Point(230, 325));
+            spawnLocations.add(new Point(130,575));
+            spawnLocations.add(new Point(850,325));
+            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(270,450));
+            spawnLocations.add(new Point(650,450));
         }
         // Inner room pattern
         else if (newPattern == 8) {
@@ -140,6 +207,15 @@ public class RockPatterns {
         } else {
             System.err.println("Invalid rock pattern: " + newPattern);
         }
+    }
+
+    /**
+     * Returns the spawn locations for enemies
+     * @return
+     */
+    public ArrayList<Point> getSpawnLocations()
+    {
+        return spawnLocations;
     }
 
     /**
