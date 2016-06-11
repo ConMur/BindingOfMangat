@@ -14,9 +14,9 @@ public class MoveableObject extends GameObject
 	private int dmg, hp, speed, maxHP;
 	private double diagonalSpeedModifier;
 	
-	public MoveableObject (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP)
+	public MoveableObject (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP, Dimension shadowSize, int xShadow, int yShadow)
 	{
-		super(xPos, yPos, image, size);
+		super(xPos, yPos, image, size, shadowSize, xShadow, yShadow);
 		this.dmg = dmg;
 		this.hp = hp;
 		this.maxHP = maxHP;

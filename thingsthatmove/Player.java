@@ -48,13 +48,13 @@ public class Player extends MoveableObject
 	private BufferedImage fullHeart, emptyHeart;
 
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
-			Dimension s, int maxHP, int projectile, Item item, Dimension mh)
+			Dimension s, int maxHP, int projectile, Item item,
+			Dimension shadowSize, int xShadow, int yShadow)
 	{
-		super(dmg, hp, speed, x, y, i, s, maxHP);
+		super(dmg, hp, speed, x, y, i, s, maxHP, shadowSize, xShadow, yShadow);
 		currentProjectiles = new ArrayList<Projectile>();
 		this.projectile = projectile;
 		this.currentItem = item;
-		this.movementHitbox = mh;
 		fireRate = PROJECTILE_ONE_RATE;
 		invincibleTime = 1500;
 
@@ -124,22 +124,22 @@ public class Player extends MoveableObject
 
 	}
 
-	public void setMovementHitbox(Dimension d)
-	{
-		movementHitbox = d;
-	}
-
-	public Dimension getMovementSize()
-	{
-		return movementHitbox;
-	}
-
-	public Rectangle getMovementHitbox()
-	{
-		return new Rectangle((int) getX() + 10, (int) (getY() + 70),
-				(int) movementHitbox.getWidth(),
-				(int) movementHitbox.getHeight());
-	}
+//	public void setMovementHitbox(Dimension d)
+//	{
+//		movementHitbox = d;
+//	}
+//
+//	public Dimension getMovementSize()
+//	{
+//		return movementHitbox;
+//	}
+//
+//	public Rectangle getMovementHitbox()
+//	{
+//		return new Rectangle((int) getX() + 10, (int) (getY() + 70),
+//				(int) movementHitbox.getWidth(),
+//				(int) movementHitbox.getHeight());
+//	}
 
 	public ArrayList<Projectile> getAllPlayerProjectiles()
 	{
@@ -361,9 +361,8 @@ public class Player extends MoveableObject
 	{
 		for (GameObject rock : rocks)
 		{
-			if (getMovementHitbox().intersects(rock.getRockHitBox()))
+			if (getShadowHitbox().intersects(rock.getRockHitBox()))
 			{
-				System.out.println("PLAYER ROCK INTERSECT");
 				return true;
 			}
 		}
@@ -377,9 +376,7 @@ public class Player extends MoveableObject
 
 		// Movement hitbox
 		g.setColor(Color.GREEN);
-		g.drawRect((int) getMovementHitbox().getX(), (int) getMovementHitbox()
-				.getY(), (int) movementHitbox.getWidth(), (int) movementHitbox
-				.getHeight());
+		g.drawRect((int) getShadowHitbox().getX(), (int) getShadowHitbox().getY(), (int)getShadowHitbox().getWidth(), (int) getShadowHitbox().getHeight());
 
 		// Projectile collision hitbox
 		g.setColor(Color.red);

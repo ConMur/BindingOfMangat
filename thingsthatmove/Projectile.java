@@ -28,7 +28,7 @@ public class Projectile extends GameObject
 
 	public Projectile(int projectileNum, char direction)
 	{
-		super(0, 0, null, null);
+		super(0, 0, null, null, null, 0, 0);
 		visible = true;
 		this.direction = direction;
 		// Basic projectile
@@ -46,6 +46,11 @@ public class Projectile extends GameObject
 			}
 			this.setImage(image);
 			this.setSize(new Dimension(30, 25));
+			this.setShadowSize(new Dimension (25, 5));
+			this.setXShadow(4);
+			this.setYShadow(24);
+			
+			
 			this.speed = 300;
 			this.dmg = 5;
 			lifeSpan = 500;
@@ -123,11 +128,15 @@ public class Projectile extends GameObject
 			}
 			this.setImage(image);
 			this.setSize(new Dimension(30, 25));
+			
+			
 			this.speed = 1000;
 			this.dmg = 3;
 			lifeSpan = 1500;
 		}
+		
 		// ENEMY PROJECTILES
+		// BASIC ENEMY PROJECTILE 
 		else if (projectileNum == 6)
 		{
 			try
@@ -142,6 +151,10 @@ public class Projectile extends GameObject
 			}
 			this.setImage(image);
 			this.setSize(new Dimension(30, 25));
+			this.setShadowSize(new Dimension (25, 5));
+			this.setXShadow(4);
+			this.setYShadow(24);
+			
 			this.speed = 300;
 			this.dmg = 1;
 			lifeSpan = 1500;
@@ -160,7 +173,11 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(89, 48));
+			this.setSize(new Dimension(46,25));
+			this.setShadowSize(new Dimension(43,8));
+			this.setXShadow(3);
+			this.setYShadow(20);
+			
 			this.speed = 600;
 			this.dmg = 1;
 			lifeSpan = 1500;
@@ -180,9 +197,9 @@ public class Projectile extends GameObject
 	 *            expiring
 	 */
 	public Projectile(int speed, int dmg, Image image, int startX, int startY,
-			Dimension size, char direction, int lifeSpan)
+			Dimension size, char direction, int lifeSpan, Dimension shadowSize, int xShadow, int yShadow)
 	{
-		super(startX, startY, image, size);
+		super(startX, startY, image, size, shadowSize, xShadow, yShadow);
 		this.speed = speed;
 		this.dmg = dmg;
 		this.direction = direction;

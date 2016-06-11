@@ -10,7 +10,7 @@ public class Item extends GameObject
 	
 	public Item (String name, int x, int y, Image image, Dimension size, boolean oG)
 	{
-		super (x, y, image, size);
+		super (x, y, image, size, null, 0, 0);
 		this.name = name;
 		this.onGround = oG;
 	}

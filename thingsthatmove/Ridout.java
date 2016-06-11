@@ -9,7 +9,7 @@ public class Ridout extends Enemy
 	
 	public Ridout (int dmg, int hp, int speed, int xPos, int yPos, Image image, Dimension size, int maxHP, int numLives,boolean shouldMove, boolean anger)
 	{
-		super (dmg, hp, speed, xPos ,yPos, image, size, maxHP, shouldMove, anger, new Dimension(50, 55));
+		super (dmg, hp, speed, xPos ,yPos, image, size, maxHP, shouldMove, anger, new Dimension(82, 16),23, 145);
 		this.numLives = numLives;
 	}
 	

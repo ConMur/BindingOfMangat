@@ -15,7 +15,7 @@ public class PlayState implements GameState
 	{
 		try {
 			player = new Player(10, 3, 250, 350, 400, ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")),
-					new Dimension(75, 55), 5, 1, null, new Dimension(55,10));
+					new Dimension(75, 55), 5, 1, null, new Dimension(55,10), 13, 75);
 		}
 		catch(IOException ioe)
 		{

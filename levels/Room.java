@@ -50,7 +50,7 @@ public class Room {
     
 
     // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
-    private RockPatterns roomPattern = new RockPatterns(4);
+    private RockPatterns roomPattern = new RockPatterns(5);
 
 
     
@@ -524,7 +524,7 @@ public class Room {
         // Update movement hitboxes
         movementHitboxes.clear();
         for (int m = 0 ; m < enemies.size() ; m ++)
-        	movementHitboxes.add(enemies.get(m).getMovementHitbox());
+        	movementHitboxes.add(enemies.get(m).getShadowHitbox());
     }
 
     public boolean enemyCollision(int enemyIndex,
@@ -692,8 +692,7 @@ public class Room {
                 killDeadEnemies();
                 synchronized (enemies) {
                     for (int n = 0; n < enemies.size(); n++) {
-                        if (enemies.get(n).getMovementHitbox()
-                                .intersects(player.getHitBox()))
+                        if (enemies.get(n).getShadowHitbox().intersects(player.getHitBox()))
                             player.takeDamage(enemies.get(n).getDamage());
                     }
                 }
@@ -792,21 +791,21 @@ public class Room {
                             // (not
                             // player) so move back and change direction
                             updateHitboxes();
-                            if (enemyCollision(n, currentEnemy.getMovementHitbox())) {
+                            if (enemyCollision(n, currentEnemy.getShadowHitbox())) {
                                 currentEnemy.move(oldX, oldY);
                                 currentEnemy.setRandomDirection();
                                 currentEnemy.moveInDirection();
 
                                 // Still collision
                                 updateHitboxes();
-                                if (enemyCollision(n, currentEnemy.getMovementHitbox())) {
+                                if (enemyCollision(n, currentEnemy.getShadowHitbox())) {
                                     currentEnemy.move(oldX, oldY);
                                     currentEnemy.setRandomDirection();
                                     currentEnemy.moveInDirection();
 
                                     // Still collision
                                     updateHitboxes();
-                                    if (enemyCollision(n, currentEnemy.getMovementHitbox()))
+                                    if (enemyCollision(n, currentEnemy.getShadowHitbox()))
                                         currentEnemy.move(oldX, oldY);
                                 }
                             }

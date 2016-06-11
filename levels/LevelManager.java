@@ -96,28 +96,23 @@ public final class LevelManager {
         // TODO: update as more enemies are added
         // Add the science enemies
         try {
-            science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-                    new Dimension(77, 55), 2, true, false,  new Dimension(60, 15)));
-            science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/einsteinfront.png")),
-                    new Dimension(135, 85), 2, true, true, new Dimension(60, 15)));
-            science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/cellfront.png")),
-                    new Dimension(79, 70), 2, true, true, new Dimension(60, 15)));
-            science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/chemfront.png")),
-                    new Dimension(72, 75), 2, true, false, new Dimension(60, 15)));
-            science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/moleculefront.png")),
-                    new Dimension(94, 80), 2, true, false, new Dimension(60, 15)));
-            science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
-                    new Dimension(77, 65), 2, true, false, new Dimension(60, 15)));
-            science.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentclusterfront.png")),
-                    new Dimension(119, 80), 2, true, false, new Dimension(60, 15)));
+            science.add(new EnemyEclipse());
+            science.add(new EnemyStudent());
+            science.add(new EnemyStudentCluster());
+            
+            science.add(new EnemyEinstein());
+            science.add(new EnemyCell());
+            science.add(new EnemyChem());
+            science.add(new EnemyMolecule());
         } catch (IOException ioe) {
             System.err.println("Unable to load science enemies");
             ioe.printStackTrace();
         }
         // Add the english enemies
         try {
-            english.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-                    new Dimension(75, 43), 2, true, false, new Dimension(50, 55)));
+            english.add(new EnemyEclipse());
+            english.add(new EnemyStudent());
+            english.add(new EnemyStudentCluster());
             
         } catch (IOException ioe) {
             System.err.println("Unable to load english enemies");
@@ -125,20 +120,21 @@ public final class LevelManager {
         }
         // Add the math enemies
         try {
-            math.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-                    new Dimension(75, 43), 2, true, false, new Dimension(50, 55)));
-            math.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/textbookfront.png")),
-                    new Dimension(75, 43), 2, true, false, new Dimension(50, 55)));
-            math.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/pifront.png")),
-                    new Dimension(75, 43), 2, true, false, new Dimension(50, 55)));
+        	math.add(new EnemyEclipse());
+            math.add(new EnemyStudent());
+            math.add(new EnemyStudentCluster());
+            
+            math.add(new EnemyTextbook());
+            math.add(new EnemyPi());
         } catch (IOException ioe) {
             System.err.println("Unable to load math enemies");
             ioe.printStackTrace();
         }
         // Add the history enemies
         try {
-            history.add(new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/eclipsefront.png")),
-                    new Dimension(75, 43), 2, true, false, new Dimension(50, 55)));
+        	history.add(new EnemyEclipse());
+        	history.add(new EnemyStudent());
+        	history.add(new EnemyStudentCluster());
         } catch (IOException ioe) {
             System.err.println("Unable to load history enemies");
             ioe.printStackTrace();
