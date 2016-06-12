@@ -13,6 +13,6 @@ public class EnemyStudentCluster extends Enemy
 	public EnemyStudentCluster () throws IOException
 	{
 		super (new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentclusterfront.png")),
-                new Dimension(119, 80), 2, true, false, new Dimension(60, 15), 28, 118));
+                new Dimension(90, 47), 2, true, false, new Dimension(46, 10), 20, 88));
 	}
 }

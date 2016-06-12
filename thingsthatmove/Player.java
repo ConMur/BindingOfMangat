@@ -207,6 +207,13 @@ public class Player extends MoveableObject
 	{
 		return currentItem.getName();
 	}
+	
+	public boolean hasItem ()
+	{
+		if (currentItem != null)
+			return true;
+		return false;
+	}
 
 	/**
 	 * Sets the players current item to the given item or null if there is no item
@@ -260,6 +267,22 @@ public class Player extends MoveableObject
 		return movingWest;
 	}
 
+	public void updateProjectiles ()
+	{
+		// Update projectiles
+		int removedProjectiles = 0;
+		for (int i = 0; i < currentProjectiles.size(); ++i)
+		{
+			Projectile p = currentProjectiles.get(i - removedProjectiles);
+			p.update();
+			if (p.isDeadProjectile())
+			{
+				currentProjectiles.remove(i - removedProjectiles);
+				++removedProjectiles;
+			}
+		}
+	}
+	
 	public void update(ArrayList<GameObject> rocks)
 	{
 		if (movingNorth && !collidesWithRocks(rocks))
@@ -295,18 +318,7 @@ public class Player extends MoveableObject
 			}
 		}
 
-		// Update projectiles
-		int removedProjectiles = 0;
-		for (int i = 0; i < currentProjectiles.size(); ++i)
-		{
-			Projectile p = currentProjectiles.get(i - removedProjectiles);
-			p.update();
-			if (p.isDeadProjectile())
-			{
-				currentProjectiles.remove(i - removedProjectiles);
-				++removedProjectiles;
-			}
-		}
+
 
 		if (isShooting)
 		{
@@ -396,6 +408,10 @@ public class Player extends MoveableObject
 			else
 				g.drawImage(emptyHeart, 820 + 30 * n, 70, null);
 		}
+		
+		// Draw the item in the HUD
+		if (hasItem())
+			g.drawImage(currentItem.getImage(), 720, 80, null);
 
 		// Draw all projectiles currently on the screen
 		for (Projectile p : currentProjectiles)

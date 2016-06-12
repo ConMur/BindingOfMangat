@@ -13,6 +13,6 @@ public class EnemyTextbook extends Enemy
 	public EnemyTextbook () throws IOException
 	{
 		super (new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/textbookfront.png")),
-                new Dimension(75, 43), 2, true, false, new Dimension(50, 55), 13, 110));
+                new Dimension(65, 47), 2, true, false, new Dimension(48, 10), 9, 84));
 	}
 }

@@ -13,6 +13,6 @@ public class EnemyChem extends Enemy
 	public EnemyChem () throws IOException
 	{
 		super (new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/chemfront.png")),
-                new Dimension(72, 75), 2, true, false, new Dimension(60, 15), 5, 98));
+                new Dimension(57, 43), 2, true, false, new Dimension(48, 10), 3, 78));
 	}
 }

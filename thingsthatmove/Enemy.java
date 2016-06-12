@@ -81,7 +81,6 @@ public class Enemy extends MoveableObject
 
 	public void draw(Graphics g)
 	{
-		updateProjectiles();
 		// Draw their set of projectiles
 		for (int n = 0; n < currentProjectiles.size(); n++)
 		{
