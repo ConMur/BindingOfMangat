@@ -25,12 +25,12 @@ public final class GameStateManager {
     public static void init() {
         states = new ArrayList<>();
         states.add(new PlayState());
-        // states.add(new MenuState());
+        states.add(new MenuState());
         // states.add(new CreditsState());
         // states.add(new InstructionsState());
 
         //TODO: remove when have a menu
-        currentState = states.get(State.PLAY.ordinal());
+        currentState = states.get(State.MENU.ordinal());
     }
 
     /**
