@@ -12,10 +12,10 @@ public class Level
 
 	private Minimap minimap;
 
-	private final int PLAYER_SOUTH_X = 465;
+	private final int PLAYER_SOUTH_X = 470;
 	private final int PLAYER_SOUTH_Y = 565;
 
-	private final int PLAYER_NORTH_X = 465;
+	private final int PLAYER_NORTH_X = 470;
 	private final int PLAYER_NORTH_Y = 220;
 
 	private final int PLAYER_EAST_X = 865;
@@ -40,6 +40,12 @@ public class Level
 		rand = new Random();
 		minimap = new Minimap();
 		setRooms(rooms);
+	}
+	
+	public void stopAllRooms ()
+	{
+		for (int n = 0 ; n < rooms.size() ; n ++)
+			rooms.get(n).endRoom();
 	}
 
 	public void setRooms(ArrayList<Room> roomList)
@@ -147,6 +153,7 @@ public class Level
 		{
 			minimap.setPlayerRoomY(minimap.getPlayerRoomY() - 1);
 			currentRoom.getPlayer().setY(PLAYER_SOUTH_Y);
+			currentRoom.getPlayer().setX(PLAYER_SOUTH_X);
 			System.out.println("AT NORTH");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getNorth();
@@ -156,6 +163,7 @@ public class Level
 		{
 			minimap.setPlayerRoomY(minimap.getPlayerRoomY() + 1);
 			currentRoom.getPlayer().setY(PLAYER_NORTH_Y);
+			currentRoom.getPlayer().setX(PLAYER_NORTH_X);
 			System.out.println("AT SOUTH");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getSouth();

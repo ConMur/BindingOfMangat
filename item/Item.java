@@ -1,5 +1,8 @@
 package item;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.util.Random;
 
 import thingsthatmove.GameObject;
 import thingsthatmove.Player;
@@ -8,6 +11,7 @@ public class Item extends GameObject
 {
 	private String name;
 	private boolean onGround;
+	Random r = new Random();
 	
 	public Item (String name, int x, int y, Image image, Dimension size, boolean oG)
 	{
@@ -37,9 +41,53 @@ public class Item extends GameObject
      */
 	public boolean applyEffects(Player player)
 	{
-		if(name.equals("c++"))
+		// Blocks one fatal instance of damage
+		if (name.equals("ankh"))
+		{
+			
+			
+			return true;
+		}
+		// Does nothing
+		else if(name.equals("blockofwood"))
+		{
+			//Do nothing
+			return true;
+		}
+		else if (name.equals("bombguidebook"))
+		{
+			return true;
+		}
+		else if (name.equals("brokenpencil"))
+		{
+			return true;
+		}
+		else if(name.equals("c++"))
 		{
 			player.setSpeed(player.getSpeed() + 50);
+			return true;
+		}
+		
+		else if(name.equals("caffood"))
+		{
+			player.takeDamage(1);
+			return true;
+		}
+		else if(name.equals("compscisweater"))
+		{
+			player.setMaxHP(player.getMaxHP() + 1);
+			return true;
+		}
+		else if (name.equals("fireflower"))
+		{
+			return true;
+		}
+		else if (name.equals("glasses"))
+		{
+			return true;
+		}
+		else if (name.equals("goldenmushroom"))
+		{
 			return true;
 		}
 		else if(name.equals("halo"))
@@ -49,26 +97,47 @@ public class Item extends GameObject
 			player.setMaxHP(player.getMaxHP() + 1);
 			return true;
 		}
-		else if(name.equals("compscisweater"))
+		else if (name.equals("icecube"))
 		{
-			player.setMaxHP(player.getMaxHP() + 1);
 			return true;
 		}
-		else if(name.equals("caffood"))
+		else if (name.equals("lightning"))
 		{
-			player.takeDamage(1);
 			return true;
 		}
-		else if(name.equals("blockofwood"))
+		else if (name.equals("lotteryticket"))
 		{
-			//Do nothing
+
+			if (r.nextInt(2) == 0)
+				player.setNumCoin(99);
+			else
+				player.takeDamage(2);
+			return true;
+		}
+		else if (name.equals("mariomushroom"))
+		{
 			return true;
 		}
 		else if(name.equals("masterkey"))
 		{
 			//This item makes keys unnessecary so just give the player a whole bunch of keys
-			player.setNumKeys(20000);
+			player.setNumKeys(99);
 			player.heal(1);
+			return true;
+		}
+		else if (name.equals("projector"))
+		{
+			if (r.nextInt(4) == 3)
+			{
+				player.heal(1);
+				player.addCoins(5);
+			}
+			else
+				player.takeDamage(1);
+			return true;
+		}
+		else if (name.equals("usb"))
+		{
 			return true;
 		}
 		return false;

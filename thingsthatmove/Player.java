@@ -4,7 +4,10 @@ import item.Item;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -14,6 +17,8 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import levels.LevelManager;
 
 public class Player extends MoveableObject
 {
@@ -28,9 +33,12 @@ public class Player extends MoveableObject
 	private boolean isShooting;
 	private boolean takenDMG;
 	private Dimension movementHitbox;
+	
+
+    private Font itemTextFont = new Font ("LetterOMatic!", Font.PLAIN, 30);
 
 	// Items
-	private int numKeys;
+	private int numKeys, numBombs, numCoins;
 
 	// Projectiles
 	private long lastFireTime, lastDmgTime;
@@ -52,6 +60,16 @@ public class Player extends MoveableObject
 			Dimension shadowSize, int xShadow, int yShadow)
 	{
 		super(dmg, hp, speed, x, y, i, s, maxHP, shadowSize, xShadow, yShadow);
+		
+		//Create the text font
+    	try {
+			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,LevelManager.class.getResourceAsStream("/fonts/ltromatic.ttf")));
+		} catch (IOException | FontFormatException e) {
+            System.err.println("Error loading font");
+            e.printStackTrace();
+		}
+		
 		currentProjectiles = new ArrayList<Projectile>();
 		this.projectile = projectile;
 		this.currentItem = item;
@@ -64,7 +82,8 @@ public class Player extends MoveableObject
 		boolean movingSouth = false;
 		takenDMG = false;
 
-		numKeys = 0;
+		numKeys = 1;
+		numBombs = 1;
 
 		try
 		{
@@ -176,7 +195,7 @@ public class Player extends MoveableObject
 			{
 				// For any other direction, have the projectile start in the
 				// centre of the player's head
-				p.setY(getY() + 25);
+				p.setY(getY() + 50);
 			}
 			p.setX(getX() + 20);
 
@@ -221,14 +240,24 @@ public class Player extends MoveableObject
      */
 	public void setItem(Item i)
 	{
-		currentItem = i;
+		// Automatically consumed upon pickup
+		if (i.getName() == "key")
+			numKeys ++;
+		else if (i.getName() == "bomb")
+			numBombs ++;
+		else if (i.getName() == "silvercoin")
+			numCoins ++;
+		else if (i.getName() == "goldcoin")
+			numCoins += 5;
+		// Manually consumed items
+		else
+			currentItem = i;
 	}
 
 	public void useItem()
 	{
-		String itemName = currentItem.getName();
-		this.setItem(null);
-
+		currentItem.applyEffects(this);
+		setItem(null);
 		// FINISH ITEMS
 	}
 
@@ -241,10 +270,46 @@ public class Player extends MoveableObject
 	{
 		this.numKeys = numKeys;
 	}
+	
+	public void addKeys (int keys)
+	{
+		numKeys += keys;
+	}
 
 	public boolean hasKeys()
 	{
 		return numKeys > 0;
+	}
+	
+	public int getNumBombs ()
+	{
+		return numBombs;
+	}
+	
+	public void addBombs (int bombs)
+	{
+		numBombs += bombs;
+	}
+	
+	
+	public void setNumBombs (int numBombs)
+	{
+		this.numBombs = numBombs;
+	}
+	
+	public int getNumCoins()
+	{
+		return numCoins;
+	}
+	
+	public void addCoins (int coins)
+	{
+		numCoins += coins;
+	}
+	
+	public void setNumCoin (int numCoins)
+	{
+		this.numCoins = numCoins;
 	}
 
 	public boolean isMovingNorth()
@@ -412,7 +477,16 @@ public class Player extends MoveableObject
 		// Draw the item in the HUD
 		if (hasItem())
 			g.drawImage(currentItem.getImage(), 720, 80, null);
+		
+		// Draw number of keys, bombs, coins 
+		g.setFont(itemTextFont);
+		g.setColor(Color.BLACK);
+		g.drawString(Integer.toString(numCoins), 435, 63);
+		g.drawString(Integer.toString(numBombs), 435, 117);
+		g.drawString(Integer.toString(numKeys), 435, 173);
 
+
+		
 		// Draw all projectiles currently on the screen
 		for (Projectile p : currentProjectiles)
 		{
@@ -471,6 +545,13 @@ public class Player extends MoveableObject
 		{
 			isShooting = true;
 		}
+		
+		if (key == KeyEvent.VK_ENTER)
+		{
+			if (hasItem())
+				useItem();
+		}
+
 	}
 
 	public void keyReleased(int key)

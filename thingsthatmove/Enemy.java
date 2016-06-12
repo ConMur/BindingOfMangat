@@ -57,7 +57,7 @@ public class Enemy extends MoveableObject
 		this.anger = connorBeingLazy.isAngry();
 //		this.movementHitbox = connorBeingLazy.getMovementSize();
 		fireRate = PROJECTILE_ONE_RATE;
-		projectile = 6;
+		projectile = connorBeingLazy.getProjectile();
 		currentProjectiles = new ArrayList<Projectile>();
 	}
 
