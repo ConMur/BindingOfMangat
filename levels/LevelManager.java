@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import states.GameStateManager;
+import states.State;
 import thingsthatmove.*;
 
 import javax.imageio.ImageIO;
@@ -414,6 +416,11 @@ public final class LevelManager {
     {
     	currentLevel.stopAllRooms();
     	++levelNumber;
+        if(levelNumber > NUMBER_OF_LEVELS)
+        {
+            //Player won
+            GameStateManager.setState(State.WIN);
+        }
     	currentLevel = levels.get(levelNumber - 1);
         currentLevel.start();
     }
