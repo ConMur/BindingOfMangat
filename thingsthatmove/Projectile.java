@@ -55,13 +55,13 @@ public class Projectile extends GameObject
 			this.dmg = 5;
 			lifeSpan = 500;
 		}
-		// Broken pencils (greater speed + dmg)
+		// Broken pencils (triple shot, faster with less dmg)
 		else if (projectileNum == 2)
 		{
 			try
 			{
 				image = ImageIO.read(getClass().getResourceAsStream(
-						"/images/projectiles/player/projectile2.png"));
+						"/images/projectiles/player/projectile1.png"));
 			}
 			catch (IOException ioe)
 			{
@@ -71,8 +71,11 @@ public class Projectile extends GameObject
 
 			this.setImage(image);
 			this.setSize(new Dimension(30, 25));
-			this.speed = 10;
-			this.dmg = 400;
+			this.setShadowSize(new Dimension (25, 5));
+			this.setXShadow(4);
+			this.setYShadow(24);
+			this.speed = 500;
+			this.dmg = 2;
 			lifeSpan = 500;
 		}
 		// Bombs (slower travel speed, explosion on impact)

@@ -159,6 +159,11 @@ public class Player extends MoveableObject
 //				(int) movementHitbox.getWidth(),
 //				(int) movementHitbox.getHeight());
 //	}
+	
+	public Rectangle getHitBox()
+	{
+		return new Rectangle ((int)getX(), (int)getY() + (int)(getSize().getHeight() * 0.5), (int)getSize().getWidth(), (int)getSize().getHeight());
+	}
 
 	public ArrayList<Projectile> getAllPlayerProjectiles()
 	{
@@ -182,26 +187,94 @@ public class Player extends MoveableObject
 
 	public void shootProjectile(char direction)
 	{
+		if (projectile == 1)
+		{
+			if (System.currentTimeMillis() - lastFireTime > fireRate)
+			{
+				Projectile p = new Projectile(getProjectile(), direction);
+	
+				// When facing back, put the projectile near the top of the head
+				if (getImage() == mangatBack || getImage() == mangatHurtBack)
+				{
+					p.setY(getY());
+				}
+				else
+				{
+					// For any other direction, have the projectile start in the
+					// centre of the player's head
+					p.setY(getY() + 50);
+				}
+				p.setX(getX() + 20);
+	
+				currentProjectiles.add(p);
+				lastFireTime = System.currentTimeMillis();
+			}
+		}
+		else if (projectile == 2)
+			shootTripleProjectiles(direction);
+	}
+	
+	public void shootTripleProjectiles(char currentDirection)
+	{
 		if (System.currentTimeMillis() - lastFireTime > fireRate)
 		{
-			Projectile p = new Projectile(getProjectile(), direction);
-
-			// When facing back, put the projectile near the top of the head
-			if (getImage() == mangatBack || getImage() == mangatHurtBack)
-			{
-				p.setY(getY());
-			}
-			else
-			{
-				// For any other direction, have the projectile start in the
-				// centre of the player's head
-				p.setY(getY() + 50);
-			}
+			Projectile p = new Projectile(getProjectile(), currentDirection);
 			p.setX(getX() + 20);
-
+			p.setY(getY() + 25);
 			currentProjectiles.add(p);
+
+			Projectile p2 = new Projectile(getProjectile(), getTopDirection(currentDirection));
+			p2.setX(getX() + 20);
+			p2.setY(getY() + 25);
+			currentProjectiles.add(p2);
+
+			Projectile p3 = new Projectile(getProjectile(), getBotDirection(currentDirection));
+			p3.setX(getX() + 20);
+			p3.setY(getY() + 25);
+			currentProjectiles.add(p3);
+
 			lastFireTime = System.currentTimeMillis();
 		}
+	}
+	
+	public char getTopDirection(char currentDirection)
+	{
+		if (currentDirection == 'N')
+			return '1';
+		else if (currentDirection == 'E')
+			return '1';
+		else if (currentDirection == 'S')
+			return '2';
+		else if (currentDirection == 'W')
+			return '4';
+		else if (currentDirection == '1')
+			return 'N';
+		else if (currentDirection == '2')
+			return 'E';
+		else if (currentDirection == '3')
+			return 'W';
+		else
+			return 'N';
+	}
+
+	public char getBotDirection(char currentDirection)
+	{
+		if (currentDirection == 'N')
+			return '4';
+		else if (currentDirection == 'E')
+			return '2';
+		else if (currentDirection == 'S')
+			return '3';
+		else if (currentDirection == 'W')
+			return '3';
+		else if (currentDirection == '1')
+			return 'E';
+		else if (currentDirection == '2')
+			return 'S';
+		else if (currentDirection == '3')
+			return 'S';
+		else
+			return 'W';
 	}
 
 	/**
@@ -241,7 +314,9 @@ public class Player extends MoveableObject
 	public void setItem(Item i)
 	{
 		// Automatically consumed upon pickup
-		if (i.getName() == "key")
+		if (i == null)
+			currentItem = i;
+		else if (i.getName() == "key")
 			numKeys ++;
 		else if (i.getName() == "bomb")
 			numBombs ++;
@@ -484,7 +559,6 @@ public class Player extends MoveableObject
 		g.drawString(Integer.toString(numCoins), 435, 63);
 		g.drawString(Integer.toString(numBombs), 435, 117);
 		g.drawString(Integer.toString(numKeys), 435, 173);
-
 
 		
 		// Draw all projectiles currently on the screen

@@ -60,6 +60,7 @@ public class Item extends GameObject
 		}
 		else if (name.equals("brokenpencil"))
 		{
+			player.setProjectile(2);
 			return true;
 		}
 		else if(name.equals("c++"))
@@ -127,6 +128,10 @@ public class Item extends GameObject
 		}
 		else if (name.equals("projector"))
 		{
+			return true;
+		}
+		else if (name.equals("usb"))
+		{
 			if (r.nextInt(4) == 3)
 			{
 				player.heal(1);
@@ -134,10 +139,6 @@ public class Item extends GameObject
 			}
 			else
 				player.takeDamage(1);
-			return true;
-		}
-		else if (name.equals("usb"))
-		{
 			return true;
 		}
 		return false;

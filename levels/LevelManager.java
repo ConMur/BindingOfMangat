@@ -114,13 +114,13 @@ public final class LevelManager {
         // Add the science enemies
         try {
             science.add(new EnemyEclipse());
-//            science.add(new EnemyStudent());
-//            science.add(new EnemyStudentCluster());
-//            
-//            science.add(new EnemyEinstein());
-//            science.add(new EnemyCell());
-//            science.add(new EnemyChem());
-//            science.add(new EnemyMolecule());
+            science.add(new EnemyStudent());
+            science.add(new EnemyStudentCluster());
+            
+            science.add(new EnemyEinstein());
+            science.add(new EnemyCell());
+            science.add(new EnemyChem());
+            science.add(new EnemyMolecule());
         } catch (IOException ioe) {
             System.err.println("Unable to load science enemies");
             ioe.printStackTrace();
@@ -162,23 +162,23 @@ public final class LevelManager {
         // TODO: update as more items are added
         // Add the items
         try {
-            items.add(new Item("ankh", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/ankh.png")), new Dimension(75, 61), true));
+//            items.add(new Item("ankh", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/ankh.png")), new Dimension(75, 61), true));
             items.add(new Item("blockofwood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/blockofwood.png")), new Dimension(60, 14), true));
-            items.add(new Item("bombguidebook", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bombguidebook.png")), new Dimension(39, 37), true));
+//            items.add(new Item("bombguidebook", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bombguidebook.png")), new Dimension(39, 37), true));
             items.add(new Item("brokenpencil", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/brokenpencil.png")), new Dimension(60, 30), true));
             items.add(new Item("c++", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/c++.png")), new Dimension(58, 31), true));
             items.add(new Item("caffood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/caffood.png")), new Dimension(69, 24), true));
             items.add(new Item("compscisweater", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/compscisweater.png")), new Dimension(87, 45), true));
-            items.add(new Item("fireflower", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/fireflower.png")), new Dimension(81, 45), true));
-            items.add(new Item("glasses", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/glasses.png")), new Dimension(69, 21), true));
-            items.add(new Item("goldenmushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/goldenmushroom.png")), new Dimension(80, 47), true));
+//            items.add(new Item("fireflower", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/fireflower.png")), new Dimension(81, 45), true));
+//            items.add(new Item("glasses", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/glasses.png")), new Dimension(69, 21), true));
+//            items.add(new Item("goldenmushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/goldenmushroom.png")), new Dimension(80, 47), true));
             items.add(new Item("halo", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/halo.png")), new Dimension(72, 26), true));
-            items.add(new Item("icecube", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/icecube.png")), new Dimension(90, 59), true));
-            items.add(new Item("lightning", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lightning.png")), new Dimension(54, 48), true));
+//            items.add(new Item("icecube", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/icecube.png")), new Dimension(90, 59), true));
+//            items.add(new Item("lightning", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lightning.png")), new Dimension(54, 48), true));
             items.add(new Item("lotteryticket", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lotteryticket.png")), new Dimension(88, 30), true));
-            items.add(new Item("mariomushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/mariomushroom.png")), new Dimension(82, 41), true));
+//            items.add(new Item("mariomushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/mariomushroom.png")), new Dimension(82, 41), true));
             items.add(new Item("masterkey", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/masterkey.png")), new Dimension(47, 61), true));
-            items.add(new Item("projector", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/projector.png")), new Dimension(88, 37), true));
+//            items.add(new Item("projector", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/projector.png")), new Dimension(88, 37), true));
             items.add(new Item("usb", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/usb.png")), new Dimension(83, 36), true));
         
             items.add(new Item("key", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/key.png")), new Dimension(40, 32), true));
@@ -217,9 +217,9 @@ public final class LevelManager {
             ArrayList<Enemy> levelEnemies;
             if (i == 1) {
                 levelEnemies = new ArrayList<>(scienceEnemyList);
-            } else if (i == 2) {
-                levelEnemies = new ArrayList<>(englishEnemyList);
             } else if (i == 3) {
+                levelEnemies = new ArrayList<>(englishEnemyList);
+            } else if (i == 2) {
                 levelEnemies = new ArrayList<>(mathEnemyList);
             } else if (i == 4) {
                 levelEnemies = new ArrayList<>(historyEnemyList);
@@ -274,12 +274,12 @@ public final class LevelManager {
                 System.err.println("Error loading gissing image file");
                 ioe.printStackTrace();
             }
-        } else if (levelNumber == 2) {
-            //TODO add mr pomakov
         } else if (levelNumber == 3) {
+            //TODO add mr pomakov
+        } else if (levelNumber == 2) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/marsellafront.png"));
-                enemyList.add(new Marsella(2, 5, 250, 500, 500, bossImage, new Dimension(93, 67), 5, true, true));
+                enemyList.add(new Marsella(2, 5, 250, 500, 500, bossImage, new Dimension(93, 67), 5, true, false));
             } catch (IOException ioe) {
                 System.err.println("Error loading marsella image file");
                 ioe.printStackTrace();
@@ -393,17 +393,11 @@ public final class LevelManager {
         ArrayList<Item> itemList = new ArrayList<>();
         int itemChance = rand.nextInt(100);
 
-        //Have more chance of items in a locked room
-        if(thisRoomLocked)
+        // Spawn item randomly and locked rooms always have items
+        if(thisRoomLocked || itemChance < ITEM_CHANCE)
         {
-            itemChance -= LOCKED_ROOM_ITEM_BONUS;
-        }
-        if (itemChance < ITEM_CHANCE) {
-            //TODO: uncomment when have enough items
-            //itemList.add(items.remove(rand.nextInt(items.size())));
             itemList.add(items.get(rand.nextInt(items.size())));
         }
-
         Room room;
         if(thisRoomLocked)
         {
@@ -439,6 +433,12 @@ public final class LevelManager {
         	g.drawString("Science Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
         else if (levelNumber == 2)
         	g.drawString("Math Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+        else if (levelNumber == 3)
+        	g.drawString("English Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+        else if (levelNumber == 4)
+        	g.drawString("History Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+        else if (levelNumber == 5)
+        	g.drawString("Ridout's Office", LEVEL_TEXT_X, LEVEL_TEXT_Y);
     }
     
 }
