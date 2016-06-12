@@ -227,13 +227,22 @@ public class Room {
             Item item = items.get(i - itemsRemoved);
 
             //If there is an item, give it to the player if they have no other item
+            //If the item is a key, coin or bomb, increment the player counts for those items instead
             if (player.getHitBox().intersects(item.getHitBox())) {
-                if(player.getCurrentItem() == null) {
+                String itemName = item.getName();
+                if (itemName.equals("silvercoin")) {
+                    player.addCoins(5);
+                } else if (itemName.equals("goldcoin")) {
+                    player.addCoins(10);
+                } else if (itemName.equals("bomb")) {
+                    player.addBombs(1);
+                } else if (itemName.equals("key")) {
+                    player.setNumKeys(player.getNumKeys() + 1);
+                } else if (player.getCurrentItem() == null) {
                     player.setItem(item);
-                    items.remove(i - itemsRemoved);
-                    ++itemsRemoved;
                 }
-
+                items.remove(i - itemsRemoved);
+                ++itemsRemoved;
             }
         }
     }
@@ -252,10 +261,10 @@ public class Room {
      * room
      */
     private void checkProjectileCollision() {
-    	// Get the latest update on the projectiles
-    	player.updateProjectiles();
+        // Get the latest update on the projectiles
+        player.updateProjectiles();
         ArrayList<Projectile> projectiles = player.getAllPlayerProjectiles();
-        
+
         // Go through all projectiles
         for (int p = 0; p < projectiles.size(); p++) {
             Projectile pj = projectiles.get(p);
@@ -270,7 +279,7 @@ public class Room {
             }
             // Go through all rock objects
             for (int z = 0; z < roomRocks.size(); z++) {
-            	// Projectile has hit a rock
+                // Projectile has hit a rock
                 if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
                     pj.killProjectile();
             }
@@ -837,7 +846,7 @@ public class Room {
                                 // Normal students shoot one direction
                                 currentEnemy.shootProjectile(currentEnemy.getDirection());
                             }
-                            
+
                             // Get the latest update of projectiles
                             currentEnemy.updateProjectiles();
                             ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();

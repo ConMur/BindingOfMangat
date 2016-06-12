@@ -35,76 +35,79 @@ public class Item extends GameObject
 	}
 
 	/**
-	 * Applies the effects the item has to the player
+	 * Applies the effects the item has to the player. If the item affects the player,
+	 * the item is consumed. If the item does no affect the player, the method returns false
+	 * and effectively does nothing
 	 * @param player the player to apply the effects to
 	 * @return if an effect was applied
      */
 	public boolean applyEffects(Player player)
 	{
+		boolean appliedEffectsToPlayer = false;
 		// Blocks one fatal instance of damage
 		if (name.equals("ankh"))
 		{
-			
-			
-			return true;
+
+
+			appliedEffectsToPlayer = true;
 		}
 		// Does nothing
 		else if(name.equals("blockofwood"))
 		{
 			//Do nothing
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("bombguidebook"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("brokenpencil"))
 		{
 			player.setProjectile(2);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if(name.equals("c++"))
 		{
 			player.setSpeed(player.getSpeed() + 50);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		
 		else if(name.equals("caffood"))
 		{
 			player.takeDamage(1);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if(name.equals("compscisweater"))
 		{
 			player.setMaxHP(player.getMaxHP() + 1);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("fireflower"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("glasses"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("goldenmushroom"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if(name.equals("halo"))
 		{
 			player.setDamage(player.getDamage() + 1);
 			player.setSpeed(player.getSpeed() + 50);
 			player.setMaxHP(player.getMaxHP() + 1);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("icecube"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("lightning"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("lotteryticket"))
 		{
@@ -113,22 +116,22 @@ public class Item extends GameObject
 				player.setNumCoin(99);
 			else
 				player.takeDamage(2);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("mariomushroom"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if(name.equals("masterkey"))
 		{
 			//This item makes keys unnessecary so just give the player a whole bunch of keys
 			player.setNumKeys(99);
 			player.heal(1);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("projector"))
 		{
-			return true;
+			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("usb"))
 		{
@@ -139,8 +142,14 @@ public class Item extends GameObject
 			}
 			else
 				player.takeDamage(1);
-			return true;
+			appliedEffectsToPlayer = true;
 		}
-		return false;
+
+		//Item was used, remove it from the player's inventory
+		if(appliedEffectsToPlayer)
+		{
+			player.setItem(null);
+		}
+		return appliedEffectsToPlayer;
 	}
 }
