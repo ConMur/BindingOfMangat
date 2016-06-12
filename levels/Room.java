@@ -252,19 +252,25 @@ public class Room {
      * room
      */
     private void checkProjectileCollision() {
+    	// Get the latest update on the projectiles
+    	player.updateProjectiles();
         ArrayList<Projectile> projectiles = player.getAllPlayerProjectiles();
+        
+        // Go through all projectiles
         for (int p = 0; p < projectiles.size(); p++) {
             Projectile pj = projectiles.get(p);
+            // Go through all enemies
             for (int e = 0; e < enemies.size(); e++) {
                 Enemy en = enemies.get(e);
+                // Projectile has hit an enemy
                 if (pj.getHitBox().intersects(en.getHitBox())) {
                     en.takeDamage(pj.getDamage());
                     pj.killProjectile();
                 }
             }
-            // VERY ROUGH PLAYER TO ROCK PROJECTILE COLLISION
-            // DO NOT USE UNTIL PROJECTILE SHADOW HITBOX IS FINISHED
+            // Go through all rock objects
             for (int z = 0; z < roomRocks.size(); z++) {
+            	// Projectile has hit a rock
                 if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
                     pj.killProjectile();
             }
@@ -819,7 +825,7 @@ public class Room {
                                         currentEnemy.move(oldX, oldY);
                                 }
                             }
-                            ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
+
                             // Gissing projectile behaviour
                             if (currentEnemy instanceof Gissing) {
                                 // Gissing is a beast so he shoots all directions
@@ -830,7 +836,10 @@ public class Room {
                                 // Normal students shoot one direction
                                 currentEnemy.shootProjectile(currentEnemy.getDirection());
                             }
-
+                            
+                            // Get the latest update of projectiles
+                            currentEnemy.updateProjectiles();
+                            ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
                             // Go through all projectiles of the current enemy
                             for (int p = 0; p < currentP.size(); p++) {
                                 // Hits a player

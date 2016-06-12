@@ -95,12 +95,12 @@ public class RockPatterns {
                             + 120 * row, rock, rockDimension, null, 0, 0));
 
             //Spawn locations
-            spawnLocations.add(new Point(130, 325));
-            spawnLocations.add(new Point(130,575));
-            spawnLocations.add(new Point(490,325));
-            spawnLocations.add(new Point(490,575));
-            spawnLocations.add(new Point(850,325));
-            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(130, 335));
+            spawnLocations.add(new Point(130,460));
+            spawnLocations.add(new Point(490,335));
+            spawnLocations.add(new Point(490,460));
+            spawnLocations.add(new Point(850,335));
+            spawnLocations.add(new Point(850,460));
         }
         // Column pattern
         else if (newPattern == 3) {
@@ -111,7 +111,7 @@ public class RockPatterns {
                             + ROCK_Y * row, rock, rockDimension, null, 0, 0));
 
             //Spawn locations
-            spawnLocations.add(new Point(200, 325));
+            spawnLocations.add(new Point(210, 325));
             spawnLocations.add(new Point(130,575));
             spawnLocations.add(new Point(730,325));
             spawnLocations.add(new Point(850,575));
@@ -128,13 +128,12 @@ public class RockPatterns {
                             + 120 * row, rock, rockDimension, null, 0, 0));
 
             //Spawn locations
-            spawnLocations.add(new Point(130, 325));
-            spawnLocations.add(new Point(130,575));
-            spawnLocations.add(new Point(850,325));
-            spawnLocations.add(new Point(850,575));
-            spawnLocations.add(new Point(470,450));
-            spawnLocations.add(new Point(340,450));
-            spawnLocations.add(new Point(600,450));
+            spawnLocations.add(new Point(130, 335));
+            spawnLocations.add(new Point(130,460));
+            spawnLocations.add(new Point(490,335));
+            spawnLocations.add(new Point(490,460));
+            spawnLocations.add(new Point(850,335));
+            spawnLocations.add(new Point(850,460));
         }
         // Open box pattern
         else if (newPattern == 5) {
@@ -153,10 +152,10 @@ public class RockPatterns {
                             + ROCK_Y * row, rock, rockDimension, null, 0, 0));
 
             //Spawn locations
-            spawnLocations.add(new Point(200, 325));
-            spawnLocations.add(new Point(130,575));
-            spawnLocations.add(new Point(730,325));
-            spawnLocations.add(new Point(850,575));
+            spawnLocations.add(new Point(560, 325));
+            spawnLocations.add(new Point(400,325));
+            spawnLocations.add(new Point(600,325));
+            spawnLocations.add(new Point(560,400));
             spawnLocations.add(new Point(400,450));
             spawnLocations.add(new Point(600,450));
         }
@@ -165,10 +164,10 @@ public class RockPatterns {
             // 6 columns, 5 rocks per column
             for (int row = 0; row < 3; row++) {
                 for (int topCol = 0; topCol < 3; topCol++)
-                    rocksInPattern.add(new GameObject(175 + 240 * topCol, 300
+                    rocksInPattern.add(new GameObject(175 + 250 * topCol, 300
                             + ROCK_Y * row, rock, rockDimension, null, 0, 0));
                 for (int botCol = 0; botCol < 3; botCol++)
-                    rocksInPattern.add(new GameObject(280 + 240 * botCol, 620
+                    rocksInPattern.add(new GameObject(280 + 250 * botCol, 620
                             - ROCK_Y * row, rock, rockDimension, null, 0, 0));
             }
 
