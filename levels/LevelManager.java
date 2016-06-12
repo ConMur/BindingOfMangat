@@ -415,6 +415,7 @@ public final class LevelManager {
     	currentLevel.stopAllRooms();
     	++levelNumber;
     	currentLevel = levels.get(levelNumber - 1);
+        currentLevel.start();
     }
     
     public static void update() {

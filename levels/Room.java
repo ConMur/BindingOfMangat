@@ -305,6 +305,7 @@ public class Room {
         if (showTrapDoor) {
             if (x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 70
                     && y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 70) {
+                inRoom = false;
                 LevelManager.advanceLevel();
             }
         }
