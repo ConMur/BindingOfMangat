@@ -30,7 +30,8 @@ public final class GameStateManager {
         // states.add(new InstructionsState());
 
         //TODO: remove when have a menu
-        currentState = states.get(State.MENU.ordinal());
+        currentStateValue = State.MENU;
+        currentState = states.get(currentStateValue.ordinal());
     }
 
     /**

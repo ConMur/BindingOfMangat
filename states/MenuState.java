@@ -82,6 +82,7 @@ public class MenuState implements GameState
 	@Override
 	public void mousePressed(int x, int y)
 	{
+
 		// Play button
 		if (x > 615 && x < 919 && y > 223 && y < 314)
 			GameStateManager.setState(State.PLAY);

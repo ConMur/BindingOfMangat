@@ -184,6 +184,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1)
 		GameStateManager.mousePressed(e.getX(), e.getY());
 	}
 }
