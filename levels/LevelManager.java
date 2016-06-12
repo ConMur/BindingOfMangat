@@ -133,6 +133,8 @@ public final class LevelManager {
             english.add(new EnemyStudent());
             english.add(new EnemyStudentCluster());
             
+            english.add(new EnemyBullshit());
+            
         } catch (IOException ioe) {
             System.err.println("Unable to load english enemies");
             ioe.printStackTrace();
@@ -145,6 +147,8 @@ public final class LevelManager {
             
             math.add(new EnemyTextbook());
             math.add(new EnemyPi());
+            math.add(new EnemyCalculator());
+            math.add(new EnemyFunction());
         } catch (IOException ioe) {
             System.err.println("Unable to load math enemies");
             ioe.printStackTrace();
@@ -277,7 +281,13 @@ public final class LevelManager {
                 ioe.printStackTrace();
             }
         } else if (levelNumber == 3) {
-            //TODO add mr pomakov
+        	 try {
+                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/pomakofront.png"));
+                 enemyList.add(new Pomakov(2, 5, 250, 500, 500, bossImage, new Dimension(75, 64), 5, true, false	));
+             } catch (IOException ioe) {
+                 System.err.println("Error loading gissing image file");
+                 ioe.printStackTrace();
+             }
         } else if (levelNumber == 2) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/marsellafront.png"));
