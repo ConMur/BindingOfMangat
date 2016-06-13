@@ -80,6 +80,7 @@ public class Item extends GameObject
 		else if(name.equals("compscisweater"))
 		{
 			player.setMaxHP(player.getMaxHP() + 1);
+			player.heal(10);
 			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("fireflower"))
@@ -96,9 +97,9 @@ public class Item extends GameObject
 		}
 		else if(name.equals("halo"))
 		{
-			player.setDamage(player.getDamage() + 1);
 			player.setSpeed(player.getSpeed() + 50);
 			player.setMaxHP(player.getMaxHP() + 1);
+			player.heal(10);
 			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("icecube"))
@@ -113,7 +114,10 @@ public class Item extends GameObject
 		{
 
 			if (r.nextInt(2) == 0)
+			{
+				player.heal(10);
 				player.setNumCoin(99);
+			}
 			else
 				player.takeDamage(2);
 			appliedEffectsToPlayer = true;
@@ -126,7 +130,7 @@ public class Item extends GameObject
 		{
 			//This item makes keys unnessecary so just give the player a whole bunch of keys
 			player.setNumKeys(99);
-			player.heal(1);
+			player.heal(10);
 			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("projector"))
@@ -137,7 +141,7 @@ public class Item extends GameObject
 		{
 			if (r.nextInt(4) == 3)
 			{
-				player.heal(1);
+				player.heal(10);
 				player.addCoins(5);
 			}
 			else
