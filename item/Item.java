@@ -44,11 +44,11 @@ public class Item extends GameObject
 	public boolean applyEffects(Player player)
 	{
 		boolean appliedEffectsToPlayer = false;
-		// Blocks one fatal instance of damage
+		// Gives you an extra life if triggered upon death, if consumed gives +2 Max HP and +1 heal
 		if (name.equals("ankh"))
 		{
-
-
+			player.setMaxHP(player.getMaxHP() + 2);
+			player.heal(1);
 			appliedEffectsToPlayer = true;
 		}
 		// Does nothing

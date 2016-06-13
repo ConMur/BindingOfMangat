@@ -91,11 +91,11 @@ public class Enemy extends MoveableObject
 		// Draw the hp bar
 		g.setColor(Color.GREEN);
 		
-		int green = (int)((double)getCurrentHP()/getMaxHP() * 60);
+		int green = (int)((double)getCurrentHP()/getMaxHP() * getSize().getWidth());
 		g.fillRect((int)getX(), (int)getY() - 10, green, 10);
 		
 		g.setColor(Color.RED);
-		g.fillRect((int)getX() + green, (int)getY() - 10, 60 - green, 10);
+		g.fillRect((int)getX() + green, (int)getY() - 10, (int)getSize().getWidth() - green, 10);
 
 	}
 

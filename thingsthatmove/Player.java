@@ -82,7 +82,7 @@ public class Player extends MoveableObject
 		boolean movingSouth = false;
 		takenDMG = false;
 
-		numKeys = 1;
+		numKeys = 2;
 		numBombs = 1;
 
 		try
@@ -114,6 +114,11 @@ public class Player extends MoveableObject
 			e.printStackTrace();
 		}
 	}
+	
+	public void goInvincible ()
+	{
+		takenDMG = true;
+	}
 
 	public void takeDamage(int amount)
 	{
@@ -139,6 +144,17 @@ public class Player extends MoveableObject
 			{
 				setImage(mangatHurtRight);
 			}
+			
+			if (currentItem == null)
+			{}
+			else if(currentItem.getName() == "ankh" && this.getCurrentHP() == 0)
+			{
+				System.out.println("REVIVE");
+				super.takeDamage(0);
+				this.heal(10);
+				currentItem = null;
+			}
+				
 		}
 
 	}
