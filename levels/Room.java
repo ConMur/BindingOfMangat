@@ -528,6 +528,8 @@ public class Room {
         resetAllDoors();
         inRoom = true;
         System.out.println("STARTING ROOM");
+        player.takeDamage(0);
+        
         moveEnemies = new Thread(new EnemyMovementThread());
         moveEnemies.start();
 
