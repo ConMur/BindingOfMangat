@@ -52,7 +52,7 @@ public class Projectile extends GameObject
 			
 			
 			this.speed = 300;
-			this.dmg = 5;
+			this.dmg = 10;
 			lifeSpan = 500;
 		}
 		// Broken pencils (triple shot, faster with less dmg)
@@ -75,7 +75,7 @@ public class Projectile extends GameObject
 			this.setXShadow(4);
 			this.setYShadow(24);
 			this.speed = 500;
-			this.dmg = 2;
+			this.dmg = 5;
 			lifeSpan = 500;
 		}
 		// Bombs (slower travel speed, explosion on impact)
@@ -320,7 +320,7 @@ public class Projectile extends GameObject
 	public void draw(Graphics g)
 	{
 		g.drawImage(image, (int) getX(), (int) getY(), null);
-		g.drawRect((int)getX(),(int)getY(),(int)getSize().getWidth(), (int)getSize().getHeight());
+//		g.drawRect((int)getX(),(int)getY(),(int)getSize().getWidth(), (int)getSize().getHeight());
 	}
 
 	/**

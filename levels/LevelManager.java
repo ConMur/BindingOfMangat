@@ -275,7 +275,7 @@ public final class LevelManager {
         if (levelNumber == 1) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/gissingfront.png"));
-                enemyList.add(new Gissing(2, 5, 250, 500, 500, bossImage, new Dimension(87, 60), 5, true, true));
+                enemyList.add(new Gissing(1, 100, 250, 500, 500, bossImage, new Dimension(87, 60), 100, true, true));
             } catch (IOException ioe) {
                 System.err.println("Error loading gissing image file");
                 ioe.printStackTrace();
@@ -283,7 +283,7 @@ public final class LevelManager {
         } else if (levelNumber == 3) {
         	 try {
                  BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/pomakofront.png"));
-                 enemyList.add(new Pomakov(2, 5, 250, 500, 500, bossImage, new Dimension(75, 64), 5, true, false	));
+                 enemyList.add(new Pomakov(1, 150, 250, 500, 500, bossImage, new Dimension(75, 64), 150, true, false	));
              } catch (IOException ioe) {
                  System.err.println("Error loading gissing image file");
                  ioe.printStackTrace();
@@ -291,7 +291,7 @@ public final class LevelManager {
         } else if (levelNumber == 2) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/marsellafront.png"));
-                enemyList.add(new Marsella(2, 5, 250, 500, 500, bossImage, new Dimension(93, 67), 5, true, false));
+                enemyList.add(new Marsella(1, 50, 250, 500, 500, bossImage, new Dimension(93, 67), 50, true, false));
             } catch (IOException ioe) {
                 System.err.println("Error loading marsella image file");
                 ioe.printStackTrace();
@@ -299,7 +299,7 @@ public final class LevelManager {
 
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/shimfront.png"));
-                enemyList.add(new Shim(2, 5, 250, 500, 500, bossImage, new Dimension(89, 51), 5, true, true));
+                enemyList.add(new Shim(1, 50, 250, 500, 500, bossImage, new Dimension(89, 51), 50, true, true));
             } catch (IOException ioe) {
                 System.err.println("Error loading shim image file");
                 ioe.printStackTrace();
@@ -309,7 +309,7 @@ public final class LevelManager {
         {
         	   try {
                    BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/macfront.png"));
-                   enemyList.add(new Mack(2, 5, 250, 500, 500, bossImage, new Dimension(85, 53), 5, true, true));
+                   enemyList.add(new Mack(1, 5, 250, 500, 500, bossImage, new Dimension(85, 53), 5, true, true));
                } catch (IOException ioe) {
                    System.err.println("Error loading mack image file");
                    ioe.printStackTrace();
@@ -317,7 +317,7 @@ public final class LevelManager {
         } else if (levelNumber == 5) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/ridoutfront.png"));
-                enemyList.add(new Ridout(2, 5, 250, 500, 500, bossImage, new Dimension(128, 79), 5, 2, true, true));
+                enemyList.add(new Ridout(1, 5, 250, 500, 500, bossImage, new Dimension(128, 79), 5, 2, true, true));
             } catch (IOException ioe) {
                 System.err.println("Error loading ridout image file");
                 ioe.printStackTrace();

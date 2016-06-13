@@ -1,9 +1,9 @@
 package thingsthatmove;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -87,6 +87,16 @@ public class Enemy extends MoveableObject
 			Projectile p = currentProjectiles.get(n);
 			g.drawImage(p.getImage(), (int) p.getX(), (int) p.getY(), null);
 		}
+		
+		// Draw the hp bar
+		g.setColor(Color.GREEN);
+		
+		int green = (int)((double)getCurrentHP()/getMaxHP() * 60);
+		g.fillRect((int)getX(), (int)getY() - 10, green, 10);
+		
+		g.setColor(Color.RED);
+		g.fillRect((int)getX() + green, (int)getY() - 10, 60 - green, 10);
+
 	}
 
 	public ArrayList<Projectile> getAllProjectiles()

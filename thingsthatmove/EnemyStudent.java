@@ -12,7 +12,7 @@ public class EnemyStudent extends Enemy
 {
 	public EnemyStudent () throws IOException
 	{
-		super (new Enemy(1, 2, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
-                new Dimension(60, 37), 2, true, false, new Dimension(49, 10), 7, 67));
+		super (new Enemy(1, 30, 200, 400, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/enemies/studentfront.png")),
+                new Dimension(60, 37), 30, true, false, new Dimension(49, 10), 7, 67));
 	}
 }

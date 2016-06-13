@@ -593,12 +593,14 @@ public class Room {
         g.drawImage(hud, 0, 0, null);
         g.drawImage(background, 0, 198, null);
         g.setColor(Color.RED);
-        g.drawRect(130, 325, 720, 250);
+        
+        
+       // g.drawRect(130, 325, 720, 250);
 
 
         g.setColor(Color.BLACK);
-        g.drawRect(LOWER_X_BOUND, LOWER_Y_BOUND, UPPER_X_BOUND - LOWER_X_BOUND,
-                UPPER_Y_BOUND - LOWER_Y_BOUND);
+//        g.drawRect(LOWER_X_BOUND, LOWER_Y_BOUND, UPPER_X_BOUND - LOWER_X_BOUND,
+//                UPPER_Y_BOUND - LOWER_Y_BOUND);
 
 
         roomPattern.draw(g);
@@ -607,7 +609,7 @@ public class Room {
         sortAllGameObjects();
         for (int e = 0; e < enemies.size(); e++) {
             Enemy currentEnemy = enemies.get(e);
-            Rectangle r = currentEnemy.getHitBox();
+//            Rectangle r = currentEnemy.getHitBox();
             g.drawImage(currentEnemy.getImage(), (int) currentEnemy.getX(),
                     (int) currentEnemy.getY(), null);
 //            g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
@@ -617,14 +619,14 @@ public class Room {
         }
 
         // Collision hitbox
-        g.setColor(Color.RED);
-        for (int h = 0; h < hitboxes.size(); h++)
-            g.drawRect((int) hitboxes.get(h).getX(), (int) hitboxes.get(h).getY(), (int) hitboxes.get(h).getWidth(), (int) hitboxes.get(h).getHeight());
-
-        // Movement hitbox
-        g.setColor(Color.GREEN);
-        for (int h = 0; h < movementHitboxes.size(); h++)
-            g.drawRect((int) movementHitboxes.get(h).getX(), (int) movementHitboxes.get(h).getY(), (int) movementHitboxes.get(h).getWidth(), (int) movementHitboxes.get(h).getHeight());
+//        g.setColor(Color.RED);
+//        for (int h = 0; h < hitboxes.size(); h++)
+//            g.drawRect((int) hitboxes.get(h).getX(), (int) hitboxes.get(h).getY(), (int) hitboxes.get(h).getWidth(), (int) hitboxes.get(h).getHeight());
+//
+//        // Movement hitbox
+//        g.setColor(Color.GREEN);
+//        for (int h = 0; h < movementHitboxes.size(); h++)
+//            g.drawRect((int) movementHitboxes.get(h).getX(), (int) movementHitboxes.get(h).getY(), (int) movementHitboxes.get(h).getWidth(), (int) movementHitboxes.get(h).getHeight());
 
 
         for (int i = 0; i < items.size(); i++) {

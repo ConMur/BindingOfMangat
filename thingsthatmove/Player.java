@@ -532,13 +532,13 @@ public class Player extends MoveableObject
 
 		// Movement hitbox
 		g.setColor(Color.GREEN);
-		g.drawRect((int) getShadowHitbox().getX(), (int) getShadowHitbox().getY(), (int)getShadowHitbox().getWidth(), (int) getShadowHitbox().getHeight());
+//		g.drawRect((int) getShadowHitbox().getX(), (int) getShadowHitbox().getY(), (int)getShadowHitbox().getWidth(), (int) getShadowHitbox().getHeight());
 
 		// Projectile collision hitbox
 		g.setColor(Color.red);
-		Rectangle r = getHitBox();
-		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
-				(int) r.getHeight());
+//		Rectangle r = getHitBox();
+//		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
+//				(int) r.getHeight());
 
 		// Draw HP level in the HUD
 		for (int n = 0; n < this.getMaxHP(); n++)
