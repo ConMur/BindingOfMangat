@@ -27,10 +27,10 @@ public final class GameStateManager {
         states.add(new PlayState());
         states.add(new MenuState());
         states.add(new WinState());
+        states.add(new DeadState());
         // states.add(new CreditsState());
         // states.add(new InstructionsState());
 
-        //TODO: remove when have a menu
         currentStateValue = State.MENU;
         currentState = states.get(currentStateValue.ordinal());
     }
@@ -51,8 +51,9 @@ public final class GameStateManager {
         // TODO: consider a loading screen
 
         // Load in the new state
-        currentState = states.get(state.ordinal());
-        currentState.init();
+        GameState newState = states.get(state.ordinal());
+        newState.init();
+        currentState = newState;
         currentStateValue = state;
     }
 

@@ -13,6 +13,12 @@ public class PlayState implements GameState
 
 	public PlayState()
 	{
+
+	}
+
+	@Override
+	public void init()
+	{
 		try {
 			player = new Player(10, 5, 250, 350, 400, ImageIO.read(getClass().getResourceAsStream("/images/mangat/mangatfront.png")),
 					new Dimension(75, 55), 5, 1, null, new Dimension(55,10), 13, 72);
@@ -23,12 +29,6 @@ public class PlayState implements GameState
 			ioe.printStackTrace();
 		}
 		LevelManager.init(player);
-	}
-
-	@Override
-	public void init()
-	{
-		
 	}
 
 	@Override

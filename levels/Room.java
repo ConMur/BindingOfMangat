@@ -15,6 +15,8 @@ import java.util.TooManyListenersException;
 
 import javax.imageio.ImageIO;
 
+import states.GameStateManager;
+import states.State;
 import thingsthatmove.Enemy;
 import thingsthatmove.GameObject;
 import thingsthatmove.Gissing;
@@ -219,6 +221,18 @@ public class Room {
         updateDoorStatus();
         checkIfPlayerAtDoor();
         checkProjectileCollision();
+        checkIfPlayerDead();
+    }
+
+    /**
+     * Checks if the player is dead and if so, changes to the dead state
+     */
+    private void checkIfPlayerDead() {
+        if(player.getCurrentHP() <=0)
+        {
+            endRoom();
+            GameStateManager.setState(State.DEAD);
+        }
     }
 
     private void checkIfPlayerOnItem() {
@@ -314,7 +328,7 @@ public class Room {
         if (showTrapDoor) {
             if (x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 70
                     && y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 70) {
-                inRoom = false;
+                endRoom();
                 LevelManager.advanceLevel();
             }
         }
