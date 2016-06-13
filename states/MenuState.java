@@ -16,13 +16,22 @@ import javax.swing.JButton;
 
 import levels.LevelManager;
 
+/**
+ * The state the program goes into when the player is on the menu. Allows the player to
+ * select to play, read instructions or exit the program
+ * @author Connor Murphy, Matthew Sun
+ */
 public class MenuState implements GameState 
 {
 	private BufferedImage bg;
 
-	
-	
 	public MenuState ()
+	{
+
+	}
+
+	@Override
+	public void init()
 	{
 		// Menu image
 		try {
@@ -32,16 +41,6 @@ public class MenuState implements GameState
 		{
 			ioe.printStackTrace();
 		}
-		
-		
-		
-	}
-	
-	
-	public void init()
-	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -61,8 +60,7 @@ public class MenuState implements GameState
 	@Override
 	public void cleanUp()
 	{
-		// TODO Auto-generated method stub
-		
+		bg = null;
 	}
 
 	@Override

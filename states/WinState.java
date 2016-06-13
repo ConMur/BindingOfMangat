@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * The state that the program goes into when the player beats the game.
+ * It allows the player to navigate back to the main menu
  * @author Connor Murphy
  */
 public class WinState implements GameState {
@@ -33,7 +35,7 @@ public class WinState implements GameState {
 
     @Override
     public void cleanUp() {
-
+        bg = null;
     }
 
     @Override

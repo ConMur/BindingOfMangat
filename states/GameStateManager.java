@@ -33,6 +33,7 @@ public final class GameStateManager {
 
         currentStateValue = State.MENU;
         currentState = states.get(currentStateValue.ordinal());
+        currentState.init();
     }
 
     /**

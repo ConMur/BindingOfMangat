@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * The state the program goes into when the player dies. Allows the player to return to the menu or play again
+ *
  * @author Connor Murphy
  */
 public class DeadState implements GameState {
@@ -33,7 +35,7 @@ public class DeadState implements GameState {
 
     @Override
     public void cleanUp() {
-
+        bg = null;
     }
 
     @Override
