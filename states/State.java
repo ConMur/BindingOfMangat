@@ -6,5 +6,5 @@ package states;
  *
  */
 public enum State {
-	PLAY, MENU, WIN, DEAD,CREDITS, INSTRUCTIONS
+	PLAY, MENU, WIN, DEAD, CREDITS, INSTRUCTIONS
 }

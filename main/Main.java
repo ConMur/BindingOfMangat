@@ -4,6 +4,12 @@ import gui.GameFrame;
 
 import java.io.IOException;
 
+/**
+ * This is the entry point for the program. If the program detects that it is running on a unix system,
+ * it attempts to relaunch using OpenGL for drawing efficiency.
+ *
+ * @author Connor Murphy
+ */
 public class Main {
     private static GameFrame frame;
 
@@ -24,15 +30,25 @@ public class Main {
                 ioe.printStackTrace();
             }
         } else {*/
-            //Start the program
-            frame = new GameFrame();
+        //Start the program
+        frame = new GameFrame();
         //}
     }
 
+    /**
+     * Returns the width of the frame
+     *
+     * @return the width of the frame
+     */
     public static int getHeight() {
         return frame.getHeight();
     }
 
+    /**
+     * Returns the height of the frame
+     *
+     * @return the height of the frame
+     */
     public static int getWidth() {
         return frame.getWidth();
     }

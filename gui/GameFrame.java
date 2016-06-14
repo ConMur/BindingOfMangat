@@ -6,7 +6,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 /**
- * The entry point for the program. Creates a frame and displays it
+ * Creates a frame and displays it. This frame contains a panel which does all the game processing.
  *
  * @author Connor Murphy
  */

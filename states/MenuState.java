@@ -23,12 +23,8 @@ import levels.LevelManager;
  */
 public class MenuState implements GameState 
 {
+	//The background for this state
 	private BufferedImage bg;
-
-	public MenuState ()
-	{
-
-	}
 
 	@Override
 	public void init()
@@ -54,7 +50,6 @@ public class MenuState implements GameState
 	public void draw(Graphics g)
 	{
 		g.drawImage(bg, 0, 0, null);
-		
 	}
 
 	@Override
@@ -80,16 +75,18 @@ public class MenuState implements GameState
 	@Override
 	public void mousePressed(int x, int y)
 	{
-
 		// Play button
 		if (x > 615 && x < 919 && y > 223 && y < 314)
 			GameStateManager.setState(State.PLAY);
-		// Help button
+		// Instructions button
 //		else if (x > 615 && x < 919 && y > 338 && y < 425)
 
 		// Exit button
-//		else if (x > 615 && x < 919 && y > 617 && y < 552)
-		
+//		else if (x > 615 && x < 919 && y > 552 && y < 617)
+//		{
+//			System.exit(0);
+//		}
+
 	}
 
 	@Override

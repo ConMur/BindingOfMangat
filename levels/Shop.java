@@ -7,6 +7,7 @@ import java.util.Random;
 
 /**
  * A collection of game objects that that player can walk over and "purchace" using coins
+ * @deprecated bc we will never use this class rip idea from a week ago
  * @author Connor Murphy
  *
  */

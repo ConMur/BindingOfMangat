@@ -60,7 +60,6 @@ public final class GameStateManager {
 
     /**
      * Updates the current state
-     *
      */
     public static void update() {
         if (currentState != null)

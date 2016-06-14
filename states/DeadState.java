@@ -50,11 +50,11 @@ public class DeadState implements GameState {
 
     @Override
     public void mousePressed(int x, int y) {
-        //play again button
+        //Play again button
         if (x > 150 && y > 628 && x < 473 && y < 725) {
             GameStateManager.setState(State.PLAY);
         }
-        // main menu button
+        //Main menu button
         else if (x > 515 && y > 625 && x < 837 && y < 726) {
             GameStateManager.setState(State.MENU);
         }
