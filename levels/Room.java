@@ -998,9 +998,9 @@ public class Room {
         if (east != null) {
             if (east.getRoomType() == RoomType.BOSS)
                 if (eastOpen)
-                    g.drawImage(westOpenBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+                    g.drawImage(eastOpenBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
                 else
-                    g.drawImage(westClosedBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+                    g.drawImage(eastClosedBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
             else if (eastOpen && !east.isLocked())
                 g.drawImage(eastOpenDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
             else if (east.isLocked())
