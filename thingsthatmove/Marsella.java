@@ -3,6 +3,7 @@ package thingsthatmove;
 import java.awt.*;
 
 /**
+ * The level 2 boss, Ms. Marsella
  * @author Connor Murphy
  */
 public class Marsella extends Enemy {

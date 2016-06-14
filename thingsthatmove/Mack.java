@@ -3,6 +3,7 @@ package thingsthatmove;
 import java.awt.*;
 
 /**
+ * The level 4 boss, Mr. Mac
  * @author Connor Murphy
  */
 public class Mack extends Enemy {

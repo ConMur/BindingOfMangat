@@ -10,6 +10,10 @@ import javax.imageio.ImageIO;
 
 import util.Util;
 
+/**
+ * A ranged attack that has a limited range. A Projectile can move and draw itself
+ * @author Connor Murphy, Matthew Sun
+ */
 public class Projectile extends GameObject
 {
 	private int speed, dmg;
@@ -26,6 +30,11 @@ public class Projectile extends GameObject
 	private final int LOWER_Y_BOUND = 200;
 	private final int UPPER_Y_BOUND = 672;
 
+	/**
+	 * Creates a new projectile of the type specified and travelling in the direction given
+	 * @param projectileNum the type of projectile this projectile is
+	 * @param direction the direction this projectile will move in
+     */
 	public Projectile(int projectileNum, char direction)
 	{
 		super(0, 0, null, null, null, 0, 0);
@@ -234,26 +243,46 @@ public class Projectile extends GameObject
 		this.lifeSpan = lifeSpan;
 	}
 
+	/**
+	 * Returns the direction that this projectile is moving in
+	 * @return the direction that this projectile is moving in
+     */
 	public char getDirection()
 	{
 		return direction;
 	}
 
+	/**
+	 * Sets the direction that this projectile is moving in
+	 * @param c the direction that this projectile will move in
+	 */
 	public void setDirection(char c)
 	{
 		direction = c;
 	}
 
+	/**
+	 * Returns if the projectile is visible or not
+	 * @return if the projectile is visible or not
+     */
 	public boolean isVisible()
 	{
 		return visible;
 	}
 
+	/**
+	 * Sets the visibility of this projectile
+	 * @param b whether the projectile is visible or not
+     */
 	public void setVisibility(boolean b)
 	{
 		visible = b;
 	}
 
+	/**
+	 * Returns the damage of this projectile if it is still moveing
+	 * @return the damage of this projectile if it is still moveing
+     */
 	public int getDamage()
 	{
 		// Make sure that there is no damage if the projectile is dead
@@ -262,11 +291,17 @@ public class Projectile extends GameObject
 		return dmg;
 	}
 
+	/**
+	 * Notifies the projectile that is should be removed from the simulation
+	 */
 	public void killProjectile()
 	{
 		isDead = true;
 	}
 
+	/**
+	 * Moves the particle and removes it if it has traveled more than its range or if it goes out of the room's bounds
+	 */
 	public void update()
 	{
 		if (direction == 'N')
@@ -317,6 +352,10 @@ public class Projectile extends GameObject
 			isDead = true;
 	}
 
+	/**
+	 * Draws the projectile
+	 * @param g the graphics to draw to
+     */
 	public void draw(Graphics g)
 	{
 		g.drawImage(image, (int) getX(), (int) getY(), null);
@@ -333,6 +372,9 @@ public class Projectile extends GameObject
 		return isDead;
 	}
 
+	/**
+	 * Moves the projectile north west
+	 */
 	public void moveNorthWest()
 	{
 		setX(getX() - (speed * Util.getDeltaTime()));
@@ -341,6 +383,9 @@ public class Projectile extends GameObject
 			visible = false;
 	}
 
+	/**
+	 * Moves the projectile north
+	 */
 	public void moveNorth()
 	{
 		setY(getY() - speed * Util.getDeltaTime());
@@ -348,6 +393,9 @@ public class Projectile extends GameObject
 			visible = false;
 	}
 
+	/**
+	 * Moves the projectile north east
+	 */
 	public void moveNorthEast()
 	{
 		setY(getY() - (speed * Util.getDeltaTime()));
@@ -356,6 +404,9 @@ public class Projectile extends GameObject
 			visible = false;
 	}
 
+	/**
+	 * Moves the projectile east
+	 */
 	public void moveEast()
 	{
 		setX(getX() + speed * Util.getDeltaTime());
@@ -363,6 +414,9 @@ public class Projectile extends GameObject
 			visible = false;
 	}
 
+	/**
+	 * Moves the projectile south east
+	 */
 	public void moveSouthEast()
 	{
 		setX(getX() + (speed * Util.getDeltaTime()));
@@ -371,6 +425,9 @@ public class Projectile extends GameObject
 			visible = false;
 	}
 
+	/**
+	 * Moves the projectile south
+	 */
 	public void moveSouth()
 	{
 		setY(getY() + speed * Util.getDeltaTime());
@@ -378,6 +435,9 @@ public class Projectile extends GameObject
 			visible = false;
 	}
 
+	/**
+	 * Moves the projectile south west
+	 */
 	public void moveSouthWest()
 	{
 		setY(getY() + (speed * Util.getDeltaTime()));
@@ -386,6 +446,9 @@ public class Projectile extends GameObject
 			visible = false;
 	}
 
+	/**
+	 * Moves the projectile west
+	 */
 	public void moveWest()
 	{
 		setX(getX() - speed * Util.getDeltaTime());

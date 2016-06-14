@@ -3,6 +3,7 @@ package thingsthatmove;
 import java.awt.*;
 
 /**
+ * The level 3 boss, Mr. Pomakov
  * @author Connor Murphy
  */
 public class Pomakov extends Enemy {

@@ -3,7 +3,8 @@ package thingsthatmove;
 import java.awt.*;
 
 /**
- * @author Connor Murphy
+ * The level 1 boss, Mr. Gissing
+ * @author Connor Murphy, Matthew Sun
  */
 public class Gissing extends Enemy {
 
