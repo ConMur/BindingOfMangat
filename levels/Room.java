@@ -1,3 +1,4 @@
+
 package levels;
 
 import item.Item;
@@ -978,11 +979,11 @@ public class Room {
         int enemiesRemoved = 0;
         for (int n = 0; n < enemies.size(); n++) {
             if (!enemies.get(n-enemiesRemoved).isAlive()) {
-                if (roomType == RoomType.BOSS) {
+            	 enemies.remove(n-enemiesRemoved);
+                if (roomType == RoomType.BOSS && !hasEnemies()) {
                     showTrapDoor = true;
                     items.add(bossItem);
                 }
-                enemies.remove(n-enemiesRemoved);
                 enemiesRemoved++;
             }
         }
