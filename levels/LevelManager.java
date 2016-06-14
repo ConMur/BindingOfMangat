@@ -1,12 +1,11 @@
 package levels;
+
 import item.Item;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
 
 import states.GameStateManager;
@@ -15,12 +14,11 @@ import thingsthatmove.*;
 
 import javax.imageio.ImageIO;
 
-//TODO: add a way to make obstacles (rocks, walls, etc) in the rooms
 
 /**
  * Creates, updates and draws the levels in the game
  *
- * @author Connor Murphy
+ * @author Connor Murphy, Matthew Sun
  */
 public final class LevelManager {
     private static final int EXTRA_ROOMS_PER_LEVEL = 2;
@@ -45,9 +43,9 @@ public final class LevelManager {
 
     //The coordinates of the text that displays the current level
     private static final int LEVEL_TEXT_X = 15;
-    private static final int  LEVEL_TEXT_Y = 760;
+    private static final int LEVEL_TEXT_Y = 760;
 
-    private static Font levelTextFont = new Font ("LetterOMatic!", Font.PLAIN, 26);
+    private static Font levelTextFont = new Font("LetterOMatic!", Font.PLAIN, 26);
 
     private static ArrayList<Level> levels;
     private static Level currentLevel;
@@ -70,14 +68,23 @@ public final class LevelManager {
     // A reference to the player
     private static Player player;
 
+    /**
+     * private constructor so that no one can access it
+     */
     private LevelManager() {
     }
 
+    /**
+     * Loads all the resources and initializes all the variables needed by the program
+     *
+     * @param p a reference to the player
+     */
     public static void init(Player p) {
-        levels = new ArrayList<Level>();
+        levels = new ArrayList<>();
         rand = new Random();
         player = p;
 
+        //Initialize the specific items for different levels
         scienceEnemyList = new ArrayList<>();
         englishEnemyList = new ArrayList<>();
         mathEnemyList = new ArrayList<>();
@@ -92,14 +99,13 @@ public final class LevelManager {
         levelNumber = 1;
 
         //Create the level text font
-    	try {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,LevelManager.class.getResourceAsStream("/fonts/ltromatic.ttf")));
-		} catch (IOException | FontFormatException e) {
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, LevelManager.class.getResourceAsStream("/fonts/ltromatic.ttf")));
+        } catch (IOException | FontFormatException e) {
             System.err.println("Error loading level display font");
             e.printStackTrace();
-		}
-
+        }
 
 
         generateLevels(NUMBER_OF_LEVELS);
@@ -109,6 +115,13 @@ public final class LevelManager {
         currentLevel.start();
     }
 
+    /**
+     * Adds enemies to the given lists of enemies
+     * @param science the enemies for the science level
+     * @param english the enemies for the english level
+     * @param math the enemies for the math level
+     * @param history the enemies for the history level
+     */
     private static void populateEnemyLists(
             ArrayList<Enemy> science, ArrayList<Enemy> english,
             ArrayList<Enemy> math, ArrayList<Enemy> history) {
@@ -118,7 +131,7 @@ public final class LevelManager {
             science.add(new EnemyEclipse());
             science.add(new EnemyStudent());
             science.add(new EnemyStudentCluster());
-            
+
             science.add(new EnemyEinstein());
             science.add(new EnemyCell());
             science.add(new EnemyChem());
@@ -132,19 +145,19 @@ public final class LevelManager {
             english.add(new EnemyEclipse());
             english.add(new EnemyStudent());
             english.add(new EnemyStudentCluster());
-            
+
             english.add(new EnemyBullshit());
-            
+
         } catch (IOException ioe) {
             System.err.println("Unable to load english enemies");
             ioe.printStackTrace();
         }
         // Add the math enemies
         try {
-        	math.add(new EnemyEclipse());
+            math.add(new EnemyEclipse());
             math.add(new EnemyStudent());
             math.add(new EnemyStudentCluster());
-            
+
             math.add(new EnemyTextbook());
             math.add(new EnemyPi());
             math.add(new EnemyCalculator());
@@ -155,15 +168,19 @@ public final class LevelManager {
         }
         // Add the history enemies
         try {
-        	history.add(new EnemyEclipse());
-        	history.add(new EnemyStudent());
-        	history.add(new EnemyStudentCluster());
+            history.add(new EnemyEclipse());
+            history.add(new EnemyStudent());
+            history.add(new EnemyStudentCluster());
         } catch (IOException ioe) {
             System.err.println("Unable to load history enemies");
             ioe.printStackTrace();
         }
     }
 
+    /**
+     * Adds items to the given list of items
+     * @param items the list to add items to
+     */
     private static void populateItemList(ArrayList<Item> items) {
         // TODO: update as more items are added
         // Add the items
@@ -197,10 +214,13 @@ public final class LevelManager {
             ioe.printStackTrace();
         }
     }
-    
-    public static ArrayList<Item> getItems ()
-    {
-    	return itemList;
+
+    /**
+     * Returns the items in the game
+     * @return the items in the game
+     */
+    public static ArrayList<Item> getItems() {
+        return itemList;
     }
 
     /**
@@ -210,7 +230,7 @@ public final class LevelManager {
      */
     private static void generateLevels(int numLevels) {
         /*
-		 * maybe shop always key door always boss room always other rooms
+         * maybe shop always key door always boss room always other rooms
 		 */
 
         for (int i = 1; i < numLevels + 1; ++i) {
@@ -256,19 +276,29 @@ public final class LevelManager {
             }
 
             //Boss room
-            rooms.add(createBossRoom(i));
+            rooms.add(createBossRoom(i, levelItems));
 
             Level level = new Level(rooms);
             levels.add(level);
         }
+
+        //Create the final boss level (an empty room and a boss room)
+        ArrayList<Item> levelItems = new ArrayList<>(itemList);
+        Room startRoom = createInitialRoom(levelItems);
+        Room boss = createBossRoom(5, levelItems);
+        ArrayList<Room> rooms = new ArrayList<>();
+        rooms.add(startRoom);
+        rooms.add(boss);
+        levels.add(new Level(rooms));
     }
 
     /**
      * Creates the boss room for the level
-     * @return the boss room for the level
+     *
      * @param levelNumber the level number to generate a boss for
+     * @return the boss room for the level
      */
-    private static Room createBossRoom(int levelNumber) {
+    private static Room createBossRoom(int levelNumber, ArrayList<Item> items) {
         ArrayList<Enemy> enemyList = new ArrayList<>();
 
         //Find the level and create the boss for that level
@@ -281,13 +311,13 @@ public final class LevelManager {
                 ioe.printStackTrace();
             }
         } else if (levelNumber == 3) {
-        	 try {
-                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/pomakofront.png"));
-                 enemyList.add(new Pomakov(1, 150, 250, 500, 500, bossImage, new Dimension(75, 64), 150, true, false	));
-             } catch (IOException ioe) {
-                 System.err.println("Error loading gissing image file");
-                 ioe.printStackTrace();
-             }
+            try {
+                BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/pomakofront.png"));
+                enemyList.add(new Pomakov(1, 150, 250, 500, 500, bossImage, new Dimension(75, 64), 150, true, false));
+            } catch (IOException ioe) {
+                System.err.println("Error loading gissing image file");
+                ioe.printStackTrace();
+            }
         } else if (levelNumber == 2) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/marsellafront.png"));
@@ -304,16 +334,14 @@ public final class LevelManager {
                 System.err.println("Error loading shim image file");
                 ioe.printStackTrace();
             }
-        }
-        else if(levelNumber == 4)
-        {
-        	   try {
-                   BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/macfront.png"));
-                   enemyList.add(new Mack(1, 5, 250, 500, 500, bossImage, new Dimension(85, 53), 5, true, true));
-               } catch (IOException ioe) {
-                   System.err.println("Error loading mack image file");
-                   ioe.printStackTrace();
-               }
+        } else if (levelNumber == 4) {
+            try {
+                BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/macfront.png"));
+                enemyList.add(new Mack(1, 5, 250, 500, 500, bossImage, new Dimension(85, 53), 5, true, true));
+            } catch (IOException ioe) {
+                System.err.println("Error loading mack image file");
+                ioe.printStackTrace();
+            }
         } else if (levelNumber == 5) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/ridoutfront.png"));
@@ -328,19 +356,24 @@ public final class LevelManager {
 
         RockPatterns rp;
         boolean emptyRockPattern = rand.nextBoolean();
-        if(emptyRockPattern)
-        {
+        if (emptyRockPattern) {
             rp = new RockPatterns(0);
-        }
-        else
-        {
+        } else {
             rp = new RockPatterns(5);
         }
 
-        Room room = new Room(enemyList, new ArrayList<>(), new ArrayList<>(), player, false, Room.RoomType.BOSS, rp);
+        ArrayList<Item> itemList = new ArrayList<>();
+        itemList.add(items.get(rand.nextInt(items.size())));
+
+        Room room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.BOSS, rp);
         return room;
     }
 
+    /**
+     * Creates the initial room which is a room with no enemies
+     * @param items the items that the room can have
+     * @return the initial room
+     */
     private static Room createInitialRoom(ArrayList<Item> items) {
         // Have a chance to have an item in the room
         ArrayList<Item> itemList = new ArrayList<>();
@@ -354,9 +387,15 @@ public final class LevelManager {
         return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL, rp);
     }
 
+    /**
+     * Creates a general room with enemies, items, a rock pattern and a chance to be locked
+     * @param enemies the list of enemies this level has
+     * @param items the list of items this level has
+     * @return the room created
+     */
     private static Room createRoom(ArrayList<Enemy> enemies,
                                    ArrayList<Item> items) {
-       boolean thisRoomLocked = false;
+        boolean thisRoomLocked = false;
 
         //Potentially make this room locked
         if (!createdLockedRoom) {
@@ -369,22 +408,18 @@ public final class LevelManager {
 
         //Set the rock pattern for this room
         RockPatterns rp;
-        if(thisRoomLocked)
-        {
+        if (thisRoomLocked) {
             rp = new RockPatterns(1);
-        }
-        else
-        {
+        } else {
             int pattern = rand.nextInt(RockPatterns.getNumRockPatterns());
             rp = new RockPatterns(pattern);
         }
-
 
         ArrayList<GameObject> rocks = rp.getRocks();
         ArrayList<Enemy> enemyList = new ArrayList<>();
         ArrayList<Point> spawnLocations = rp.getSpawnLocations();
 
-        if(!thisRoomLocked) {
+        if (!thisRoomLocked) {
             // Choose the enemy for this room
             //TODO: uncomment when have enough enemies
             //Enemy e = enemies.remove(rand.nextInt(enemies.size()));
@@ -406,57 +441,64 @@ public final class LevelManager {
         int itemChance = rand.nextInt(100);
 
         // Spawn item randomly and locked rooms always have items
-        if(thisRoomLocked || itemChance < ITEM_CHANCE)
-        {
+        if (thisRoomLocked || itemChance < ITEM_CHANCE) {
             itemList.add(items.get(rand.nextInt(items.size())));
         }
         Room room;
-        if(thisRoomLocked)
-        {
-            room =  new Room(enemyList, itemList, new ArrayList<>(), player, true, Room.RoomType.NORMAL, rp);
-        }
-        else
-        {
+        if (thisRoomLocked) {
+            room = new Room(enemyList, itemList, new ArrayList<>(), player, true, Room.RoomType.NORMAL, rp);
+        } else {
             room = new Room(enemyList, itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL, rp);
         }
         return room;
     }
 
-    public static void advanceLevel()
-    {
-    	currentLevel.stopAllRooms();
-    	++levelNumber;
-        if(levelNumber > NUMBER_OF_LEVELS)
-        {
+    /**
+     * Advances the level to the next one. If the level advanced to is more than the total levels, it notifies the
+     * player that they won
+     */
+    public static void advanceLevel() {
+        currentLevel.stopAllRooms();
+        ++levelNumber;
+
+        //If there are no more levels, the player won
+        if (levelNumber > NUMBER_OF_LEVELS) {
             //Player won
             GameStateManager.setState(State.WIN);
         }
-    	currentLevel = levels.get(levelNumber - 1);
+        currentLevel = levels.get(levelNumber - 1);
         currentLevel.start();
     }
-    
+
+    /**
+     * Updates the current level
+     */
     public static void update() {
         currentLevel.update();
     }
 
+    /**
+     * Draws the current level and text in the bottom left corner that displays the current level's name
+     * @param g the graphics to draw to
+     */
     public static void draw(Graphics g) {
         currentLevel.draw(g);
 
-        
+
         g.setColor(Color.BLACK);
         g.fillRect(0, 720, 400, 300);
         g.setFont(levelTextFont);
         g.setColor(Color.WHITE);
         if (levelNumber == 1)
-        	g.drawString("Science Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+            g.drawString("Science Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
         else if (levelNumber == 2)
-        	g.drawString("Math Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+            g.drawString("Math Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
         else if (levelNumber == 3)
-        	g.drawString("English Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+            g.drawString("English Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
         else if (levelNumber == 4)
-        	g.drawString("History Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+            g.drawString("History Department", LEVEL_TEXT_X, LEVEL_TEXT_Y);
         else if (levelNumber == 5)
-        	g.drawString("Ridout's Office", LEVEL_TEXT_X, LEVEL_TEXT_Y);
+            g.drawString("Ridout's Office", LEVEL_TEXT_X, LEVEL_TEXT_Y);
     }
-    
+
 }

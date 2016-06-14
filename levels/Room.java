@@ -9,9 +9,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.TooManyListenersException;
 
 import javax.imageio.ImageIO;
 
@@ -23,6 +21,12 @@ import thingsthatmove.Gissing;
 import thingsthatmove.Player;
 import thingsthatmove.Projectile;
 
+/**
+ * A Room in the game. It can contain Enemies, Items and other GameObjects and has a rock pattern in it.
+ * The room manages everything inside it except the player.
+ *
+ * @author Matthew Sun, Connor Murphy
+ */
 public class Room {
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
     private ArrayList<Rectangle> hitboxes = new ArrayList<Rectangle>();
@@ -58,6 +62,8 @@ public class Room {
     private boolean showTrapDoor;
     private BufferedImage trapDoor;
 
+    private Item bossItem;
+
     // The room bounds
     private final int LOWER_X_BOUND = 130;
     private final int UPPER_X_BOUND = 850;
@@ -82,6 +88,21 @@ public class Room {
 
     private RoomType roomType;
 
+    /**
+     * Creates the room
+     *
+     * @param e       the Enemies in this room
+     * @param i       the Items in this room
+     * @param go      the various game objects in this room
+     * @param p       the player reference
+     * @param locked  if the room is a locked room
+     * @param type    the type of room this room is
+     * @param pattern the pattern of rocks this room has
+     * @param north   the Room the north door connects to
+     * @param east    the Room the east door connects to
+     * @param south   the Room the south door connects to
+     * @param west    the Room the west door connects to
+     */
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
                 ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPatterns pattern,
                 Room north, Room east,
@@ -152,69 +173,112 @@ public class Room {
         this.roomType = type;
         roomPattern = pattern;
         roomRocks = roomPattern.getRocks();
-    }
 
+        //If this is a boss room then set the item the boss drops
+        if (roomType == RoomType.BOSS) {
+            bossItem = items.remove(0);
+        }
+    }
+    /**
+     * Creates the room
+     *
+     * @param e       the Enemies in this room
+     * @param i       the Items in this room
+     * @param go      the various game objects in this room
+     * @param p       the player reference
+     * @param locked  if the room is a locked room
+     * @param type    the type of room this room is
+     * @param pattern the pattern of rocks this room has
+     */
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
                 ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPatterns pattern) {
         this(e, i, go, p, locked, type, pattern, null, null, null, null);
         found = false;
     }
 
+    /**
+     * Creates the room
+     * @param locked  if the room is a locked room
+     * @param type    the type of room this room is
+     * @param pattern the pattern of rocks this room has
+     * @param north   the Room the north door connects to
+     * @param east    the Room the east door connects to
+     * @param south   the Room the south door connects to
+     * @param west    the Room the west door connects to
+     */
     public Room(boolean locked, RoomType type, RockPatterns pattern, Room north, Room east,
                 Room south, Room west) {
         this(null, null, null, null, locked, type, pattern, north, east, south, west);
         found = false;
     }
 
+    /**
+     * Returns if the room was found by the player
+     * @return if the room was found by the player
+     */
     public boolean isFound() {
         return found;
     }
 
+    /**
+     * Sets if the room was found by the player
+     * @param b the boolean for if the player found the room or not
+     */
     public void setFound(boolean b) {
         found = b;
     }
 
+    /**
+     * Returns if the north door is open
+     * @return if the north door is open
+     */
     public boolean isNorthOpen() {
         return northOpen;
     }
 
+    /**
+     * Returns if the south door is open
+     * @return if the south door is open
+     */
     public boolean isSouthOpen() {
         return southOpen;
     }
 
+    /**
+     * Returns if the east door is open
+     * @return if the east door is open
+     */
     public boolean isEastOpen() {
         return eastOpen;
     }
 
+    /**
+     * Returns if the west door is open
+     * @return if the west door is open
+     */
     public boolean isWestOpen() {
         return westOpen;
     }
 
-    public void updateDoorStatus() {
-        // Keep all doors closed if there are enemies
-        if (hasEnemies()) {
-            northOpen = false;
-            southOpen = false;
-            eastOpen = false;
-            westOpen = false;
-        }
-        // No enemies, open all doors
-        else {
-            if (north != null)
-                if (!north.isLocked() || (north.isLocked() && player.hasKeys()))
-                    northOpen = true;
-            if (south != null)
-                if (!south.isLocked() || (south.isLocked() && player.hasKeys()))
-                    southOpen = true;
-            if (east != null)
-                if (!east.isLocked() || (east.isLocked() && player.hasKeys()))
-                    eastOpen = true;
-            if (west != null)
-                if (!west.isLocked() || (west.isLocked() && player.hasKeys()))
-                    westOpen = true;
-        }
+    /**
+     * Sets the rock pattern of this room to the given one
+     * @param r the rock pattern to set this room to
+     */
+    public void setRockPattern(RockPatterns r) {
+        roomPattern = r;
     }
 
+    /**
+     * Returns the rock pattern associated with this room
+     * @return the rock pattern associated with this room
+     */
+    public RockPatterns getRockPattern() {
+        return roomPattern;
+    }
+
+    /**
+     * Updates the room
+     */
     public void update() {
         player.update(roomRocks);
         checkIfPlayerOnItem();
@@ -225,16 +289,10 @@ public class Room {
     }
 
     /**
-     * Checks if the player is dead and if so, changes to the dead state
+     * Checks if the player is standing over an item and picks it up if so.  If the item is a coin, bomb or key those
+     * values for the player are updated and the item is instantly consumed. If the item is anything else, it is held
+     * by the player for later use
      */
-    private void checkIfPlayerDead() {
-        if(player.getCurrentHP() <=0)
-        {
-            endRoom();
-            GameStateManager.setState(State.DEAD);
-        }
-    }
-
     private void checkIfPlayerOnItem() {
         int itemsRemoved = 0;
         for (int i = 0; i < items.size(); ++i) {
@@ -261,42 +319,32 @@ public class Room {
         }
     }
 
-    public void setRockPattern(RockPatterns r) {
-        roomPattern = r;
-    }
-
-    public RockPatterns getRockPattern() {
-        return roomPattern;
-    }
-
-
     /**
-     * Checks collisions between all the projectiles and the enemies in this
-     * room
+     * Sets flags to open unlocked doors when there are no enemies in the room or open locked doors when the player
+     * has keys. When there are enemies in the room, sets the flags to close all doors
      */
-    private void checkProjectileCollision() {
-        // Get the latest update on the projectiles
-        player.updateProjectiles();
-        ArrayList<Projectile> projectiles = player.getAllPlayerProjectiles();
-
-        // Go through all projectiles
-        for (int p = 0; p < projectiles.size(); p++) {
-            Projectile pj = projectiles.get(p);
-            // Go through all enemies
-            for (int e = 0; e < enemies.size(); e++) {
-                Enemy en = enemies.get(e);
-                // Projectile has hit an enemy
-                if (pj.getHitBox().intersects(en.getHitBox())) {
-                    en.takeDamage(pj.getDamage());
-                    pj.killProjectile();
-                }
-            }
-            // Go through all rock objects
-            for (int z = 0; z < roomRocks.size(); z++) {
-                // Projectile has hit a rock
-                if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
-                    pj.killProjectile();
-            }
+    public void updateDoorStatus() {
+        // Keep all doors closed if there are enemies
+        if (hasEnemies()) {
+            northOpen = false;
+            southOpen = false;
+            eastOpen = false;
+            westOpen = false;
+        }
+        // No enemies, open all doors
+        else {
+            if (north != null)
+                if (!north.isLocked() || (north.isLocked() && player.hasKeys()))
+                    northOpen = true;
+            if (south != null)
+                if (!south.isLocked() || (south.isLocked() && player.hasKeys()))
+                    southOpen = true;
+            if (east != null)
+                if (!east.isLocked() || (east.isLocked() && player.hasKeys()))
+                    eastOpen = true;
+            if (west != null)
+                if (!west.isLocked() || (west.isLocked() && player.hasKeys()))
+                    westOpen = true;
         }
     }
 
@@ -334,6 +382,51 @@ public class Room {
         }
     }
 
+    /**
+     * Checks collisions between all the projectiles and the enemies in this
+     * room
+     */
+    private void checkProjectileCollision() {
+        // Get the latest update on the projectiles
+        player.updateProjectiles();
+        ArrayList<Projectile> projectiles = player.getAllPlayerProjectiles();
+
+        // Go through all projectiles
+        for (int p = 0; p < projectiles.size(); p++) {
+            Projectile pj = projectiles.get(p);
+            // Go through all enemies
+            for (int e = 0; e < enemies.size(); e++) {
+                Enemy en = enemies.get(e);
+                // Projectile has hit an enemy
+                if (pj.getHitBox().intersects(en.getHitBox())) {
+                    en.takeDamage(pj.getDamage());
+                    pj.killProjectile();
+                }
+            }
+            // Go through all rock objects
+            for (int z = 0; z < roomRocks.size(); z++) {
+                // Projectile has hit a rock
+                if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
+                    pj.killProjectile();
+            }
+        }
+    }
+
+    /**
+     * Checks if the player is dead and if so, changes to the dead state
+     */
+    private void checkIfPlayerDead() {
+        if (player.getCurrentHP() <= 0) {
+            endRoom();
+            GameStateManager.setState(State.DEAD);
+        }
+    }
+
+    /**
+     * Returns if the player is at the north door. If the player is at a locked door with keys, the player has one key
+     * removed and the door is unlocked.
+     * @return if the player is at the north door
+     */
     public boolean isPlayerAtNorthDoor() {
         if (atNorthDoor && player.isMovingNorth()) {
             if (north.isLocked() && player.getNumKeys() > 0) {
@@ -346,6 +439,11 @@ public class Room {
         return false;
     }
 
+    /**
+     * Returns if the player is at the south door. If the player is at a locked door with keys, the player has one key
+     * removed and the door is unlocked.
+     * @return if the player is at the south door
+     */
     public boolean isPlayerAtSouthDoor() {
         if (atSouthDoor && player.isMovingSouth()) {
             if (south.isLocked() && player.getNumKeys() > 0) {
@@ -358,6 +456,11 @@ public class Room {
         return false;
     }
 
+    /**
+     * Returns if the player is at the east door. If the player is at a locked door with keys, the player has one key
+     * removed and the door is unlocked.
+     * @return if the player is at the east door
+     */
     public boolean isPlayerAtEastDoor() {
         if (atEastDoor && player.isMovingEast()) {
             if (east.isLocked() && player.getNumKeys() > 0) {
@@ -370,6 +473,11 @@ public class Room {
         return false;
     }
 
+    /**
+     * Returns if the player is at the west door. If the player is at a locked door with keys, the player has one key
+     * removed and the door is unlocked.
+     * @return if the player is at the west door
+     */
     public boolean isPlayerAtWestDoor() {
         if (atWestDoor && player.isMovingWest()) {
             if (west.isLocked() && player.getNumKeys() > 0) {
@@ -382,6 +490,9 @@ public class Room {
         return false;
     }
 
+    /**
+     * Resets all the player at door flags to false
+     */
     public void resetAllDoors() {
         atNorthDoor = false;
         atSouthDoor = false;
@@ -389,78 +500,141 @@ public class Room {
         atWestDoor = false;
     }
 
+    /**
+     * Returns a reference to the player in this room
+     * @return a reference to the player in this room
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Sets the player in this room
+     * @param p the player to set for this room
+     */
     public void setPlayer(Player p) {
         this.player = p;
     }
 
+    /**
+     * Sets the player in this room  to null
+     */
     public void removePlayer() {
         this.player = null;
     }
 
+    /**
+     * Returns if this room has a player
+     * @return if this room has a player
+     */
     public boolean hasPlayer() {
         if (player == null)
             return false;
         return true;
     }
 
+    /**
+     * Returns the list of enemies in this room
+     * @return the list of enemies in this room
+     */
     public ArrayList<Enemy> getEnemies() {
         return enemies;
     }
 
-    public void addEnemies(ArrayList<Enemy> e) {
+    /**
+     * Sets the enemies of this room to the given list of enemies
+     * @param e the list of enemies to set for this room
+     */
+    public void setEnemies(ArrayList<Enemy> e) {
         enemies = e;
     }
 
+    /**
+     * Removes the enemies from this room
+     */
     public void removeEnemies() {
         enemies = null;
     }
 
+    /**
+     * Returns if this room has enemies
+     * @return if this room has enemies
+     */
     public boolean hasEnemies() {
         if (enemies == null || enemies.size() == 0)
             return false;
         return true;
     }
 
+    /**
+     * Returns the list of items in this room
+     * @return the list of items in this room
+     */
     public ArrayList<Item> getItems() {
         return items;
     }
 
-    public void addItems(ArrayList<Item> i) {
+    /**
+     * Sets the list of items in this room to the given list of items
+     * @param i the list of items to set this room's list of items to
+     */
+    public void setItems(ArrayList<Item> i) {
         items = i;
     }
 
+    /**
+     * Removes all items from this room
+     */
     public void removeItems() {
         items = null;
     }
 
+    /**
+     * Returns if this room has items
+     * @return if this room has items
+     */
     public boolean hasItems() {
         if (items == null)
             return false;
         return true;
     }
 
+    /**
+     * Returns the list of game objects in this room
+     * @return the list of game objects in this room
+     */
     public ArrayList<GameObject> getRoomObjects() {
         return roomObjects;
     }
 
-    public void addRoomObjects(ArrayList<GameObject> go) {
+    /**
+     * Sets the list of game objects in this room to the given list of items
+     * @param go the list of game objects to set this room's list of items to
+     */
+    public void setRoomObjects(ArrayList<GameObject> go) {
         roomObjects = go;
     }
 
+    /**
+     * Removes all the game objects in this room
+     */
     public void removeRoomObjects() {
         roomObjects = null;
     }
 
+    /**
+     * Returns if this room has any game objects
+     * @return if this room has any game objects
+     */
     public boolean hasRoomObjects() {
-        if (roomObjects == null)
-            return false;
-        return true;
+        return roomObjects != null;
     }
 
+    /**
+     * Sets the north room to the given room if possible
+     * @param r the room to set the north room to
+     * @return if it is possible to set the north room to the given room
+     */
     public boolean setNorth(Room r) {
         if (north != null)
             return false;
@@ -468,6 +642,11 @@ public class Room {
         return true;
     }
 
+    /**
+     * Sets the south room to the given room if possible
+     * @param r the room to set the south room to
+     * @return if it is possible to set the south room to the given room
+     */
     public boolean setSouth(Room r) {
         if (south != null)
             return false;
@@ -475,6 +654,11 @@ public class Room {
         return true;
     }
 
+    /**
+     * Sets the west room to the given room if possible
+     * @param r the room to set the west room to
+     * @return if it is possible to set the west room to the given room
+     */
     public boolean setWest(Room r) {
         if (west != null)
             return false;
@@ -482,6 +666,11 @@ public class Room {
         return true;
     }
 
+    /**
+     * Sets the east room to the given room if possible
+     * @param r the room to set the east room to
+     * @return if it is possible to set the east room to the given room
+     */
     public boolean setEast(Room r) {
         if (east != null)
             return false;
@@ -489,47 +678,82 @@ public class Room {
         return true;
     }
 
+    /**
+     * Returns the north room to this room
+     * @return the north room to this room
+     */
     public Room getNorth() {
         return north;
     }
 
+    /**
+     * Returns the south room to this room
+     * @return the south room to this room
+     */
     public Room getSouth() {
         return south;
     }
 
+    /**
+     * Returns the west room to this room
+     * @return the west room to this room
+     */
     public Room getWest() {
         return west;
     }
 
+    /**
+     * Returns the east room to this room
+     * @return the east room to this room
+     */
     public Room getEast() {
         return east;
     }
 
+    /**
+     * Returns if this room's north, east, west and south rooms are set or not
+     * @return if this room's north, east, west and south rooms are set or not
+     */
     public boolean isFull() {
         if (north != null && south != null && west != null && east != null)
             return true;
         return false;
     }
 
+    /**
+     * Returns if this room is locked
+     * @return if this room is locked
+     */
     public boolean isLocked() {
         return isLocked;
     }
 
+    /**
+     * Sets whether or not this room is locked
+     * @param locked whether or not this room is locked
+     */
     public void setLocked(boolean locked) {
         isLocked = locked;
     }
 
+    /**
+     * Returns the type of room this room is
+     * @return the type of room this room is
+     */
     public RoomType getRoomType() {
         return roomType;
     }
 
+    /**
+     * Initializes variables and starts threads required by the room
+     */
     public void startRoom() {
         updateHitboxes();
         resetAllDoors();
         inRoom = true;
         System.out.println("STARTING ROOM");
         player.takeDamage(0);
-        
+
         moveEnemies = new Thread(new EnemyMovementThread());
         moveEnemies.start();
 
@@ -541,6 +765,9 @@ public class Room {
 
     }
 
+    /**
+     * Releases any resources and ends threads used by the room
+     */
     public void endRoom() {
         System.out.println("ENDING ROOM");
         inRoom = false;
@@ -548,6 +775,9 @@ public class Room {
         player.clearProjectiles();
     }
 
+    /**
+     * Update the rectangular representation of all the hitboxes in the room to their new coordinates
+     */
     public void updateHitboxes() {
         // Remove all current hitboxes
         hitboxes.clear();
@@ -570,6 +800,12 @@ public class Room {
             movementHitboxes.add(enemies.get(m).getShadowHitbox());
     }
 
+    /**
+     * Returns if the enemy specified by the index intersects with the given hitbox
+     * @param enemyIndex the index of the enemy to check
+     * @param enemyHitbox the hitbox to check the enemy against
+     * @return if the enemy and the hitbox collide
+     */
     public boolean enemyCollision(int enemyIndex,
                                   Rectangle enemyHitbox) {
         for (int n = 0; n < hitboxes.size(); n++) {
@@ -583,6 +819,9 @@ public class Room {
         return false;
     }
 
+    /**
+     * Sorts all objects in the game based on their y position so that shadows appear normally
+     */
     public void sortAllGameObjects() {
         // roomObjects.addAll(enemies);
         // roomObjects.addAll(items);
@@ -605,13 +844,17 @@ public class Room {
         }
     }
 
+    /**
+     * Draws the room, HUD background, enemes, items, the player and the room's rock pattern
+     * @param g the graphics to draw to
+     */
     public void draw(Graphics g) {
         g.drawImage(hud, 0, 0, null);
         g.drawImage(background, 0, 198, null);
         g.setColor(Color.RED);
-        
-        
-       // g.drawRect(130, 325, 720, 250);
+
+
+        // g.drawRect(130, 325, 720, 250);
 
 
         g.setColor(Color.BLACK);
@@ -711,25 +954,44 @@ public class Room {
         }
     }
 
+    /**
+     * Returns if this room was visited by the player
+     * @return if the room was visited by the player
+     */
     public boolean isVisited() {
         return visited;
     }
 
+    /**
+     * Sets if this room was visited by the player
+     * @param visited sets if this room was visited by the player
+     */
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
 
+    /**
+     * Removes all dead enemies from the room. If the enemy was a boss, a trap door is opened and the boss drops an
+     * item
+     */
     public void killDeadEnemies() {
+        int enemiesRemoved = 0;
         for (int n = 0; n < enemies.size(); n++) {
-            if (!enemies.get(n).isAlive()) {
-                if (roomType == RoomType.BOSS)
+            if (!enemies.get(n-enemiesRemoved).isAlive()) {
+                if (roomType == RoomType.BOSS) {
                     showTrapDoor = true;
-                enemies.remove(n);
-
+                    items.add(bossItem);
+                }
+                enemies.remove(n-enemiesRemoved);
+                enemiesRemoved++;
             }
         }
     }
 
+    /**
+     * A thread that deals with the playercollisions that an enemy has
+     * @author Matthew Sun
+     */
     private class EnemyPlayerCollisionThread implements Runnable {
         public void run() {
             while (inRoom) {
@@ -755,6 +1017,9 @@ public class Room {
         }
     }
 
+    /**
+     * A thread that deals with moving the enemies properly.
+     */
     private class EnemyMovementThread implements Runnable {
         public void run() {
             while (inRoom) {
