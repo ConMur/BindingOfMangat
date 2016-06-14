@@ -3,6 +3,7 @@ package thingsthatmove;
 import java.awt.*;
 
 /**
+ * The level 2 boss, Mr. Shim
  * @author Connor Murphy
  */
 public class Shim extends Enemy {
