@@ -34,7 +34,7 @@ public final class LevelManager {
     private static final int LOCKED_ROOM_ITEM_BONUS = -(100 - ITEM_CHANCE);
 
     //The percent chance that a room will be locked
-    private static final int LOCKED_CHANCE = 20;
+    private static final int LOCKED_CHANCE = 100;
 
     // The minimum amount of enemies in a level
     private static final int MIN_ENEMIES = 3;
