@@ -41,10 +41,10 @@ public class Level
 		minimap = new Minimap();
 		setRooms(rooms);
 	}
-	
-	public void stopAllRooms ()
+
+	public void stopAllRooms()
 	{
-		for (int n = 0 ; n < rooms.size() ; n ++)
+		for (int n = 0; n < rooms.size(); n++)
 			rooms.get(n).endRoom();
 	}
 
@@ -79,13 +79,14 @@ public class Level
 		{
 			validIndices.add(i);
 		}
-		
+
 		while (validIndices.size() > 0)
 		{
 			if (!workingRoom.isFull())
 			{
 				// Always connect to one room
-				int index = validIndices.remove(rand.nextInt(validIndices.size()));
+				int index = validIndices.remove(rand.nextInt(validIndices
+						.size()));
 				Room room = rooms.get(index);
 				addRoom(workingRoom, room);
 				minimap.addRoom(room);
@@ -96,7 +97,8 @@ public class Level
 					int chanceNumber = rand.nextInt(TOTAL_CHANCES);
 					if (chanceNumber <= ADDITIONAL_ROOM_CHANCE)
 					{
-						index = validIndices.remove(rand.nextInt(validIndices.size()));
+						index = validIndices.remove(rand.nextInt(validIndices
+								.size()));
 						Room additionalRoom = rooms.get(index);
 						addRoom(workingRoom, additionalRoom);
 						minimap.addRoom(additionalRoom);
@@ -108,7 +110,6 @@ public class Level
 			}
 		}
 
-		
 		// Connect the locked room in such a way that it does not lead to a room
 		if (lockedRoom != null)
 		{
@@ -124,8 +125,28 @@ public class Level
 			}
 		}
 
-		// Add the boss room to the last room added
-		addRoom(workingRoom, bossRoom);
+		// If all the rooms are removed from the list (i.e. last level) just
+		// connect the boss room to the working room
+		if (rooms.size() == 0)
+		{
+			addRoom(workingRoom, bossRoom);
+		}
+		else
+		{
+			// Connect the boss room in such a way that it does not lead to a
+			// room
+			boolean foundRoom = false;
+			while (!foundRoom)
+			{
+				Room r = rooms.get(rand.nextInt(rooms.size()));
+				if (!r.isFull())
+				{
+					addRoom(r, bossRoom);
+					foundRoom = true;
+				}
+			}
+		}
+
 		minimap.addRoom(bossRoom);
 
 		minimap.setUpRooms();

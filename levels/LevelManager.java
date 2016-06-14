@@ -249,10 +249,7 @@ public final class LevelManager {
                 levelEnemies = new ArrayList<>(mathEnemyList);
             } else if (i == 4) {
                 levelEnemies = new ArrayList<>(historyEnemyList);
-            }else if (i == 5)
-                {
-                	
-                }
+            }
             else {
                 System.err.println("Invalid level value: " + i);
                 levelEnemies = null;
