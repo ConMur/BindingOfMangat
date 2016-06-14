@@ -325,7 +325,7 @@ public class Room {
 
             //If there is an item, give it to the player if they have no other item
             //If the item is a key, coin or bomb, increment the player counts for those items instead
-            if (player.getHitBox().intersects(item.getHitBox())) {
+            if (player.getHitBox().intersects(item.getHitBox()) && !player.hasItem()) {
                 String itemName = item.getName();
                 if (itemName.equals("silvercoin")) {
                     player.addCoins(5);
