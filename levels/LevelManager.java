@@ -22,7 +22,7 @@ import javax.imageio.ImageIO;
  */
 public final class LevelManager {
     private static final int EXTRA_ROOMS_PER_LEVEL = 2;
-    private static final int NUMBER_OF_LEVELS = 4;
+    private static final int NUMBER_OF_LEVELS = 5;
 
     // The percent chance that there will be a shop this level
     private static final int SHOP_ROOM_CHANCE = 50;
@@ -108,7 +108,7 @@ public final class LevelManager {
         }
 
 
-        generateLevels(NUMBER_OF_LEVELS);
+        generateLevels(NUMBER_OF_LEVELS - 1);
 
         // Set the current level to the first level
         currentLevel = levels.get(0);
@@ -186,28 +186,28 @@ public final class LevelManager {
         // Add the items
         try {
             items.add(new Item("ankh", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/ankh.png")), new Dimension(75, 61), true));
-//            items.add(new Item("blockofwood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/blockofwood.png")), new Dimension(60, 14), true));
-////            items.add(new Item("bombguidebook", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bombguidebook.png")), new Dimension(39, 37), true));
-//            items.add(new Item("brokenpencil", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/brokenpencil.png")), new Dimension(60, 30), true));
-//            items.add(new Item("c++", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/c++.png")), new Dimension(58, 31), true));
-//            items.add(new Item("caffood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/caffood.png")), new Dimension(69, 24), true));
-//            items.add(new Item("compscisweater", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/compscisweater.png")), new Dimension(87, 45), true));
-////            items.add(new Item("fireflower", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/fireflower.png")), new Dimension(81, 45), true));
-////            items.add(new Item("glasses", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/glasses.png")), new Dimension(69, 21), true));
-////            items.add(new Item("goldenmushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/goldenmushroom.png")), new Dimension(80, 47), true));
-//            items.add(new Item("halo", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/halo.png")), new Dimension(72, 26), true));
-////            items.add(new Item("icecube", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/icecube.png")), new Dimension(90, 59), true));
-////            items.add(new Item("lightning", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lightning.png")), new Dimension(54, 48), true));
-//            items.add(new Item("lotteryticket", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lotteryticket.png")), new Dimension(88, 30), true));
-////            items.add(new Item("mariomushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/mariomushroom.png")), new Dimension(82, 41), true));
-//            items.add(new Item("masterkey", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/masterkey.png")), new Dimension(47, 61), true));
-////            items.add(new Item("projector", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/projector.png")), new Dimension(88, 37), true));
-//            items.add(new Item("usb", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/usb.png")), new Dimension(83, 36), true));
-//        
-//            items.add(new Item("key", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/key.png")), new Dimension(40, 32), true));
-//            items.add(new Item("bomb", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bomb.png")), new Dimension(58, 38), true));
-//            items.add(new Item("silvercoin", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/silvercoin.png")), new Dimension(53, 20), true));
-//            items.add(new Item("goldcoin", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/goldcoin.png")), new Dimension(53, 20), true));
+            items.add(new Item("blockofwood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/blockofwood.png")), new Dimension(60, 14), true));
+//            items.add(new Item("bombguidebook", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bombguidebook.png")), new Dimension(39, 37), true));
+            items.add(new Item("brokenpencil", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/brokenpencil.png")), new Dimension(60, 30), true));
+            items.add(new Item("c++", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/c++.png")), new Dimension(58, 31), true));
+            items.add(new Item("caffood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/caffood.png")), new Dimension(69, 24), true));
+            items.add(new Item("compscisweater", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/compscisweater.png")), new Dimension(87, 45), true));
+//            items.add(new Item("fireflower", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/fireflower.png")), new Dimension(81, 45), true));
+//            items.add(new Item("glasses", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/glasses.png")), new Dimension(69, 21), true));
+//            items.add(new Item("goldenmushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/goldenmushroom.png")), new Dimension(80, 47), true));
+            items.add(new Item("halo", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/halo.png")), new Dimension(72, 26), true));
+//            items.add(new Item("icecube", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/icecube.png")), new Dimension(90, 59), true));
+//            items.add(new Item("lightning", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lightning.png")), new Dimension(54, 48), true));
+            items.add(new Item("lotteryticket", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/lotteryticket.png")), new Dimension(88, 30), true));
+//            items.add(new Item("mariomushroom", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/mariomushroom.png")), new Dimension(82, 41), true));
+            items.add(new Item("masterkey", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/masterkey.png")), new Dimension(47, 61), true));
+//            items.add(new Item("projector", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/projector.png")), new Dimension(88, 37), true));
+            items.add(new Item("usb", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/usb.png")), new Dimension(83, 36), true));
+        
+            items.add(new Item("key", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/key.png")), new Dimension(40, 32), true));
+            items.add(new Item("bomb", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bomb.png")), new Dimension(58, 38), true));
+            items.add(new Item("silvercoin", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/silvercoin.png")), new Dimension(53, 20), true));
+            items.add(new Item("goldcoin", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/goldcoin.png")), new Dimension(53, 20), true));
 
         } catch (IOException ioe) {
             System.err.println("Error loading items");
@@ -240,7 +240,7 @@ public final class LevelManager {
             ArrayList<Room> rooms = new ArrayList<>();
 
             // Create a copy of the list of enemies for this level
-            ArrayList<Enemy> levelEnemies;
+            ArrayList<Enemy> levelEnemies = null;
             if (i == 1) {
                 levelEnemies = new ArrayList<>(scienceEnemyList);
             } else if (i == 3) {
@@ -249,7 +249,11 @@ public final class LevelManager {
                 levelEnemies = new ArrayList<>(mathEnemyList);
             } else if (i == 4) {
                 levelEnemies = new ArrayList<>(historyEnemyList);
-            } else {
+            }else if (i == 5)
+                {
+                	
+                }
+            else {
                 System.err.println("Invalid level value: " + i);
                 levelEnemies = null;
             }
@@ -462,7 +466,7 @@ public final class LevelManager {
         ++levelNumber;
 
         //If there are no more levels, the player won
-        if (levelNumber > NUMBER_OF_LEVELS) {
+        if (levelNumber >= NUMBER_OF_LEVELS) {
             //Player won
             GameStateManager.setState(State.WIN);
         }
