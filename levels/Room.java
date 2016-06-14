@@ -45,6 +45,8 @@ public class Room {
     private Image northOpenDoor, southOpenDoor, eastOpenDoor, westOpenDoor;
     private BufferedImage northLockedDoor, southLockedDoor, eastLockedDoor,
             westLockedDoor;
+    private BufferedImage northClosedBossDoor, southClosedBossDoor, eastClosedBossDoor, westClosedBossDoor;
+    private BufferedImage northOpenBossDoor, southOpenBossDoor, eastOpenBossDoor, westOpenBossDoor;
     private Room north, east, south, west;
     private boolean northOpen, southOpen, eastOpen, westOpen;
     private boolean atNorthDoor, atSouthDoor, atEastDoor, atWestDoor;
@@ -151,9 +153,21 @@ public class Room {
                     "/images/doors/lockeddoorwest.png"));
 
             // Trap door
-            // TODO: add trap door image
             trapDoor = ImageIO.read(getClass().getResourceAsStream(
-                    "/images/trapdoor.png"));
+                    "/images/doors/trapdoor.png"));
+
+            //Boss closed doors
+            northClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosednorth.png"));
+            southClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosedsouth.png"));
+            eastClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosedeast.png"));
+            westClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosedwest.png"));
+
+            //Boss open doors
+            northOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoornorth.png"));
+            southOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorsouth.png"));
+            eastOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdooreast.png"));
+            westOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorwest.png"));
+
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -180,6 +194,7 @@ public class Room {
             bossItem = items.remove(0);
         }
     }
+
     /**
      * Creates the room
      *
@@ -199,6 +214,7 @@ public class Room {
 
     /**
      * Creates the room
+     *
      * @param locked  if the room is a locked room
      * @param type    the type of room this room is
      * @param pattern the pattern of rocks this room has
@@ -215,6 +231,7 @@ public class Room {
 
     /**
      * Returns if the room was found by the player
+     *
      * @return if the room was found by the player
      */
     public boolean isFound() {
@@ -223,6 +240,7 @@ public class Room {
 
     /**
      * Sets if the room was found by the player
+     *
      * @param b the boolean for if the player found the room or not
      */
     public void setFound(boolean b) {
@@ -231,6 +249,7 @@ public class Room {
 
     /**
      * Returns if the north door is open
+     *
      * @return if the north door is open
      */
     public boolean isNorthOpen() {
@@ -239,6 +258,7 @@ public class Room {
 
     /**
      * Returns if the south door is open
+     *
      * @return if the south door is open
      */
     public boolean isSouthOpen() {
@@ -247,6 +267,7 @@ public class Room {
 
     /**
      * Returns if the east door is open
+     *
      * @return if the east door is open
      */
     public boolean isEastOpen() {
@@ -255,6 +276,7 @@ public class Room {
 
     /**
      * Returns if the west door is open
+     *
      * @return if the west door is open
      */
     public boolean isWestOpen() {
@@ -263,6 +285,7 @@ public class Room {
 
     /**
      * Sets the rock pattern of this room to the given one
+     *
      * @param r the rock pattern to set this room to
      */
     public void setRockPattern(RockPatterns r) {
@@ -271,6 +294,7 @@ public class Room {
 
     /**
      * Returns the rock pattern associated with this room
+     *
      * @return the rock pattern associated with this room
      */
     public RockPatterns getRockPattern() {
@@ -426,6 +450,7 @@ public class Room {
     /**
      * Returns if the player is at the north door. If the player is at a locked door with keys, the player has one key
      * removed and the door is unlocked.
+     *
      * @return if the player is at the north door
      */
     public boolean isPlayerAtNorthDoor() {
@@ -443,6 +468,7 @@ public class Room {
     /**
      * Returns if the player is at the south door. If the player is at a locked door with keys, the player has one key
      * removed and the door is unlocked.
+     *
      * @return if the player is at the south door
      */
     public boolean isPlayerAtSouthDoor() {
@@ -460,6 +486,7 @@ public class Room {
     /**
      * Returns if the player is at the east door. If the player is at a locked door with keys, the player has one key
      * removed and the door is unlocked.
+     *
      * @return if the player is at the east door
      */
     public boolean isPlayerAtEastDoor() {
@@ -477,6 +504,7 @@ public class Room {
     /**
      * Returns if the player is at the west door. If the player is at a locked door with keys, the player has one key
      * removed and the door is unlocked.
+     *
      * @return if the player is at the west door
      */
     public boolean isPlayerAtWestDoor() {
@@ -503,6 +531,7 @@ public class Room {
 
     /**
      * Returns a reference to the player in this room
+     *
      * @return a reference to the player in this room
      */
     public Player getPlayer() {
@@ -511,6 +540,7 @@ public class Room {
 
     /**
      * Sets the player in this room
+     *
      * @param p the player to set for this room
      */
     public void setPlayer(Player p) {
@@ -526,6 +556,7 @@ public class Room {
 
     /**
      * Returns if this room has a player
+     *
      * @return if this room has a player
      */
     public boolean hasPlayer() {
@@ -536,6 +567,7 @@ public class Room {
 
     /**
      * Returns the list of enemies in this room
+     *
      * @return the list of enemies in this room
      */
     public ArrayList<Enemy> getEnemies() {
@@ -544,6 +576,7 @@ public class Room {
 
     /**
      * Sets the enemies of this room to the given list of enemies
+     *
      * @param e the list of enemies to set for this room
      */
     public void setEnemies(ArrayList<Enemy> e) {
@@ -559,6 +592,7 @@ public class Room {
 
     /**
      * Returns if this room has enemies
+     *
      * @return if this room has enemies
      */
     public boolean hasEnemies() {
@@ -569,6 +603,7 @@ public class Room {
 
     /**
      * Returns the list of items in this room
+     *
      * @return the list of items in this room
      */
     public ArrayList<Item> getItems() {
@@ -577,6 +612,7 @@ public class Room {
 
     /**
      * Sets the list of items in this room to the given list of items
+     *
      * @param i the list of items to set this room's list of items to
      */
     public void setItems(ArrayList<Item> i) {
@@ -592,6 +628,7 @@ public class Room {
 
     /**
      * Returns if this room has items
+     *
      * @return if this room has items
      */
     public boolean hasItems() {
@@ -602,6 +639,7 @@ public class Room {
 
     /**
      * Returns the list of game objects in this room
+     *
      * @return the list of game objects in this room
      */
     public ArrayList<GameObject> getRoomObjects() {
@@ -610,6 +648,7 @@ public class Room {
 
     /**
      * Sets the list of game objects in this room to the given list of items
+     *
      * @param go the list of game objects to set this room's list of items to
      */
     public void setRoomObjects(ArrayList<GameObject> go) {
@@ -625,6 +664,7 @@ public class Room {
 
     /**
      * Returns if this room has any game objects
+     *
      * @return if this room has any game objects
      */
     public boolean hasRoomObjects() {
@@ -633,6 +673,7 @@ public class Room {
 
     /**
      * Sets the north room to the given room if possible
+     *
      * @param r the room to set the north room to
      * @return if it is possible to set the north room to the given room
      */
@@ -645,6 +686,7 @@ public class Room {
 
     /**
      * Sets the south room to the given room if possible
+     *
      * @param r the room to set the south room to
      * @return if it is possible to set the south room to the given room
      */
@@ -657,6 +699,7 @@ public class Room {
 
     /**
      * Sets the west room to the given room if possible
+     *
      * @param r the room to set the west room to
      * @return if it is possible to set the west room to the given room
      */
@@ -669,6 +712,7 @@ public class Room {
 
     /**
      * Sets the east room to the given room if possible
+     *
      * @param r the room to set the east room to
      * @return if it is possible to set the east room to the given room
      */
@@ -681,6 +725,7 @@ public class Room {
 
     /**
      * Returns the north room to this room
+     *
      * @return the north room to this room
      */
     public Room getNorth() {
@@ -689,6 +734,7 @@ public class Room {
 
     /**
      * Returns the south room to this room
+     *
      * @return the south room to this room
      */
     public Room getSouth() {
@@ -697,6 +743,7 @@ public class Room {
 
     /**
      * Returns the west room to this room
+     *
      * @return the west room to this room
      */
     public Room getWest() {
@@ -705,6 +752,7 @@ public class Room {
 
     /**
      * Returns the east room to this room
+     *
      * @return the east room to this room
      */
     public Room getEast() {
@@ -713,6 +761,7 @@ public class Room {
 
     /**
      * Returns if this room's north, east, west and south rooms are set or not
+     *
      * @return if this room's north, east, west and south rooms are set or not
      */
     public boolean isFull() {
@@ -723,6 +772,7 @@ public class Room {
 
     /**
      * Returns if this room is locked
+     *
      * @return if this room is locked
      */
     public boolean isLocked() {
@@ -731,6 +781,7 @@ public class Room {
 
     /**
      * Sets whether or not this room is locked
+     *
      * @param locked whether or not this room is locked
      */
     public void setLocked(boolean locked) {
@@ -739,6 +790,7 @@ public class Room {
 
     /**
      * Returns the type of room this room is
+     *
      * @return the type of room this room is
      */
     public RoomType getRoomType() {
@@ -803,7 +855,8 @@ public class Room {
 
     /**
      * Returns if the enemy specified by the index intersects with the given hitbox
-     * @param enemyIndex the index of the enemy to check
+     *
+     * @param enemyIndex  the index of the enemy to check
      * @param enemyHitbox the hitbox to check the enemy against
      * @return if the enemy and the hitbox collide
      */
@@ -847,6 +900,7 @@ public class Room {
 
     /**
      * Draws the room, HUD background, enemes, items, the player and the room's rock pattern
+     *
      * @param g the graphics to draw to
      */
     public void draw(Graphics g) {
@@ -913,7 +967,12 @@ public class Room {
     private void drawDoors(Graphics g) {
         // Draw doors
         if (north != null) {
-            if (northOpen && !north.isLocked())
+            if (north.getRoomType() == RoomType.BOSS)
+                if (northOpen)
+                    g.drawImage(northOpenBossDoor, NORTH_DOOR_X, NORTH_DOOR_Y, null);
+                else
+                    g.drawImage(northClosedBossDoor, NORTH_DOOR_X, NORTH_DOOR_Y, null);
+            else if (northOpen && !north.isLocked())
                 g.drawImage(northOpenDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100,
                         null);
             else if (north.isLocked())
@@ -924,7 +983,12 @@ public class Room {
                         null);
         }
         if (south != null) {
-            if (southOpen && !south.isLocked())
+            if (south.getRoomType() == RoomType.BOSS)
+                if (southOpen)
+                    g.drawImage(southOpenBossDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
+                else
+                    g.drawImage(southClosedBossDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
+            else if (southOpen && !south.isLocked())
                 g.drawImage(southOpenDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
             else if (south.isLocked())
                 g.drawImage(southLockedDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
@@ -932,7 +996,12 @@ public class Room {
                 g.drawImage(southClosedDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
         }
         if (east != null) {
-            if (eastOpen && !east.isLocked())
+            if (east.getRoomType() == RoomType.BOSS)
+                if (eastOpen)
+                    g.drawImage(westOpenBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+                else
+                    g.drawImage(westClosedBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+            else if (eastOpen && !east.isLocked())
                 g.drawImage(eastOpenDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
             else if (east.isLocked())
                 g.drawImage(eastLockedDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
@@ -940,7 +1009,12 @@ public class Room {
                 g.drawImage(eastClosedDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
         }
         if (west != null) {
-            if (westOpen && !west.isLocked())
+            if (west.getRoomType() == RoomType.BOSS)
+                if (westOpen)
+                    g.drawImage(westOpenBossDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
+                else
+                    g.drawImage(westClosedBossDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
+            else if (westOpen && !west.isLocked())
                 g.drawImage(westOpenDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
             else if (west.isLocked())
                 g.drawImage(westLockedDoor, WEST_DOOR_X - 100, WEST_DOOR_Y,
@@ -957,6 +1031,7 @@ public class Room {
 
     /**
      * Returns if this room was visited by the player
+     *
      * @return if the room was visited by the player
      */
     public boolean isVisited() {
@@ -965,6 +1040,7 @@ public class Room {
 
     /**
      * Sets if this room was visited by the player
+     *
      * @param visited sets if this room was visited by the player
      */
     public void setVisited(boolean visited) {
@@ -978,8 +1054,8 @@ public class Room {
     public void killDeadEnemies() {
         int enemiesRemoved = 0;
         for (int n = 0; n < enemies.size(); n++) {
-            if (!enemies.get(n-enemiesRemoved).isAlive()) {
-            	 enemies.remove(n-enemiesRemoved);
+            if (!enemies.get(n - enemiesRemoved).isAlive()) {
+                enemies.remove(n - enemiesRemoved);
                 if (roomType == RoomType.BOSS && !hasEnemies()) {
                     showTrapDoor = true;
                     items.add(bossItem);
@@ -991,6 +1067,7 @@ public class Room {
 
     /**
      * A thread that deals with the playercollisions that an enemy has
+     *
      * @author Matthew Sun
      */
     private class EnemyPlayerCollisionThread implements Runnable {
