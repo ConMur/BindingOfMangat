@@ -29,10 +29,14 @@ public class Player extends MoveableObject
 	private boolean movingEast;
 	private boolean movingSouth;
 	private ArrayList<Projectile> currentProjectiles;
+	private Item bomb;
+	private long bombPlaceTime;
 	private Thread pThread;
 	private boolean isShooting;
 	private boolean takenDMG;
 	private Dimension movementHitbox;
+	
+	private final long BOMB_TIME = 2000;
 	
 
     private Font itemTextFont = new Font ("LetterOMatic!", Font.PLAIN, 30);
@@ -52,7 +56,7 @@ public class Player extends MoveableObject
 
 	private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
 	private BufferedImage mangatHurtFront, mangatHurtBack, mangatHurtLeft,
-			mangatHurtRight;
+			mangatHurtRight, bombImage;
 	private BufferedImage fullHeart, emptyHeart;
 
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
@@ -83,10 +87,12 @@ public class Player extends MoveableObject
 		takenDMG = false;
 
 		numKeys = 2;
-		numBombs = 1;
+		numBombs = 5;
+		numCoins = 2;
 
 		try
 		{
+			bombImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bomb.png"));
 			mangatFront = ImageIO.read(getClass().getResourceAsStream(
 					"/images/mangat/mangatfront.png"));
 			mangatBack = ImageIO.read(getClass().getResourceAsStream(
@@ -113,6 +119,11 @@ public class Player extends MoveableObject
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public Item getBomb()
+	{
+		return bomb;
 	}
 	
 	public void goInvincible ()
@@ -522,6 +533,16 @@ public class Player extends MoveableObject
 				}
 			}
 		}
+		
+		if (bomb != null)
+		{
+			if (System.currentTimeMillis() - bombPlaceTime > BOMB_TIME)
+			{
+				System.out.println("BOMB EXPLOSION");
+				bomb = null;
+			}
+
+		}
 	}
 
 	/**
@@ -537,6 +558,26 @@ public class Player extends MoveableObject
 			{
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	public boolean useCoins ()
+	{
+		if (numCoins >= 2)
+		{
+			numCoins -= 2;
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean useBomb ()
+	{
+		if (numBombs >= 1&& bomb == null)
+		{
+			numBombs --;
+			return true;
 		}
 		return false;
 	}
@@ -556,13 +597,36 @@ public class Player extends MoveableObject
 //		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
 //				(int) r.getHeight());
 
+		if (bomb != null)
+		{
+			g.drawImage(bombImage, (int)bomb.getX(), (int)bomb.getY(), null);
+		}
+
+		
 		// Draw HP level in the HUD
 		for (int n = 0; n < this.getMaxHP(); n++)
 		{
-			if (n < this.getCurrentHP())
-				g.drawImage(fullHeart, 820 + 30 * n, 70 + (n / 5) * 30, null);
-			else
-				g.drawImage(emptyHeart, 820 + 30 * n, 70, null);
+			if (n < 5)
+			{
+				if (n < this.getCurrentHP())
+					g.drawImage(fullHeart, 820 + (30 * n) , 70, null);
+				else
+					g.drawImage(emptyHeart, 820 + (30 * n) , 70, null);
+			}
+			else if (n < 10)
+			{
+				if (n < this.getCurrentHP())
+					g.drawImage(fullHeart, 670 + (30 * n) , 70 + 30, null);
+				else
+					g.drawImage(emptyHeart, 670 + (30 * n) , 70 + 30, null);
+			}
+			else 
+			{
+				if (n < this.getCurrentHP())
+					g.drawImage(fullHeart, 520 + (30 * n) , 130, null);
+				else
+					g.drawImage(emptyHeart, 520 + (30 * n) , 130, null);
+			}
 		}
 		
 		// Draw the item in the HUD
@@ -576,7 +640,6 @@ public class Player extends MoveableObject
 		g.drawString(Integer.toString(numBombs), 435, 117);
 		g.drawString(Integer.toString(numKeys), 435, 173);
 
-		
 		// Draw all projectiles currently on the screen
 		for (Projectile p : currentProjectiles)
 		{
@@ -641,6 +704,24 @@ public class Player extends MoveableObject
 			if (hasItem())
 				useItem();
 		}
+		
+		if (key == KeyEvent.VK_Q)
+		{
+			// There are enough coins to go invincible
+			if (useCoins())
+				takeDamage(0);
+		}
+		
+		if (key == KeyEvent.VK_E)
+		{
+			if (useBomb() && bomb == null)
+			{
+				bomb = new Item("bomb", (int)getX(), (int)getY(), bombImage, new Dimension(58, 38), true);
+				bombPlaceTime = System.currentTimeMillis();
+			}
+		}
+		
+		
 
 	}
 
