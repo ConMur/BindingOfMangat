@@ -15,6 +15,11 @@ public final class Util {
 
     private Util(){}
 
+    /**
+     * Creates a BufferedImage that is optimized for the operating system
+     * @param image the image to optimize
+     * @return the optimized BufferedImage
+     */
     public static BufferedImage createCompatibleImage(Image image)
     {
         //Get current GraphicsConfiguration
@@ -63,7 +68,7 @@ public final class Util {
     /**
      * Calculates the average fps using the delta time
      * @param dt the delta time (time elapsed between frames)
-     * @return
+     * @return the average fps
      */
     public static double calcFPS(double dt)
     {
@@ -72,11 +77,19 @@ public final class Util {
         return oldFPS;
     }
 
+    /**
+     * Returns the time between frame updates
+     * @return the time between frame updates
+     */
     public static double getDeltaTime()
     {
         return deltaTime;
     }
 
+    /**
+     * Sets the time between updates
+     * @param dt the time to set between updates
+     */
     public static void setDeltaTime(double dt)
     {
         deltaTime = dt;
