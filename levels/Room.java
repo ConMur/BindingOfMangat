@@ -763,7 +763,7 @@ public class Room {
         //
         // enemyProjectile = new Thread (new EnemyProjectileThread());
         // enemyProjectile.start();
-
+        found = true;
     }
 
     /**
