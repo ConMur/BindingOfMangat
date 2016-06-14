@@ -4,6 +4,12 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * A collection of connecting Rooms forms a Level. The level connects rooms together and manages the
+ * transition between rooms in the level.  It draws and updates the room the player in currently in.
+ * It also has a minimap that expands as the player explores the level
+ * @author Connor Murphy, Matthew Sun
+ */
 public class Level
 {
 	private ArrayList<Room> rooms;
@@ -24,7 +30,6 @@ public class Level
 	private final int PLAYER_WEST_X = 85;
 	private final int PLAYER_WEST_Y = 380;
 
-	// TODO: call start room and end room when entering and exiting a room
 
 	// Additional room chance out of TOTAL_CHANCES
 	private final int ADDITIONAL_ROOM_CHANCE = 3;
@@ -33,7 +38,7 @@ public class Level
 	/**
 	 * Creates the level with the given rooms
 	 * @param rooms the rooms to create the level with. The room at index 0 is
-	 *            the starting room
+	 *            the starting room and the room in the last index is the boss room
 	 */
 	public Level(ArrayList<Room> rooms)
 	{
@@ -42,12 +47,20 @@ public class Level
 		setRooms(rooms);
 	}
 
+	/**
+	 * Ends all the thread and other methods running in each room in this level
+	 */
 	public void stopAllRooms()
 	{
 		for (int n = 0; n < rooms.size(); n++)
 			rooms.get(n).endRoom();
 	}
 
+	/**
+	 * Links all the given rooms together and creates the minimap of the level.
+	 * The boss rooms and the item rooms are guaranteed to not have any room leading from them
+	 * @param roomList the rooms to connect
+     */
 	public void setRooms(ArrayList<Room> roomList)
 	{
 		rooms = new ArrayList<>(roomList);
@@ -147,17 +160,24 @@ public class Level
 			}
 		}
 
+		//Add the boss room to the minimap
 		minimap.addRoom(bossRoom);
 
+		//Create the minimap
 		minimap.setUpRooms();
-
 	}
 
+	/**
+	 * Starts the level
+	 */
 	public void start()
 	{
 		currentRoom.startRoom();
 	}
 
+	/**
+	 * Updates the level
+	 */
 	public void update()
 	{
 		currentRoom.update();
@@ -175,7 +195,6 @@ public class Level
 			minimap.setPlayerRoomY(minimap.getPlayerRoomY() - 1);
 			currentRoom.getPlayer().setY(PLAYER_SOUTH_Y);
 			currentRoom.getPlayer().setX(PLAYER_SOUTH_X);
-			System.out.println("AT NORTH");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getNorth();
 			currentRoom.startRoom();
@@ -185,7 +204,6 @@ public class Level
 			minimap.setPlayerRoomY(minimap.getPlayerRoomY() + 1);
 			currentRoom.getPlayer().setY(PLAYER_NORTH_Y);
 			currentRoom.getPlayer().setX(PLAYER_NORTH_X);
-			System.out.println("AT SOUTH");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getSouth();
 			currentRoom.startRoom();
@@ -194,7 +212,6 @@ public class Level
 		{
 			minimap.setPlayerRoomX(minimap.getPlayerRoomX() + 1);
 			currentRoom.getPlayer().setX(PLAYER_WEST_X);
-			System.out.println("AT EAST");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getEast();
 			currentRoom.startRoom();
@@ -203,13 +220,16 @@ public class Level
 		{
 			minimap.setPlayerRoomX(minimap.getPlayerRoomX() - 1);
 			currentRoom.getPlayer().setX(PLAYER_EAST_X);
-			System.out.println("AT WEST");
 			currentRoom.endRoom();
 			currentRoom = currentRoom.getWest();
 			currentRoom.startRoom();
 		}
 	}
 
+	/**
+	 * Draws the current level
+	 * @param g the graphics to draw to
+     */
 	public void draw(Graphics g)
 	{
 		currentRoom.draw(g);

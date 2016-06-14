@@ -59,7 +59,7 @@ public class Room {
 
 
     // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
-    private RockPatterns roomPattern;
+    private RockPattern roomPattern;
 
     // The trap door shown when the player defeats the boss
     private boolean showTrapDoor;
@@ -107,7 +107,7 @@ public class Room {
      * @param west    the Room the west door connects to
      */
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPatterns pattern,
+                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPattern pattern,
                 Room north, Room east,
                 Room south, Room west) {
         this.enemies = e;
@@ -207,7 +207,7 @@ public class Room {
      * @param pattern the pattern of rocks this room has
      */
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPatterns pattern) {
+                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPattern pattern) {
         this(e, i, go, p, locked, type, pattern, null, null, null, null);
         found = false;
     }
@@ -223,7 +223,7 @@ public class Room {
      * @param south   the Room the south door connects to
      * @param west    the Room the west door connects to
      */
-    public Room(boolean locked, RoomType type, RockPatterns pattern, Room north, Room east,
+    public Room(boolean locked, RoomType type, RockPattern pattern, Room north, Room east,
                 Room south, Room west) {
         this(null, null, null, null, locked, type, pattern, north, east, south, west);
         found = false;
@@ -288,7 +288,7 @@ public class Room {
      *
      * @param r the rock pattern to set this room to
      */
-    public void setRockPattern(RockPatterns r) {
+    public void setRockPattern(RockPattern r) {
         roomPattern = r;
     }
 
@@ -297,7 +297,7 @@ public class Room {
      *
      * @return the rock pattern associated with this room
      */
-    public RockPatterns getRockPattern() {
+    public RockPattern getRockPattern() {
         return roomPattern;
     }
 

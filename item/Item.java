@@ -7,28 +7,55 @@ import java.util.Random;
 import thingsthatmove.GameObject;
 import thingsthatmove.Player;
 
+/**
+ * An item is something in the game that can be picked up by the player. It can have positive or
+ * negative effects such as changing hp, giving coins or affecting enemies
+ * @author Matthew Sun, Connor Murphy
+ */
 public class Item extends GameObject
 {
 	private String name;
 	private boolean onGround;
 	Random r = new Random();
-	
+
+	/**
+	 * Creates the item
+	 * @param name the name of the item
+	 * @param x the x coordinate of the item
+	 * @param y the y coordinate of the item
+	 * @param image the image that visually represents the item
+	 * @param size the size of the item
+     * @param oG if the item is on the ground or not
+     */
 	public Item (String name, int x, int y, Image image, Dimension size, boolean oG)
 	{
 		super (x, y, image, size, null, 0, 0);
 		this.name = name;
 		this.onGround = oG;
 	}
-	
+
+	/**
+	 * Returns the name of the item
+	 * @return the name of the item
+     */
 	public String getName ()
 	{
 		return name;
 	}
-	
+
+	/**
+	 * Returns if the item is on the ground
+	 * @return if the item is on the ground
+     */
 	public boolean isTheItemOnTheGround ()
 	{
 		return onGround;
 	}
+
+	/**
+	 * Draws the item
+	 * @param g the graphics to draw to
+     */
 	public void draw(Graphics g)
 	{
 		g.drawImage(getImage(), (int)getX(), (int)getY(), null);

@@ -355,12 +355,12 @@ public final class LevelManager {
             System.err.println("Invalid level value: " + levelNumber);
         }
 
-        RockPatterns rp;
+        RockPattern rp;
         boolean emptyRockPattern = rand.nextBoolean();
         if (emptyRockPattern) {
-            rp = new RockPatterns(0);
+            rp = new RockPattern(0);
         } else {
-            rp = new RockPatterns(5);
+            rp = new RockPattern(5);
         }
 
         ArrayList<Item> itemList = new ArrayList<>();
@@ -384,7 +384,7 @@ public final class LevelManager {
             //itemList.add(items.remove(rand.nextInt(items.size())));
             itemList.add(items.get(rand.nextInt(items.size())));
         }
-        RockPatterns rp = new RockPatterns(0);
+        RockPattern rp = new RockPattern(0);
         return new Room(new ArrayList<>(), itemList, new ArrayList<>(), player, false, Room.RoomType.NORMAL, rp);
     }
 
@@ -408,12 +408,12 @@ public final class LevelManager {
         }
 
         //Set the rock pattern for this room
-        RockPatterns rp;
+        RockPattern rp;
         if (thisRoomLocked) {
-            rp = new RockPatterns(1);
+            rp = new RockPattern(1);
         } else {
-            int pattern = rand.nextInt(RockPatterns.getNumRockPatterns());
-            rp = new RockPatterns(pattern);
+            int pattern = rand.nextInt(RockPattern.getNumRockPatterns());
+            rp = new RockPattern(pattern);
         }
 
         ArrayList<GameObject> rocks = rp.getRocks();

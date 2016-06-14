@@ -42,7 +42,7 @@ public class GameFrame extends JFrame {
         });
 
         setLocationRelativeTo(null);
-        setResizable(true);
+        setResizable(false);
         setVisible(true);
         panel.go();
     }
