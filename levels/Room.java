@@ -1224,6 +1224,13 @@ public class Room {
                                     }
 
                             }
+                            
+                            // Check enemy collision with MIIIIICHAEL BAY
+                            if (player.hasMichaelBay())
+                            {
+                            	if (currentEnemy.getHitBox().intersects(player.getMichaelBay().getRockHitBox()))
+                            		currentEnemy.takeDamage(10);
+                            }
                         }
 
                     }

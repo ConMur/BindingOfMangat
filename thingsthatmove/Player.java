@@ -35,11 +35,15 @@ public class Player extends MoveableObject
 	private boolean isShooting;
 	private boolean takenDMG;
 	private Dimension movementHitbox;
-	
-	private final long BOMB_TIME = 2000;
-	
+	private int bombX, bombY;
 
-    private Font itemTextFont = new Font ("LetterOMatic!", Font.PLAIN, 30);
+	private GameObject michaelBay;
+
+	private boolean explosionActive;
+	private long bombExplosionTime;
+	private final long BOMB_TIME = 2000;
+
+	private Font itemTextFont = new Font("LetterOMatic!", Font.PLAIN, 30);
 
 	// Items
 	private int numKeys, numBombs, numCoins;
@@ -56,7 +60,7 @@ public class Player extends MoveableObject
 
 	private BufferedImage mangatFront, mangatBack, mangatLeft, mangatRight;
 	private BufferedImage mangatHurtFront, mangatHurtBack, mangatHurtLeft,
-			mangatHurtRight, bombImage;
+			mangatHurtRight, bombImage, michaelBayImage;
 	private BufferedImage fullHeart, emptyHeart;
 
 	public Player(int dmg, int hp, int speed, int x, int y, Image i,
@@ -64,27 +68,34 @@ public class Player extends MoveableObject
 			Dimension shadowSize, int xShadow, int yShadow)
 	{
 		super(dmg, hp, speed, x, y, i, s, maxHP, shadowSize, xShadow, yShadow);
-		
-		//Create the text font
-    	try {
-			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,LevelManager.class.getResourceAsStream("/fonts/ltromatic.ttf")));
-		} catch (IOException | FontFormatException e) {
-            System.err.println("Error loading font");
-            e.printStackTrace();
+
+		// Create the text font
+		try
+		{
+			GraphicsEnvironment ge = GraphicsEnvironment
+					.getLocalGraphicsEnvironment();
+			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT,
+					LevelManager.class
+							.getResourceAsStream("/fonts/ltromatic.ttf")));
 		}
-		
+		catch (IOException | FontFormatException e)
+		{
+			System.err.println("Error loading font");
+			e.printStackTrace();
+		}
+
 		currentProjectiles = new ArrayList<Projectile>();
 		this.projectile = projectile;
 		this.currentItem = item;
 		fireRate = PROJECTILE_ONE_RATE;
 		invincibleTime = 1500;
-
+		explosionActive = false;
 		boolean movingNorth = false;
 		boolean movingWest = false;
 		boolean movingEast = false;
 		boolean movingSouth = false;
 		takenDMG = false;
+		michaelBay = null;
 
 		numKeys = 2;
 		numBombs = 5;
@@ -92,7 +103,10 @@ public class Player extends MoveableObject
 
 		try
 		{
-			bombImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bomb.png"));
+			bombImage = ImageIO.read(LevelManager.class
+					.getResourceAsStream("/images/items/bomb.png"));
+			michaelBayImage = ImageIO.read(LevelManager.class
+					.getResourceAsStream("/images/michaelbay.png"));
 			mangatFront = ImageIO.read(getClass().getResourceAsStream(
 					"/images/mangat/mangatfront.png"));
 			mangatBack = ImageIO.read(getClass().getResourceAsStream(
@@ -120,13 +134,13 @@ public class Player extends MoveableObject
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Item getBomb()
 	{
 		return bomb;
 	}
-	
-	public void goInvincible ()
+
+	public void goInvincible()
 	{
 		takenDMG = true;
 	}
@@ -155,41 +169,45 @@ public class Player extends MoveableObject
 			{
 				setImage(mangatHurtRight);
 			}
-			
+
 			if (currentItem == null)
-			{}
-			else if(currentItem.getName() == "ankh" && this.getCurrentHP() == 0)
+			{
+			}
+			else if (currentItem.getName() == "ankh"
+					&& this.getCurrentHP() == 0)
 			{
 				System.out.println("REVIVE");
 				super.takeDamage(0);
 				this.heal(10);
 				currentItem = null;
 			}
-				
+
 		}
 
 	}
 
-//	public void setMovementHitbox(Dimension d)
-//	{
-//		movementHitbox = d;
-//	}
-//
-//	public Dimension getMovementSize()
-//	{
-//		return movementHitbox;
-//	}
-//
-//	public Rectangle getMovementHitbox()
-//	{
-//		return new Rectangle((int) getX() + 10, (int) (getY() + 70),
-//				(int) movementHitbox.getWidth(),
-//				(int) movementHitbox.getHeight());
-//	}
-	
+	// public void setMovementHitbox(Dimension d)
+	// {
+	// movementHitbox = d;
+	// }
+	//
+	// public Dimension getMovementSize()
+	// {
+	// return movementHitbox;
+	// }
+	//
+	// public Rectangle getMovementHitbox()
+	// {
+	// return new Rectangle((int) getX() + 10, (int) (getY() + 70),
+	// (int) movementHitbox.getWidth(),
+	// (int) movementHitbox.getHeight());
+	// }
+
 	public Rectangle getHitBox()
 	{
-		return new Rectangle ((int)getX(), (int)getY() + (int)(getSize().getHeight() * 0.5), (int)getSize().getWidth(), (int)getSize().getHeight());
+		return new Rectangle((int) getX(), (int) getY()
+				+ (int) (getSize().getHeight() * 0.5), (int) getSize()
+				.getWidth(), (int) getSize().getHeight());
 	}
 
 	public ArrayList<Projectile> getAllPlayerProjectiles()
@@ -219,7 +237,7 @@ public class Player extends MoveableObject
 			if (System.currentTimeMillis() - lastFireTime > fireRate)
 			{
 				Projectile p = new Projectile(getProjectile(), direction);
-	
+
 				// When facing back, put the projectile near the top of the head
 				if (getImage() == mangatBack || getImage() == mangatHurtBack)
 				{
@@ -232,7 +250,7 @@ public class Player extends MoveableObject
 					p.setY(getY() + 50);
 				}
 				p.setX(getX() + 20);
-	
+
 				currentProjectiles.add(p);
 				lastFireTime = System.currentTimeMillis();
 			}
@@ -240,7 +258,7 @@ public class Player extends MoveableObject
 		else if (projectile == 2)
 			shootTripleProjectiles(direction);
 	}
-	
+
 	public void shootTripleProjectiles(char currentDirection)
 	{
 		if (System.currentTimeMillis() - lastFireTime > fireRate)
@@ -250,12 +268,14 @@ public class Player extends MoveableObject
 			p.setY(getY() + 25);
 			currentProjectiles.add(p);
 
-			Projectile p2 = new Projectile(getProjectile(), getTopDirection(currentDirection));
+			Projectile p2 = new Projectile(getProjectile(),
+					getTopDirection(currentDirection));
 			p2.setX(getX() + 20);
 			p2.setY(getY() + 25);
 			currentProjectiles.add(p2);
 
-			Projectile p3 = new Projectile(getProjectile(), getBotDirection(currentDirection));
+			Projectile p3 = new Projectile(getProjectile(),
+					getBotDirection(currentDirection));
 			p3.setX(getX() + 20);
 			p3.setY(getY() + 25);
 			currentProjectiles.add(p3);
@@ -263,7 +283,7 @@ public class Player extends MoveableObject
 			lastFireTime = System.currentTimeMillis();
 		}
 	}
-	
+
 	public char getTopDirection(char currentDirection)
 	{
 		if (currentDirection == 'N')
@@ -326,8 +346,8 @@ public class Player extends MoveableObject
 	{
 		return currentItem.getName();
 	}
-	
-	public boolean hasItem ()
+
+	public boolean hasItem()
 	{
 		if (currentItem != null)
 			return true;
@@ -335,20 +355,21 @@ public class Player extends MoveableObject
 	}
 
 	/**
-	 * Sets the players current item to the given item or null if there is no item
+	 * Sets the players current item to the given item or null if there is no
+	 * item
 	 * @param i the item to give to the player
-     */
+	 */
 	public void setItem(Item i)
 	{
 		// Automatically consumed upon pickup
 		if (i == null)
 			currentItem = i;
 		else if (i.getName() == "key")
-			numKeys ++;
+			numKeys++;
 		else if (i.getName() == "bomb")
-			numBombs ++;
+			numBombs++;
 		else if (i.getName() == "silvercoin")
-			numCoins ++;
+			numCoins++;
 		else if (i.getName() == "goldcoin")
 			numCoins += 5;
 		// Manually consumed items
@@ -372,8 +393,8 @@ public class Player extends MoveableObject
 	{
 		this.numKeys = numKeys;
 	}
-	
-	public void addKeys (int keys)
+
+	public void addKeys(int keys)
 	{
 		numKeys += keys;
 	}
@@ -382,34 +403,33 @@ public class Player extends MoveableObject
 	{
 		return numKeys > 0;
 	}
-	
-	public int getNumBombs ()
+
+	public int getNumBombs()
 	{
 		return numBombs;
 	}
-	
-	public void addBombs (int bombs)
+
+	public void addBombs(int bombs)
 	{
 		numBombs += bombs;
 	}
-	
-	
-	public void setNumBombs (int numBombs)
+
+	public void setNumBombs(int numBombs)
 	{
 		this.numBombs = numBombs;
 	}
-	
+
 	public int getNumCoins()
 	{
 		return numCoins;
 	}
-	
-	public void addCoins (int coins)
+
+	public void addCoins(int coins)
 	{
 		numCoins += coins;
 	}
-	
-	public void setNumCoin (int numCoins)
+
+	public void setNumCoin(int numCoins)
 	{
 		this.numCoins = numCoins;
 	}
@@ -434,7 +454,7 @@ public class Player extends MoveableObject
 		return movingWest;
 	}
 
-	public void updateProjectiles ()
+	public void updateProjectiles()
 	{
 		// Update projectiles
 		int removedProjectiles = 0;
@@ -449,7 +469,7 @@ public class Player extends MoveableObject
 			}
 		}
 	}
-	
+
 	public void update(ArrayList<GameObject> rocks)
 	{
 		if (movingNorth && !collidesWithRocks(rocks))
@@ -484,8 +504,6 @@ public class Player extends MoveableObject
 				moveWest();
 			}
 		}
-
-
 
 		if (isShooting)
 		{
@@ -533,16 +551,29 @@ public class Player extends MoveableObject
 				}
 			}
 		}
-		
+
 		if (bomb != null)
 		{
 			if (System.currentTimeMillis() - bombPlaceTime > BOMB_TIME)
 			{
 				System.out.println("BOMB EXPLOSION");
+				michaelBay = new GameObject((int) bomb.getX(),
+						(int) bomb.getY(), michaelBayImage, new Dimension(80,
+								80), new Dimension(80, 80), 0, 0);
 				bomb = null;
-			}
+				explosionActive = true;
 
+				bombExplosionTime = System.currentTimeMillis();
+			}
 		}
+
+		if (explosionActive
+				&& System.currentTimeMillis() - bombExplosionTime > BOMB_TIME)
+		{
+			michaelBay = null;
+			explosionActive = false;
+		}
+
 	}
 
 	/**
@@ -561,8 +592,8 @@ public class Player extends MoveableObject
 		}
 		return false;
 	}
-	
-	public boolean useCoins ()
+
+	public boolean useCoins()
 	{
 		if (numCoins >= 2)
 		{
@@ -571,15 +602,29 @@ public class Player extends MoveableObject
 		}
 		return false;
 	}
-	
-	public boolean useBomb ()
+
+	public boolean useBomb()
 	{
-		if (numBombs >= 1&& bomb == null)
+		if (numBombs >= 1 && bomb == null)
 		{
-			numBombs --;
+			numBombs--;
 			return true;
 		}
 		return false;
+	}
+	
+	public GameObject getMichaelBay ()
+	{
+		if (explosionActive)
+			return michaelBay;
+		return null;
+	}
+	
+	public boolean hasMichaelBay()
+	{
+		if (michaelBay == null)
+			return false;
+		return true;
 	}
 
 	public void draw(Graphics g)
@@ -589,51 +634,55 @@ public class Player extends MoveableObject
 
 		// Movement hitbox
 		g.setColor(Color.GREEN);
-//		g.drawRect((int) getShadowHitbox().getX(), (int) getShadowHitbox().getY(), (int)getShadowHitbox().getWidth(), (int) getShadowHitbox().getHeight());
+		// g.drawRect((int) getShadowHitbox().getX(), (int)
+		// getShadowHitbox().getY(), (int)getShadowHitbox().getWidth(), (int)
+		// getShadowHitbox().getHeight());
 
 		// Projectile collision hitbox
 		g.setColor(Color.red);
-//		Rectangle r = getHitBox();
-//		g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
-//				(int) r.getHeight());
+		// Rectangle r = getHitBox();
+		// g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
+		// (int) r.getHeight());
 
 		if (bomb != null)
 		{
-			g.drawImage(bombImage, (int)bomb.getX(), (int)bomb.getY(), null);
+			g.drawImage(bombImage, (int) bomb.getX(), (int) bomb.getY(), null);
 		}
 
-		
+		if (explosionActive)
+			g.drawImage(michaelBayImage, (int)michaelBay.getX(), (int)michaelBay.getY(), null);
+
 		// Draw HP level in the HUD
 		for (int n = 0; n < this.getMaxHP(); n++)
 		{
 			if (n < 5)
 			{
 				if (n < this.getCurrentHP())
-					g.drawImage(fullHeart, 820 + (30 * n) , 70, null);
+					g.drawImage(fullHeart, 820 + (30 * n), 70, null);
 				else
-					g.drawImage(emptyHeart, 820 + (30 * n) , 70, null);
+					g.drawImage(emptyHeart, 820 + (30 * n), 70, null);
 			}
 			else if (n < 10)
 			{
 				if (n < this.getCurrentHP())
-					g.drawImage(fullHeart, 670 + (30 * n) , 70 + 30, null);
+					g.drawImage(fullHeart, 670 + (30 * n), 70 + 30, null);
 				else
-					g.drawImage(emptyHeart, 670 + (30 * n) , 70 + 30, null);
+					g.drawImage(emptyHeart, 670 + (30 * n), 70 + 30, null);
 			}
-			else 
+			else
 			{
 				if (n < this.getCurrentHP())
-					g.drawImage(fullHeart, 520 + (30 * n) , 130, null);
+					g.drawImage(fullHeart, 520 + (30 * n), 130, null);
 				else
-					g.drawImage(emptyHeart, 520 + (30 * n) , 130, null);
+					g.drawImage(emptyHeart, 520 + (30 * n), 130, null);
 			}
 		}
-		
+
 		// Draw the item in the HUD
 		if (hasItem())
 			g.drawImage(currentItem.getImage(), 720, 80, null);
-		
-		// Draw number of keys, bombs, coins 
+
+		// Draw number of keys, bombs, coins
 		g.setFont(itemTextFont);
 		g.setColor(Color.BLACK);
 		g.drawString(Integer.toString(numCoins), 435, 63);
@@ -698,30 +747,31 @@ public class Player extends MoveableObject
 		{
 			isShooting = true;
 		}
-		
+
 		if (key == KeyEvent.VK_ENTER)
 		{
 			if (hasItem())
 				useItem();
 		}
-		
+
 		if (key == KeyEvent.VK_Q)
 		{
 			// There are enough coins to go invincible
 			if (useCoins())
 				takeDamage(0);
 		}
-		
+
 		if (key == KeyEvent.VK_E)
 		{
 			if (useBomb() && bomb == null)
 			{
-				bomb = new Item("bomb", (int)getX(), (int)getY(), bombImage, new Dimension(58, 38), true);
+				bomb = new Item("bomb", (int) getX(), (int) getY(), bombImage,
+						new Dimension(58, 38), true);
+				bombX = (int) bomb.getX();
+				bombY = (int) bomb.getY();
 				bombPlaceTime = System.currentTimeMillis();
 			}
 		}
-		
-		
 
 	}
 
