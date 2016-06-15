@@ -78,7 +78,7 @@ public class MenuState implements GameState
 		// Play button
 		if (x > 615 && x < 919 && y > 223 && y < 314)
 		{
-			GameStateManager.setState(State.PLAY);
+			GameStateManager.setState(State.INTRO);
 		}
 		else if (x > 615 && x < 919 && y > 338 && y < 425)
 		{

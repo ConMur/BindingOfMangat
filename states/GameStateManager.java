@@ -29,6 +29,7 @@ public final class GameStateManager {
         states.add(new WinState());
         states.add(new DeadState());
         states.add(new InstructionsState());
+        states.add(new IntroCutsceneState());
 
         currentStateValue = State.MENU;
         currentState = states.get(currentStateValue.ordinal());
