@@ -26,13 +26,16 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
 	private boolean running;
 
-	private long lastTime;
 
 	private JLabel fpsLabel;
 
 	private int oldWidth, oldHeight;
 
-	private int frames;
+	//Variables for timing
+	private long lastTime = System.nanoTime();
+	private final double amountOfTicks = 60.0;
+	private double ns = 1000000000 / amountOfTicks;
+	private double delta = 0;
 
 	public GamePanel()
 	{
@@ -40,8 +43,6 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 		running = true;
 		
 		setPreferredSize(new Dimension(1024, 768));
-
-		lastTime = System.nanoTime();
 
 		fpsLabel = new JLabel();
 		add(fpsLabel);
@@ -57,89 +58,35 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	}
 
 	/**
-	 * Initializes any resources and starts the program
+	 * Initializes any resources and starts the program. Contains the game's main loop
 	 */
 	public void go()
 	{
-		long lastTime = System.nanoTime();
-		final double amountOfTicks = 60.0;
-		double ns = 1000000000 / amountOfTicks;
-		double delta = 0;
-		int ticks = 0;
-		frames = 0;
-		long timer = System.currentTimeMillis();
-
+		//Initialize static classes
 		ImageManager.init();
 		GameStateManager.init();
 
 		long lastFrameTime = System.nanoTime();
 
+		//The main loop
 		while (running) {
+
+			//Update and draw only when the fps dips below 60
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			if (delta >= 1) {
 				update();
 				draw();
-				ticks++;
 				delta--;
 
+				//Update the displayed fps on screen
 				double deltaFrameTime = (System.nanoTime() - lastFrameTime)/1000000000.0;
 				Util.setDeltaTime(deltaFrameTime);
 				lastFrameTime = System.nanoTime();
 				fpsLabel.setText("FPS: " + (int)Util.calcFPS(deltaFrameTime));
 			}
-			frames++;
-
-
-			if (System.currentTimeMillis() - timer > 1000) {
-				timer += 1000;
-				frames = 0;
-				ticks = 0;
-			}
-
-
 		}
-		/*
-		//Initialize static classes
-		ImageManager.init();
-		GameStateManager.init();
-
-		//Program loop
-		while (running)
-		{
-			// Calculate the time between frames
-			long currentTime = System.nanoTime();
-			double deltaTime = (currentTime - lastTime) / 1000000000.0;
-			Util.setDeltaTime(deltaTime);
-			// Update the simulation
-			update();
-
-			//Check if the window was resized
-
-			int height = getHeight();
-			int width = getWidth();
-			if(width != oldWidth || height != oldHeight )
-			{
-				ImageManager.resizeImages(width, height);
-				oldWidth = width;
-				oldHeight = height;
-			}
-			// Draw the updates
-			draw();
-
-			lastTime = currentTime;
-			fpsLabel.setText("fps: " + (int)Util.calcFPS(deltaTime));
-			try
-			{
-				Thread.sleep(16);
-			}
-			catch (InterruptedException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
 	}
 
 	/**
