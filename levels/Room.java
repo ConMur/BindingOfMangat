@@ -425,10 +425,10 @@ public class Room
 
 		if (hasEnemies())
 		{
-			northOpen = true;
-			southOpen = true;
-			eastOpen = true;
-			westOpen = true;
+			northOpen = false;
+			southOpen = false;
+			eastOpen = false;
+			westOpen = false;
 		}
 
 		// No enemies, open all doors
@@ -484,8 +484,8 @@ public class Room
 		// Check if at trapDoor
 		if (showTrapDoor)
 		{
-			if (x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 70
-					&& y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 70)
+			 if (x > ROOM_CENTRE_X - 30 && x < ROOM_CENTRE_X + 30
+	                    && y > ROOM_CENTRE_Y - 60 && y < ROOM_CENTRE_Y)
 			{
 				endRoom();
 				LevelManager.advanceLevel();
