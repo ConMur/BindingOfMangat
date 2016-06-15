@@ -62,7 +62,7 @@ public class Projectile extends GameObject
 
 			//TODO: reset damage to 10
 			this.speed = 300;
-			this.dmg = 1000;
+			this.dmg = 10;
 			lifeSpan = 500;
 		}
 		// Broken pencils (triple shot, faster with less dmg)
