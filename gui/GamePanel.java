@@ -32,6 +32,8 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
 	private int oldWidth, oldHeight;
 
+	private int frames;
+
 	public GamePanel()
 	{
 		super();
@@ -59,6 +61,46 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	 */
 	public void go()
 	{
+		long lastTime = System.nanoTime();
+		final double amountOfTicks = 60.0;
+		double ns = 1000000000 / amountOfTicks;
+		double delta = 0;
+		int ticks = 0;
+		frames = 0;
+		long timer = System.currentTimeMillis();
+
+		ImageManager.init();
+		GameStateManager.init();
+
+		long lastFrameTime = System.nanoTime();
+
+		while (running) {
+			long now = System.nanoTime();
+			delta += (now - lastTime) / ns;
+			lastTime = now;
+			if (delta >= 1) {
+				update();
+				draw();
+				ticks++;
+				delta--;
+
+				double deltaFrameTime = (System.nanoTime() - lastFrameTime)/1000000000.0;
+				Util.setDeltaTime(deltaFrameTime);
+				lastFrameTime = System.nanoTime();
+				fpsLabel.setText("FPS: " + (int)Util.calcFPS(deltaFrameTime));
+			}
+			frames++;
+
+
+			if (System.currentTimeMillis() - timer > 1000) {
+				timer += 1000;
+				frames = 0;
+				ticks = 0;
+			}
+
+
+		}
+		/*
 		//Initialize static classes
 		ImageManager.init();
 		GameStateManager.init();
@@ -97,7 +139,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	/**
