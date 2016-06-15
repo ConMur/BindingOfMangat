@@ -59,9 +59,10 @@ public class Projectile extends GameObject
 			this.setXShadow(4);
 			this.setYShadow(24);
 			
-			
+
+			//TODO: reset damage to 10
 			this.speed = 300;
-			this.dmg = 10;
+			this.dmg = 1000;
 			lifeSpan = 500;
 		}
 		// Broken pencils (triple shot, faster with less dmg)

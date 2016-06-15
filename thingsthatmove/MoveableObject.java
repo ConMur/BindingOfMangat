@@ -68,6 +68,15 @@ public class MoveableObject extends GameObject
 	}
 
 	/**
+	 * Sets this moveable object's health to the given value
+	 * @param newHp the new hp of this moveable object
+     */
+	public void setCurrentHP(int newHp)
+	{
+		hp = newHp;
+	}
+
+	/**
 	 * Returns the max hp of this moveable object
 	 * @return the max hp of this moveable object
      */
