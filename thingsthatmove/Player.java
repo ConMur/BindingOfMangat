@@ -195,9 +195,7 @@ public class Player extends MoveableObject {
                 this.heal(10);
                 currentItem = null;
             }
-
         }
-
     }
 
     /**
@@ -434,6 +432,15 @@ public class Player extends MoveableObject {
      */
     public boolean hasKeys() {
         return numKeys > 0;
+    }
+    
+    /**
+     * Clears the player bombs
+     */
+    public void clearBombs () {
+    	explosionActive = false;
+    	michaelBay = null;
+    	bomb = null;
     }
 
     /**
