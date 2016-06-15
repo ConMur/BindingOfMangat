@@ -961,6 +961,7 @@ public class Room
 	{
 		System.out.println("ENDING ROOM");
 		inRoom = false;
+		player.clearBombs();
 		// Clear all projectiles
 		player.clearProjectiles();
 	}
