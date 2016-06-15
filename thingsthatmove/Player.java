@@ -116,7 +116,7 @@ public class Player extends MoveableObject {
         michaelBay = null;
 
         numKeys = 2;
-        numBombs = 5;
+        numBombs = 1;
         numCoins = 2;
 
         //Load the images for the player
