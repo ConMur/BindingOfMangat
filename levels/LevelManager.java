@@ -187,7 +187,7 @@ public final class LevelManager {
         try {
             items.add(new Item("ankh", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/ankh.png")), new Dimension(75, 61), true));
             items.add(new Item("blockofwood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/blockofwood.png")), new Dimension(60, 14), true));
-//            items.add(new Item("bombguidebook", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bombguidebook.png")), new Dimension(39, 37), true));
+            items.add(new Item("bombguidebook", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/bombguidebook.png")), new Dimension(39, 37), true));
             items.add(new Item("brokenpencil", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/brokenpencil.png")), new Dimension(60, 30), true));
             items.add(new Item("c++", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/c++.png")), new Dimension(58, 31), true));
             items.add(new Item("caffood", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/caffood.png")), new Dimension(69, 24), true));
