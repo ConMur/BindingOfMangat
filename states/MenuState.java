@@ -77,15 +77,22 @@ public class MenuState implements GameState
 	{
 		// Play button
 		if (x > 615 && x < 919 && y > 223 && y < 314)
+		{
 			GameStateManager.setState(State.PLAY);
-		// Instructions button
-//		else if (x > 615 && x < 919 && y > 338 && y < 425)
-
-		// Exit button
-//		else if (x > 615 && x < 919 && y > 552 && y < 617)
-//		{
-//			System.exit(0);
-//		}
+		}
+		else if (x > 615 && x < 919 && y > 338 && y < 425)
+		{
+			// Instructions button	
+			GameStateManager.setState(State.INSTRUCTIONS);
+		}
+		else if (x > 615 && x < 919 && y > 449 && y < 514)
+		{
+			//Exit button
+			System.exit(0);
+		}
+		
+		
+		
 
 	}
 
