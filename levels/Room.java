@@ -1139,11 +1139,11 @@ public class Room
 		{
 			if (north.getRoomType() == RoomType.BOSS)
 				if (northOpen)
-					g.drawImage(northOpenBossDoor, NORTH_DOOR_X, NORTH_DOOR_Y,
+					g.drawImage(northOpenBossDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100,
 							null);
 				else
 					g.drawImage(northClosedBossDoor, NORTH_DOOR_X,
-							NORTH_DOOR_Y, null);
+							NORTH_DOOR_Y - 100, null);
 			else if (northOpen && !north.isLocked())
 				g.drawImage(northOpenDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100,
 						null);
