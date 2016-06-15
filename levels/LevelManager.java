@@ -346,7 +346,7 @@ public final class LevelManager {
         } else if (levelNumber == 5) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/ridoutfront.png"));
-                enemyList.add(new Ridout(1, 5, 250, 500, 500, bossImage, new Dimension(128, 79), 5, 2, true, true));
+                enemyList.add(new Ridout(1, 5, 250, 500, 500, bossImage, new Dimension(128, 79), 5, 1, true, true));
             } catch (IOException ioe) {
                 System.err.println("Error loading ridout image file");
                 ioe.printStackTrace();
@@ -462,10 +462,12 @@ public final class LevelManager {
         currentLevel.stopAllRooms();
         ++levelNumber;
 
+        System.out.println("level number " + levelNumber + " number of levels "  + NUMBER_OF_LEVELS);
         //If there are no more levels, the player won
-        if (levelNumber >= NUMBER_OF_LEVELS) {
+        if (levelNumber > NUMBER_OF_LEVELS) {
             //Player won
             GameStateManager.setState(State.WIN);
+            return;
         }
         currentLevel = levels.get(levelNumber - 1);
         currentLevel.start();
