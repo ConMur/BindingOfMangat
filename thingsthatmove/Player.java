@@ -66,6 +66,7 @@ public class Player extends MoveableObject {
     private BufferedImage mangatHurtFront, mangatHurtBack, mangatHurtLeft,
             mangatHurtRight, bombImage, michaelBayImage;
     private BufferedImage fullHeart, emptyHeart;
+    private BufferedImage p1Image, p2Image;
 
     /**
      * Creates a player with the given values
@@ -124,6 +125,10 @@ public class Player extends MoveableObject {
                     .getResourceAsStream("/images/items/bomb.png"));
             michaelBayImage = ImageIO.read(LevelManager.class
                     .getResourceAsStream("/images/michaelbay.png"));
+            p1Image = ImageIO.read(getClass().getResourceAsStream(
+					"/images/projectiles/player/projectile1.png"));
+            p2Image = ImageIO.read(getClass().getResourceAsStream(
+					"/images/items/brokenpencil.png"));
             mangatFront = ImageIO.read(getClass().getResourceAsStream(
                     "/images/mangat/mangatfront.png"));
             mangatBack = ImageIO.read(getClass().getResourceAsStream(
@@ -747,6 +752,12 @@ public class Player extends MoveableObject {
         // Draw the item in the HUD
         if (hasItem())
             g.drawImage(currentItem.getImage(), 720, 80, null);
+        
+        // Draw the projectile in the HUD
+        if (this.getProjectile() == 1)
+        	g.drawImage(p1Image, 580, 100, null);
+        else if (getProjectile() == 2)
+        	g.drawImage(p2Image, 565, 80, null);
 
         // Draw number of keys, bombs, coins
         g.setFont(itemTextFont);
