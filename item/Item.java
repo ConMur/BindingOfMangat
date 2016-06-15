@@ -86,6 +86,7 @@ public class Item extends GameObject
 		}
 		else if (name.equals("bombguidebook"))
 		{
+			player.addBombs(2);
 			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("brokenpencil"))
@@ -139,11 +140,10 @@ public class Item extends GameObject
 		}
 		else if (name.equals("lotteryticket"))
 		{
-
 			if (r.nextInt(2) == 0)
 			{
 				player.heal(10);
-				player.setNumCoin(99);
+				player.setNumCoin(10);
 			}
 			else
 				player.takeDamage(2);
