@@ -186,7 +186,7 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(46,25));
+			this.setSize(new Dimension(43,19));
 			this.setShadowSize(new Dimension(43,8));
 			this.setXShadow(3);
 			this.setYShadow(20);
