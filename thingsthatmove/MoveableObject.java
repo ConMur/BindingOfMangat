@@ -13,8 +13,8 @@ public class MoveableObject extends GameObject
 {
 	private final int LOWER_X_BOUND = 90;
 	private final int UPPER_X_BOUND = 940;
-	private final int LOWER_Y_BOUND = 220;
-	private final int UPPER_Y_BOUND = 660;
+	private final int LOWER_Y_BOUND = 225;
+	private final int UPPER_Y_BOUND = 655;
 	private int dmg, hp, speed, maxHP;
 
 	/**
