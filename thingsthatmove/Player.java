@@ -786,7 +786,40 @@ public class Player extends MoveableObject {
 
         // Draw the item in the HUD
         if (hasItem())
-            g.drawImage(currentItem.getImage(), 720, 80, null);
+        {
+        	if (currentItem.getName().equals("fireflower"))
+        		g.drawImage(currentItem.getImage(), 700, 75, null);
+        	else if (currentItem.getName().equals("ankh"))
+        		g.drawImage(currentItem.getImage(), 717, 85, null);
+        	else if (currentItem.getName().equals("blockofwood"))
+        		g.drawImage(currentItem.getImage(), 705, 105, null);
+        	else if (currentItem.getName().equals("bombguidebook"))
+        		g.drawImage(currentItem.getImage(), 717, 84, null);
+        	else if (currentItem.getName().equals("brokenpencil"))
+        		g.drawImage(currentItem.getImage(), 709, 84, null);
+        	else if (currentItem.getName().equals("c++"))
+        		g.drawImage(currentItem.getImage(), 709, 84, null);
+        	else if (currentItem.getName().equals("caffood"))
+        		g.drawImage(currentItem.getImage(), 700, 95, null);
+        	else if (currentItem.getName().equals("compscisweater"))
+        		g.drawImage(currentItem.getImage(), 690, 75, null);
+        	else if (currentItem.getName().equals("halo"))
+        		g.drawImage(currentItem.getImage(), 700, 95, null);
+        	else if (currentItem.getName().equals("lotteryticket"))
+        		g.drawImage(currentItem.getImage(), 690, 85, null);
+        	else if (currentItem.getName().equals("masterkey"))
+        		g.drawImage(currentItem.getImage(), 720, 75, null);
+        	else if (currentItem.getName().equals("usb"))
+        		g.drawImage(currentItem.getImage(), 690, 84, null);
+        	else if (currentItem.getName().equals("socksandsandals"))
+        		g.drawImage(currentItem.getImage(), 700, 75, null);
+        	else if (currentItem.getName().equals("wheyprotein"))
+        		g.drawImage(currentItem.getImage(), 700, 75, null);
+        	else if (currentItem.getName().equals("steak"))
+        		g.drawImage(currentItem.getImage(), 695, 85, null);
+        	else if (currentItem.getName().equals("duedateextension"))
+        		g.drawImage(currentItem.getImage(), 705, 75, null);
+        }
         
         // Draw the projectile in the HUD
         if (this.getProjectile() == 1)
