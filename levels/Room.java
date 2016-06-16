@@ -1,4 +1,3 @@
-
 package levels;
 
 import item.Item;
@@ -16,15 +15,12 @@ import javax.imageio.ImageIO;
 
 import states.GameStateManager;
 import states.State;
-import thingsthatmove.Enemy;
-import thingsthatmove.GameObject;
-import thingsthatmove.Gissing;
-import thingsthatmove.Player;
-import thingsthatmove.Projectile;
+import thingsthatmove.*;
 
 /**
- * A Room in the game. It can contain Enemies, Items and other GameObjects and has a rock pattern in it.
- * The room manages everything inside it except the player.
+ * A Room in the game. It can contain Enemies, Items and other GameObjects and
+ * has a rock pattern in it. The room manages everything inside it except the
+ * player.
  *
  * @author Matthew Sun, Connor Murphy
  */
@@ -36,7 +32,6 @@ public class Room {
     private ArrayList<GameObject> roomObjects = new ArrayList<GameObject>();
     private ArrayList<GameObject> roomRocks = new ArrayList<GameObject>();
 
-
     private Thread moveEnemies, playerEnemyCollision, enemyProjectile;
     private Player player;
     private Image background, hud;
@@ -45,8 +40,10 @@ public class Room {
     private Image northOpenDoor, southOpenDoor, eastOpenDoor, westOpenDoor;
     private BufferedImage northLockedDoor, southLockedDoor, eastLockedDoor,
             westLockedDoor;
-    private BufferedImage northClosedBossDoor, southClosedBossDoor, eastClosedBossDoor, westClosedBossDoor;
-    private BufferedImage northOpenBossDoor, southOpenBossDoor, eastOpenBossDoor, westOpenBossDoor;
+    private BufferedImage northClosedBossDoor, southClosedBossDoor,
+            eastClosedBossDoor, westClosedBossDoor;
+    private BufferedImage northOpenBossDoor, southOpenBossDoor,
+            eastOpenBossDoor, westOpenBossDoor;
     private Room north, east, south, west;
     private boolean northOpen, southOpen, eastOpen, westOpen;
     private boolean atNorthDoor, atSouthDoor, atEastDoor, atWestDoor;
@@ -57,6 +54,7 @@ public class Room {
     private boolean isLocked;
     private boolean found;
 
+    private boolean pauseRoom;
 
     // CHANGE THIS FOR DIFFERENT ROOM PATTERNS (1-7 FOR NOW)
     private RockPattern roomPattern;
@@ -107,7 +105,8 @@ public class Room {
      * @param west    the Room the west door connects to
      */
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPattern pattern,
+                ArrayList<GameObject> go, Player p, boolean locked, RoomType type,
+                RockPattern pattern,
                 Room north, Room east,
                 Room south, Room west) {
         this.enemies = e;
@@ -156,18 +155,25 @@ public class Room {
             trapDoor = ImageIO.read(getClass().getResourceAsStream(
                     "/images/doors/trapdoor.png"));
 
-            //Boss closed doors
-            northClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosednorth.png"));
-            southClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosedsouth.png"));
-            eastClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosedeast.png"));
-            westClosedBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorclosedwest.png"));
+            // Boss closed doors
+            northClosedBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdoorclosednorth.png"));
+            southClosedBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdoorclosedsouth.png"));
+            eastClosedBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdoorclosedeast.png"));
+            westClosedBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdoorclosedwest.png"));
 
-            //Boss open doors
-            northOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoornorth.png"));
-            southOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorsouth.png"));
-            eastOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdooreast.png"));
-            westOpenBossDoor = ImageIO.read(getClass().getResourceAsStream("/images/doors/bossdoorwest.png"));
-
+            // Boss open doors
+            northOpenBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdoornorth.png"));
+            southOpenBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdoorsouth.png"));
+            eastOpenBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdooreast.png"));
+            westOpenBossDoor = ImageIO.read(getClass().getResourceAsStream(
+                    "/images/doors/bossdoorwest.png"));
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -189,10 +195,12 @@ public class Room {
         roomPattern = pattern;
         roomRocks = roomPattern.getRocks();
 
-        //If this is a boss room then set the item the boss drops
+        // If this is a boss room then set the item the boss drops
         if (roomType == RoomType.BOSS) {
             bossItem = items.remove(0);
         }
+
+        pauseRoom = false;
     }
 
     /**
@@ -207,7 +215,8 @@ public class Room {
      * @param pattern the pattern of rocks this room has
      */
     public Room(ArrayList<Enemy> e, ArrayList<Item> i,
-                ArrayList<GameObject> go, Player p, boolean locked, RoomType type, RockPattern pattern) {
+                ArrayList<GameObject> go, Player p, boolean locked, RoomType type,
+                RockPattern pattern) {
         this(e, i, go, p, locked, type, pattern, null, null, null, null);
         found = false;
     }
@@ -223,9 +232,11 @@ public class Room {
      * @param south   the Room the south door connects to
      * @param west    the Room the west door connects to
      */
-    public Room(boolean locked, RoomType type, RockPattern pattern, Room north, Room east,
+    public Room(boolean locked, RoomType type, RockPattern pattern, Room north,
+                Room east,
                 Room south, Room west) {
-        this(null, null, null, null, locked, type, pattern, north, east, south, west);
+        this(null, null, null, null, locked, type, pattern, north, east, south,
+                west);
         found = false;
     }
 
@@ -305,27 +316,46 @@ public class Room {
      * Updates the room
      */
     public void update() {
-        player.update(roomRocks);
-        checkIfPlayerOnItem();
-        updateDoorStatus();
-        checkIfPlayerAtDoor();
-        checkProjectileCollision();
-        checkIfPlayerDead();
+        if (!pauseRoom) {
+            player.update(roomRocks);
+            checkIfPlayerOnItem();
+            updateDoorStatus();
+            checkIfPlayerAtDoor();
+            checkProjectileCollision();
+            checkIfPlayerDead();
+        } else {
+            // Resume the game when ridout finishes his cutscene
+            if (roomType == RoomType.BOSS) {
+                for (Enemy e : enemies) {
+                    if (e instanceof Ridout) {
+                        Ridout ridout = (Ridout) e;
+                        if (ridout.resumeGame()) {
+                            pauseRoom = false;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * Checks if the player is standing over an item and picks it up if so.  If the item is a coin, bomb or key those
-     * values for the player are updated and the item is instantly consumed. If the item is anything else, it is held
-     * by the player for later use
+     * Checks if the player is standing over an item and picks it up if so. If
+     * the item is a coin, bomb or key those values for the player are updated
+     * and the item is instantly consumed. If the item is anything else, it is
+     * held by the player for later use
      */
     private void checkIfPlayerOnItem() {
         int itemsRemoved = 0;
         for (int i = 0; i < items.size(); ++i) {
             Item item = items.get(i - itemsRemoved);
 
-            //If there is an item, give it to the player if they have no other item
-            //If the item is a key, coin or bomb, increment the player counts for those items instead
-            if (player.getHitBox().intersects(item.getHitBox()) && !player.hasItem()) {
+            // If there is an item, give it to the player if they have no other
+            // item
+            // If the item is a key, coin or bomb, increment the player counts
+            // for those items instead
+            if (player.getHitBox().intersects(item.getHitBox())
+                    && !player.hasItem()) {
                 String itemName = item.getName();
                 if (itemName.equals("silvercoin")) {
                     player.addCoins(5);
@@ -345,8 +375,9 @@ public class Room {
     }
 
     /**
-     * Sets flags to open unlocked doors when there are no enemies in the room or open locked doors when the player
-     * has keys. When there are enemies in the room, sets the flags to close all doors
+     * Sets flags to open unlocked doors when there are no enemies in the room
+     * or open locked doors when the player has keys. When there are enemies in
+     * the room, sets the flags to close all doors
      */
     public void updateDoorStatus() {
         // Keep all doors closed if there are enemies
@@ -356,6 +387,7 @@ public class Room {
             eastOpen = true;
             westOpen = true;
         }
+
         // No enemies, open all doors
         else {
             if (north != null)
@@ -391,26 +423,28 @@ public class Room {
             atNorthDoor = true;
         } else if (south != null && southOpen && x > 412 && x < 518 && y > 600) {
             atSouthDoor = true;
-        } else if (east != null && eastOpen && x > 845 && y > 360 && y < 450) {
+        } else if (east != null && eastOpen && x > 845 && y > 360 && y < 420) {
             atEastDoor = true;
-        } else if (west != null && westOpen && x < 90 && y > 360 && y < 450) {
+        } else if (west != null && westOpen && x < 90 && y > 360 && y < 420) {
             atWestDoor = true;
         }
 
         // Check if at trapDoor
         if (showTrapDoor) {
-            if (x + 32> ROOM_CENTRE_X && x + 32 < ROOM_CENTRE_X + 70
-                    && y + 32> ROOM_CENTRE_Y && y + 32 < ROOM_CENTRE_X + 70) {
-                endRoom();
-                LevelManager.advanceLevel();
+            if (x + 32 > ROOM_CENTRE_X && x + 32 < ROOM_CENTRE_X + 70
+                    && y + 32 > ROOM_CENTRE_Y && y + 32 < ROOM_CENTRE_X + 70)
+                {
+                    endRoom();
+                    LevelManager.advanceLevel();
+                }
             }
         }
-    }
 
-    /**
-     * Checks collisions between all the projectiles and the enemies in this
-     * room
-     */
+        /**
+         * Checks collisions between all the projectiles and the enemies in this
+         * room
+         */
+
     private void checkProjectileCollision() {
         // Get the latest update on the projectiles
         player.updateProjectiles();
@@ -431,7 +465,8 @@ public class Room {
             // Go through all rock objects
             for (int z = 0; z < roomRocks.size(); z++) {
                 // Projectile has hit a rock
-                if (pj.getShadowHitbox().intersects(roomRocks.get(z).getRockHitBox()))
+                if (pj.getShadowHitbox().intersects(
+                        roomRocks.get(z).getRockHitBox()))
                     pj.killProjectile();
             }
         }
@@ -448,8 +483,8 @@ public class Room {
     }
 
     /**
-     * Returns if the player is at the north door. If the player is at a locked door with keys, the player has one key
-     * removed and the door is unlocked.
+     * Returns if the player is at the north door. If the player is at a locked
+     * door with keys, the player has one key removed and the door is unlocked.
      *
      * @return if the player is at the north door
      */
@@ -466,8 +501,8 @@ public class Room {
     }
 
     /**
-     * Returns if the player is at the south door. If the player is at a locked door with keys, the player has one key
-     * removed and the door is unlocked.
+     * Returns if the player is at the south door. If the player is at a locked
+     * door with keys, the player has one key removed and the door is unlocked.
      *
      * @return if the player is at the south door
      */
@@ -484,8 +519,8 @@ public class Room {
     }
 
     /**
-     * Returns if the player is at the east door. If the player is at a locked door with keys, the player has one key
-     * removed and the door is unlocked.
+     * Returns if the player is at the east door. If the player is at a locked
+     * door with keys, the player has one key removed and the door is unlocked.
      *
      * @return if the player is at the east door
      */
@@ -502,8 +537,8 @@ public class Room {
     }
 
     /**
-     * Returns if the player is at the west door. If the player is at a locked door with keys, the player has one key
-     * removed and the door is unlocked.
+     * Returns if the player is at the west door. If the player is at a locked
+     * door with keys, the player has one key removed and the door is unlocked.
      *
      * @return if the player is at the west door
      */
@@ -548,7 +583,7 @@ public class Room {
     }
 
     /**
-     * Sets the player in this room  to null
+     * Sets the player in this room to null
      */
     public void removePlayer() {
         this.player = null;
@@ -824,12 +859,14 @@ public class Room {
     public void endRoom() {
         System.out.println("ENDING ROOM");
         inRoom = false;
+        player.clearBombs();
         // Clear all projectiles
         player.clearProjectiles();
     }
 
     /**
-     * Update the rectangular representation of all the hitboxes in the room to their new coordinates
+     * Update the rectangular representation of all the hitboxes in the room to
+     * their new coordinates
      */
     public void updateHitboxes() {
         // Remove all current hitboxes
@@ -854,7 +891,8 @@ public class Room {
     }
 
     /**
-     * Returns if the enemy specified by the index intersects with the given hitbox
+     * Returns if the enemy specified by the index intersects with the given
+     * hitbox
      *
      * @param enemyIndex  the index of the enemy to check
      * @param enemyHitbox the hitbox to check the enemy against
@@ -874,7 +912,8 @@ public class Room {
     }
 
     /**
-     * Sorts all objects in the game based on their y position so that shadows appear normally
+     * Sorts all objects in the game based on their y position so that shadows
+     * appear normally
      */
     public void sortAllGameObjects() {
         // roomObjects.addAll(enemies);
@@ -899,63 +938,78 @@ public class Room {
     }
 
     /**
-     * Draws the room, HUD background, enemes, items, the player and the room's rock pattern
+     * Draws the room, HUD background, enemes, items, the player and the room's
+     * rock pattern
      *
      * @param g the graphics to draw to
      */
     public void draw(Graphics g) {
-        g.drawImage(hud, 0, 0, null);
-        g.drawImage(background, 0, 198, null);
-        g.setColor(Color.RED);
+        if (!pauseRoom) {
+            g.drawImage(hud, 0, 0, null);
+            g.drawImage(background, 0, 198, null);
+            g.setColor(Color.RED);
 
+            // g.drawRect(130, 325, 720, 250);
 
-        // g.drawRect(130, 325, 720, 250);
+            g.setColor(Color.BLACK);
+            // g.drawRect(LOWER_X_BOUND, LOWER_Y_BOUND, UPPER_X_BOUND -
+            // LOWER_X_BOUND,
+            // UPPER_Y_BOUND - LOWER_Y_BOUND);
 
+            roomPattern.draw(g);
 
-        g.setColor(Color.BLACK);
-//        g.drawRect(LOWER_X_BOUND, LOWER_Y_BOUND, UPPER_X_BOUND - LOWER_X_BOUND,
-//                UPPER_Y_BOUND - LOWER_Y_BOUND);
+            drawDoors(g);
+            sortAllGameObjects();
+            for (int e = 0; e < enemies.size(); e++) {
+                Enemy currentEnemy = enemies.get(e);
+                // Rectangle r = currentEnemy.getHitBox();
+                g.drawImage(currentEnemy.getImage(), (int) currentEnemy.getX(),
+                        (int) currentEnemy.getY(), null);
+                // g.drawRect((int) r.getX(), (int) r.getY(), (int)
+                // r.getWidth(),
+                // (int) r.getHeight());
 
+                currentEnemy.draw(g);
+            }
 
-        roomPattern.draw(g);
+            // Collision hitbox
+            // g.setColor(Color.RED);
+            // for (int h = 0; h < hitboxes.size(); h++)
+            // g.drawRect((int) hitboxes.get(h).getX(), (int)
+            // hitboxes.get(h).getY(), (int) hitboxes.get(h).getWidth(), (int)
+            // hitboxes.get(h).getHeight());
+            //
+            // // Movement hitbox
+            // g.setColor(Color.GREEN);
+            // for (int h = 0; h < movementHitboxes.size(); h++)
+            // g.drawRect((int) movementHitboxes.get(h).getX(), (int)
+            // movementHitboxes.get(h).getY(), (int)
+            // movementHitboxes.get(h).getWidth(), (int)
+            // movementHitboxes.get(h).getHeight());
 
-        drawDoors(g);
-        sortAllGameObjects();
-        for (int e = 0; e < enemies.size(); e++) {
-            Enemy currentEnemy = enemies.get(e);
-//            Rectangle r = currentEnemy.getHitBox();
-            g.drawImage(currentEnemy.getImage(), (int) currentEnemy.getX(),
-                    (int) currentEnemy.getY(), null);
-//            g.drawRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(),
-//                    (int) r.getHeight());
+            for (int i = 0; i < items.size(); i++) {
+                items.get(i).draw(g);
+            }
 
-            currentEnemy.draw(g);
+            // for (GameObject currentRoomObject : roomObjects)
+            // {
+            // g.drawImage(currentRoomObject.getImage(),
+            // (int) currentRoomObject.getX(),
+            // (int) currentRoomObject.getY(), null);
+            // }
+            //
+
+            player.draw(g);
+        } else {
+            // Draw the ridout cutscenes
+            for (Enemy e : enemies) {
+                if (e instanceof Ridout) {
+                    Ridout ridout = (Ridout) e;
+                    ridout.draw(g);
+                }
+                break;
+            }
         }
-
-        // Collision hitbox
-//        g.setColor(Color.RED);
-//        for (int h = 0; h < hitboxes.size(); h++)
-//            g.drawRect((int) hitboxes.get(h).getX(), (int) hitboxes.get(h).getY(), (int) hitboxes.get(h).getWidth(), (int) hitboxes.get(h).getHeight());
-//
-//        // Movement hitbox
-//        g.setColor(Color.GREEN);
-//        for (int h = 0; h < movementHitboxes.size(); h++)
-//            g.drawRect((int) movementHitboxes.get(h).getX(), (int) movementHitboxes.get(h).getY(), (int) movementHitboxes.get(h).getWidth(), (int) movementHitboxes.get(h).getHeight());
-
-
-        for (int i = 0; i < items.size(); i++) {
-            items.get(i).draw(g);
-        }
-
-        // for (GameObject currentRoomObject : roomObjects)
-        // {
-        // g.drawImage(currentRoomObject.getImage(),
-        // (int) currentRoomObject.getX(),
-        // (int) currentRoomObject.getY(), null);
-        // }
-        //
-
-        player.draw(g);
     }
 
     /**
@@ -968,9 +1022,11 @@ public class Room {
         if (north != null) {
             if (north.getRoomType() == RoomType.BOSS)
                 if (northOpen)
-                    g.drawImage(northOpenBossDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100, null);
+                    g.drawImage(northOpenBossDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100,
+                            null);
                 else
-                    g.drawImage(northClosedBossDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100, null);
+                    g.drawImage(northClosedBossDoor, NORTH_DOOR_X,
+                            NORTH_DOOR_Y - 100, null);
             else if (northOpen && !north.isLocked())
                 g.drawImage(northOpenDoor, NORTH_DOOR_X, NORTH_DOOR_Y - 100,
                         null);
@@ -984,9 +1040,11 @@ public class Room {
         if (south != null) {
             if (south.getRoomType() == RoomType.BOSS)
                 if (southOpen)
-                    g.drawImage(southOpenBossDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
+                    g.drawImage(southOpenBossDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y,
+                            null);
                 else
-                    g.drawImage(southClosedBossDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
+                    g.drawImage(southClosedBossDoor, SOUTH_DOOR_X,
+                            SOUTH_DOOR_Y, null);
             else if (southOpen && !south.isLocked())
                 g.drawImage(southOpenDoor, SOUTH_DOOR_X, SOUTH_DOOR_Y, null);
             else if (south.isLocked())
@@ -997,9 +1055,11 @@ public class Room {
         if (east != null) {
             if (east.getRoomType() == RoomType.BOSS)
                 if (eastOpen)
-                    g.drawImage(eastOpenBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+                    g.drawImage(eastOpenBossDoor, EAST_DOOR_X, EAST_DOOR_Y,
+                            null);
                 else
-                    g.drawImage(eastClosedBossDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
+                    g.drawImage(eastClosedBossDoor, EAST_DOOR_X, EAST_DOOR_Y,
+                            null);
             else if (eastOpen && !east.isLocked())
                 g.drawImage(eastOpenDoor, EAST_DOOR_X, EAST_DOOR_Y, null);
             else if (east.isLocked())
@@ -1010,9 +1070,11 @@ public class Room {
         if (west != null) {
             if (west.getRoomType() == RoomType.BOSS)
                 if (westOpen)
-                    g.drawImage(westOpenBossDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
+                    g.drawImage(westOpenBossDoor, WEST_DOOR_X - 100,
+                            WEST_DOOR_Y, null);
                 else
-                    g.drawImage(westClosedBossDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
+                    g.drawImage(westClosedBossDoor, WEST_DOOR_X - 100,
+                            WEST_DOOR_Y, null);
             else if (westOpen && !west.isLocked())
                 g.drawImage(westOpenDoor, WEST_DOOR_X - 100, WEST_DOOR_Y, null);
             else if (west.isLocked())
@@ -1047,36 +1109,56 @@ public class Room {
     }
 
     /**
-     * Removes all dead enemies from the room. If the enemy was a boss, a trap door is opened and the boss drops an
-     * item
+     * Removes all dead enemies from the room. If the enemy was a boss, a trap
+     * door is opened and the boss drops an item
      */
     public void killDeadEnemies() {
         int enemiesRemoved = 0;
         for (int n = 0; n < enemies.size(); n++) {
-            if (!enemies.get(n - enemiesRemoved).isAlive()) {
-                enemies.remove(n - enemiesRemoved);
-                if (roomType == RoomType.BOSS && !hasEnemies()) {
-                    showTrapDoor = true;
-                    items.add(bossItem);
+            Enemy e = enemies.get(n - enemiesRemoved);
+            if (!e.isAlive()) {
+                if (e instanceof Ridout) {
+                    Ridout ridout = (Ridout) e;
+                    synchronized (ridout) {
+                        if (!ridout.hasUpgraded()) {
+                            ridout.loseLife();
+                            pauseRoom = true;
+                        } else {
+                            enemies.remove(n - enemiesRemoved);
+                            ++enemiesRemoved;
+                            showTrapDoor = true;
+                            System.out.println("removed enemy");
+                        }
+                    }
+                } else {
+                    enemies.remove(n - enemiesRemoved);
+                    if (roomType == RoomType.BOSS && !hasEnemies()) {
+                        showTrapDoor = true;
+                        items.add(bossItem);
+                    }
+                    enemiesRemoved++;
+                    System.out.println("removed enemy");
                 }
-                enemiesRemoved++;
             }
         }
     }
 
     /**
-     * A thread that deals with the playercollisions that an enemy has
+     * A thread that deals with the player collisions that an enemy has
      *
      * @author Matthew Sun
      */
     private class EnemyPlayerCollisionThread implements Runnable {
         public void run() {
             while (inRoom) {
-                killDeadEnemies();
-                synchronized (enemies) {
-                    for (int n = 0; n < enemies.size(); n++) {
-                        if (enemies.get(n).getShadowHitbox().intersects(player.getHitBox()))
-                            player.takeDamage(enemies.get(n).getDamage());
+                if (!pauseRoom) {
+                    killDeadEnemies();
+                    synchronized (enemies) {
+                        for (int n = 0; n < enemies.size(); n++) {
+                            if (enemies.get(n).getShadowHitbox()
+                                    .intersects(player.getHitBox()))
+                                player.takeDamage(enemies.get(n).getDamage());
+                        }
                     }
                 }
             }
@@ -1086,9 +1168,11 @@ public class Room {
     private class EnemyProjectileThread implements Runnable {
         public void run() {
             while (inRoom) {
-                for (int n = 0; n < enemies.size(); n++) {
-                    Enemy currentEnemy = enemies.get(n);
+                if (!pauseRoom) {
+                    for (int n = 0; n < enemies.size(); n++) {
+                        Enemy currentEnemy = enemies.get(n);
 
+                    }
                 }
             }
         }
@@ -1100,144 +1184,172 @@ public class Room {
     private class EnemyMovementThread implements Runnable {
         public void run() {
             while (inRoom) {
-                killDeadEnemies();
-                synchronized (enemies) {
-                    for (int n = 0; n < enemies.size(); n++) {
-                        // Each enemy can go four directions (N,E,S,W)
-                        // Enemies decide on which direction to take on a random
-                        // basis
-                        // Enemies want to (more likely) to continue moving in a
-                        // direction, until they hit another game object
-                        // After hitting another game object they will decide
-                        // another direction on a random basis
-                        // When enemies are within aggro-range follow players
-                        // Enemies cannot overlap other game objects
-                        Enemy currentEnemy = enemies.get(n);
-                        // if (!currentEnemy.isAlive())
-                        // {
-                        // if (roomType == RoomType.BOSS)
-                        // {
-                        // showTrapDoor = true;
-                        // }
-                        // enemies.remove(n);
-                        // }
-                        // Only move moveable enemies
-                        if (currentEnemy.canMove()) {
-                            Random r = new Random();
+                if (!pauseRoom) {
+                    killDeadEnemies();
+                    synchronized (enemies) {
+                        for (int n = 0; n < enemies.size(); n++) {
+                            // Each enemy can go four directions (N,E,S,W)
+                            // Enemies decide on which direction to take on a
+                            // random
+                            // basis
+                            // Enemies want to (more likely) to continue moving
+                            // in a
+                            // direction, until they hit another game object
+                            // After hitting another game object they will
+                            // decide
+                            // another direction on a random basis
+                            // When enemies are within aggro-range follow
+                            // players
+                            // Enemies cannot overlap other game objects
+                            Enemy currentEnemy = enemies.get(n);
+                            // if (!currentEnemy.isAlive())
+                            // {
+                            // if (roomType == RoomType.BOSS)
+                            // {
+                            // showTrapDoor = true;
+                            // }
+                            // enemies.remove(n);
+                            // }
+                            // Only move moveable enemies
+                            if (currentEnemy.canMove()) {
+                                Random r = new Random();
 
-                            // No initial direction
-                            if (currentEnemy.getDirection() == ' ')
-                                currentEnemy.setRandomDirection();
-                                // Already moving in a direction
-                            else {
-                                // Set a 5% chance to change direction
-                                if (r.nextInt(100) >= 95)
+                                // No initial direction
+                                if (currentEnemy.getDirection() == ' ')
                                     currentEnemy.setRandomDirection();
-                            }
+                                    // Already moving in a direction
+                                else {
+                                    // Set a 5% chance to change direction
+                                    if (r.nextInt(100) >= 95)
+                                        currentEnemy.setRandomDirection();
+                                }
 
-                            // Keep track of old coordinates
-                            int oldX = (int) currentEnemy.getX();
-                            int oldY = (int) currentEnemy.getY();
-                            // Enemy is of the aggresive type
-                            if (currentEnemy.isAngry()) {
-                                int enemyWidth = (int) currentEnemy.getSize()
-                                        .getWidth();
-                                int enemyHeight = (int) currentEnemy.getSize()
-                                        .getHeight();
-                                // Make an aggro rectangle for range
-                                // Aggro range is in a 3 * enemy width by 3 *
-                                // enemy
-                                // height box with the enemy in the centre
-                                Rectangle aggroBox = new Rectangle(oldX
-                                        - enemyWidth, oldY - enemyHeight,
-                                        enemyWidth * 3, enemyHeight * 3);
-                                // Player is within aggro range
-                                if (aggroBox.intersects(player.getHitBox())) {
-                                    // Change direction to run at the player
-                                    // AGGRESIVELY
-                                    currentEnemy.setSpeed(300);
-                                    if (player.getX() < currentEnemy.getX() + 50
-                                            && player.getX() > currentEnemy
-                                            .getX()) {
-                                        if (player.getY() > currentEnemy.getY())
-                                            currentEnemy.setDirection('S');
+                                // Keep track of old coordinates
+                                int oldX = (int) currentEnemy.getX();
+                                int oldY = (int) currentEnemy.getY();
+                                // Enemy is of the aggresive type
+                                if (currentEnemy.isAngry()) {
+                                    int enemyWidth = (int) currentEnemy
+                                            .getSize()
+                                            .getWidth();
+                                    int enemyHeight = (int) currentEnemy
+                                            .getSize()
+                                            .getHeight();
+                                    // Make an aggro rectangle for range
+                                    // Aggro range is in a 3 * enemy width by 3
+                                    // *
+                                    // enemy
+                                    // height box with the enemy in the centre
+                                    Rectangle aggroBox = new Rectangle(oldX
+                                            - enemyWidth, oldY - enemyHeight,
+                                            enemyWidth * 3, enemyHeight * 3);
+                                    // Player is within aggro range
+                                    if (aggroBox.intersects(player.getHitBox())) {
+                                        // Change direction to run at the player
+                                        // AGGRESIVELY
+                                        currentEnemy.setSpeed(300);
+                                        if (player.getX() < currentEnemy.getX() + 50
+                                                && player.getX() > currentEnemy
+                                                .getX()) {
+                                            if (player.getY() > currentEnemy
+                                                    .getY())
+                                                currentEnemy.setDirection('S');
+                                            else
+                                                currentEnemy.setDirection('N');
+                                        } else if (player.getX() > currentEnemy
+                                                .getX())
+                                            currentEnemy.setDirection('E');
                                         else
-                                            currentEnemy.setDirection('N');
-                                    } else if (player.getX() > currentEnemy
-                                            .getX())
-                                        currentEnemy.setDirection('E');
-                                    else
-                                        currentEnemy.setDirection('W');
-                                } else
-                                    currentEnemy.setSpeed(200);
-                            }
-                            // Move the enemy in its direction
-                            currentEnemy.moveInDirection();
-                            // There is a collision with another ENEMY or ITEM
-                            // (not
-                            // player) so move back and change direction
-                            updateHitboxes();
-                            if (enemyCollision(n, currentEnemy.getShadowHitbox())) {
-                                currentEnemy.move(oldX, oldY);
-                                currentEnemy.setRandomDirection();
+                                            currentEnemy.setDirection('W');
+                                    } else
+                                        currentEnemy.setSpeed(200);
+                                }
+                                // Move the enemy in its direction
                                 currentEnemy.moveInDirection();
-
-                                // Still collision
+                                // There is a collision with another ENEMY or
+                                // ITEM
+                                // (not
+                                // player) so move back and change direction
                                 updateHitboxes();
-                                if (enemyCollision(n, currentEnemy.getShadowHitbox())) {
+                                if (enemyCollision(n,
+                                        currentEnemy.getShadowHitbox())) {
                                     currentEnemy.move(oldX, oldY);
                                     currentEnemy.setRandomDirection();
                                     currentEnemy.moveInDirection();
 
                                     // Still collision
                                     updateHitboxes();
-                                    if (enemyCollision(n, currentEnemy.getShadowHitbox()))
+                                    if (enemyCollision(n,
+                                            currentEnemy.getShadowHitbox())) {
                                         currentEnemy.move(oldX, oldY);
+                                        currentEnemy.setRandomDirection();
+                                        currentEnemy.moveInDirection();
+
+                                        // Still collision
+                                        updateHitboxes();
+                                        if (enemyCollision(n,
+                                                currentEnemy.getShadowHitbox()))
+                                            currentEnemy.move(oldX, oldY);
+                                    }
+                                }
+
+                                // Gissing projectile behaviour
+                                if (currentEnemy instanceof Gissing) {
+                                    // Gissing is a beast so he shoots all
+                                    // directions
+                                    currentEnemy.shootAllDirections();
+                                }
+                                // Student enemy
+                                else {
+                                    // Normal students shoot one direction
+                                    currentEnemy.shootProjectile(currentEnemy
+                                            .getDirection());
+                                }
+
+                                // Get the latest update of projectiles
+                                currentEnemy.updateProjectiles();
+                                ArrayList<Projectile> currentP = currentEnemy
+                                        .getAllProjectiles();
+                                // Go through all projectiles of the current
+                                // enemy
+                                for (int p = 0; p < currentP.size(); p++) {
+                                    // Hits a player
+                                    if (currentP.get(p).getHitBox()
+                                            .intersects(player.getHitBox()))
+                                        player.takeDamage(currentEnemy
+                                                .getDamage());
+                                        // Hits a rock
+                                    else
+                                        for (int z = 0; z < roomRocks.size(); z++) {
+                                            if (currentP
+                                                    .get(p)
+                                                    .getHitBox()
+                                                    .intersects(
+                                                            roomRocks
+                                                                    .get(z)
+                                                                    .getRockHitBox()))
+                                                currentP.get(p)
+                                                        .killProjectile();
+                                        }
+
+                                }
+
+                                // Check enemy collision with MIIIIICHAEL BAY
+                                if (player.hasMichaelBay()) {
+                                    if (currentEnemy.getHitBox().intersects(
+                                            player.getMichaelBay()
+                                                    .getRockHitBox()))
+                                        currentEnemy.takeDamage(10);
                                 }
                             }
 
-                            // Gissing projectile behaviour
-                            if (currentEnemy instanceof Gissing) {
-                                // Gissing is a beast so he shoots all directions
-                                currentEnemy.shootAllDirections();
-                            }
-                            // Student enemy
-                            else {
-                                // Normal students shoot one direction
-                                currentEnemy.shootProjectile(currentEnemy.getDirection());
-                            }
-
-                            // Get the latest update of projectiles
-                            currentEnemy.updateProjectiles();
-                            ArrayList<Projectile> currentP = currentEnemy.getAllProjectiles();
-                            // Go through all projectiles of the current enemy
-                            for (int p = 0; p < currentP.size(); p++) {
-                                // Hits a player
-                                if (currentP.get(p).getHitBox().intersects(player.getHitBox()))
-                                    player.takeDamage(currentEnemy.getDamage());
-                                    // Hits a rock
-                                else
-                                    for (int z = 0; z < roomRocks.size(); z++) {
-                                        if (currentP.get(p).getHitBox().intersects(roomRocks.get(z).getRockHitBox()))
-                                            currentP.get(p).killProjectile();
-                                    }
-
-                            }
-
-                            // Check enemy collision with MIIIIICHAEL BAY
-                            if (player.hasMichaelBay())
-                            {
-                            	if (currentEnemy.getHitBox().intersects(player.getMichaelBay().getRockHitBox()))
-                            		currentEnemy.takeDamage(10);
-                            }
                         }
-
                     }
-                }
 
-                try {
-                    Thread.sleep(20);
-                } catch (Exception exc) {
+                    try {
+                        Thread.sleep(20);
+                    } catch (Exception exc) {
+                    }
                 }
             }
         }

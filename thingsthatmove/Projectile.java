@@ -230,7 +230,7 @@ public class Projectile extends GameObject
 			try
 			{
 				image = ImageIO.read(getClass().getResourceAsStream(
-						"/images/projectiles/enemy/canada.PNG"));
+						"/images/projectiles/enemy/canada.png"));
 			}
 			catch (IOException ioe)
 			{
@@ -253,7 +253,7 @@ public class Projectile extends GameObject
 			try
 			{
 				image = ImageIO.read(getClass().getResourceAsStream(
-						"/images/projectiles/enemy/journal.PNG"));
+						"/images/projectiles/enemy/journal.png"));
 			}
 			catch (IOException ioe)
 			{
