@@ -210,7 +210,8 @@ public final class LevelManager {
         
             items.add(new Item("socksandsandals", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/socksandsandals.png")), new Dimension(69,40), true));
             items.add(new Item("wheyprotein", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/wheyprotein.png")), new Dimension(72,39), true));
-            items.add(new Item("steak", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/socksandsandals.png")), new Dimension(81,34), true));
+            items.add(new Item("steak", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/steak.png")), new Dimension(81,34), true));
+            items.add(new Item("duedateextension", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/items/duedateextension.png")), new Dimension(67,86), true));
 
             
             items.add(new Item("key", 450, 400, ImageIO.read(LevelManager.class.getResourceAsStream("/images/key.png")), new Dimension(40, 32), true));

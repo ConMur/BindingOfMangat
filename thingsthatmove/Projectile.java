@@ -129,7 +129,7 @@ public class Projectile extends GameObject
 
 			//TODO: reset damage to 10
 			this.speed = 600;
-			this.dmg = 3;
+			this.dmg = 2;
 			lifeSpan = 500;
 		}
 		// Reflective Sunglasses (instant speed, low dmg)

@@ -128,12 +128,12 @@ public class RockPatterns {
                             + 120 * row, rock, rockDimension, null, 0, 0));
 
             //Spawn locations
-            spawnLocations.add(new Point(130, 335));
+            spawnLocations.add(new Point(130, 240));
             spawnLocations.add(new Point(130,460));
             spawnLocations.add(new Point(490,335));
             spawnLocations.add(new Point(490,460));
-            spawnLocations.add(new Point(850,335));
-            spawnLocations.add(new Point(850,460));
+            spawnLocations.add(new Point(855,335));
+            spawnLocations.add(new Point(855,460));
         }
         // Open box pattern
         else if (newPattern == 5) {

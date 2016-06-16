@@ -193,6 +193,12 @@ public class Item extends GameObject
 			player.heal(10);
 			appliedEffectsToPlayer = true;
 		}
+		else if (name.equals("duedateextension"))
+		{
+			player.setMaxHP(player.getMaxHP() + 4);
+			player.heal(10);
+			appliedEffectsToPlayer = true;
+		}
 
 		//Item was used, remove it from the player's inventory
 		if(appliedEffectsToPlayer)

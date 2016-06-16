@@ -243,7 +243,7 @@ public class Player extends MoveableObject {
         projectile = projectileNumber;
         
         if (projectileNumber == 4)
-        	this.setFireRate(200);
+        	this.setFireRate(50);
         else if (projectileNumber == 1 || projectileNumber == 2)
         	setFireRate(500);
     }
@@ -794,7 +794,7 @@ public class Player extends MoveableObject {
         else if (getProjectile() == 2)
         	g.drawImage(p2Image, 565, 80, null);
         else if (getProjectile() == 4)
-        	g.drawImage(p4Image, 565, 80, null);
+        	g.drawImage(p4Image, 555, 70, null);
 
         // Draw number of keys, bombs, coins
         g.setFont(itemTextFont);
