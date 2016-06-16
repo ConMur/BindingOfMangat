@@ -113,6 +113,7 @@ public class Item extends GameObject
 		}
 		else if (name.equals("fireflower"))
 		{
+			player.setProjectile(4);
 			appliedEffectsToPlayer = true;
 		}
 		else if (name.equals("glasses"))
@@ -173,6 +174,23 @@ public class Item extends GameObject
 			}
 			else
 				player.takeDamage(1);
+			appliedEffectsToPlayer = true;
+		}
+		else if (name.equals("socksandsandals"))
+		{
+			player.setSpeed(player.getSpeed() + 100);
+			appliedEffectsToPlayer = true;
+		}
+		else if (name.equals("wheyprotein"))
+		{
+			player.setMaxHP(player.getMaxHP() + 2);
+			player.heal(1);
+			appliedEffectsToPlayer = true;
+		}
+		else if (name.equals("steak"))
+		{
+			player.setMaxHP(player.getMaxHP() + 2);
+			player.heal(10);
 			appliedEffectsToPlayer = true;
 		}
 

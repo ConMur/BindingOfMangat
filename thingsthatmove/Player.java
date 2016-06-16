@@ -66,7 +66,7 @@ public class Player extends MoveableObject {
     private BufferedImage mangatHurtFront, mangatHurtBack, mangatHurtLeft,
             mangatHurtRight, bombImage, michaelBayImage;
     private BufferedImage fullHeart, emptyHeart;
-    private BufferedImage p1Image, p2Image;
+    private BufferedImage p1Image, p2Image, p4Image;
 
     /**
      * Creates a player with the given values
@@ -129,6 +129,8 @@ public class Player extends MoveableObject {
 					"/images/projectiles/player/projectile1.png"));
             p2Image = ImageIO.read(getClass().getResourceAsStream(
 					"/images/items/brokenpencil.png"));
+            p4Image = ImageIO.read(getClass().getResourceAsStream(
+					"/images/items/fireflower.png"));
             mangatFront = ImageIO.read(getClass().getResourceAsStream(
                     "/images/mangat/mangatfront.png"));
             mangatBack = ImageIO.read(getClass().getResourceAsStream(
@@ -239,6 +241,20 @@ public class Player extends MoveableObject {
      */
     public void setProjectile(int projectileNumber) {
         projectile = projectileNumber;
+        
+        if (projectileNumber == 4)
+        	this.setFireRate(200);
+        else if (projectileNumber == 1 || projectileNumber == 2)
+        	setFireRate(500);
+    }
+    
+    /**
+     * Sets the firerate of player
+     * @param f the fire rate
+     */
+    public void setFireRate(int f)
+    {
+    	fireRate = f;
     }
 
     /**
@@ -266,6 +282,25 @@ public class Player extends MoveableObject {
             }
         } else if (projectile == 2)
             shootTripleProjectiles(direction);
+        else if (projectile == 4)
+        {
+        	  if (System.currentTimeMillis() - lastFireTime > fireRate) {
+                  Projectile p = new Projectile(getProjectile(), direction);
+
+                  // When facing back, put the projectile near the top of the head
+                  if (getImage() == mangatBack || getImage() == mangatHurtBack) {
+                      p.setY(getY());
+                  } else {
+                      // For any other direction, have the projectile start in the
+                      // centre of the player's head
+                      p.setY(getY() + 50);
+                  }
+                  p.setX(getX() + 20);
+
+                  currentProjectiles.add(p);
+                  lastFireTime = System.currentTimeMillis();
+              }
+        }
     }
 
     /**
@@ -758,6 +793,8 @@ public class Player extends MoveableObject {
         	g.drawImage(p1Image, 580, 100, null);
         else if (getProjectile() == 2)
         	g.drawImage(p2Image, 565, 80, null);
+        else if (getProjectile() == 4)
+        	g.drawImage(p4Image, 565, 80, null);
 
         // Draw number of keys, bombs, coins
         g.setFont(itemTextFont);

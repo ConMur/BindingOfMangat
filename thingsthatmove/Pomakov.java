@@ -12,6 +12,8 @@ public class Pomakov extends Enemy {
                  Dimension size, int maxHP, boolean shouldMove, boolean anger)
     {
         super(dmg, hp, speed, xPos, yPos, image, size, maxHP, shouldMove, anger,  new Dimension(66, 14), 4, 115);
+        setFireRate(3000);
+        setProjectile(10);
     }
     
 }
