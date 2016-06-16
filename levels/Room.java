@@ -351,10 +351,10 @@ public class Room {
     public void updateDoorStatus() {
         // Keep all doors closed if there are enemies
         if (hasEnemies()) {
-            northOpen = false;
-            southOpen = false;
-            eastOpen = false;
-            westOpen = false;
+            northOpen = true;
+            southOpen = true;
+            eastOpen = true;
+            westOpen = true;
         }
         // No enemies, open all doors
         else {

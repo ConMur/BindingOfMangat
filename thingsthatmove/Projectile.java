@@ -224,6 +224,7 @@ public class Projectile extends GameObject
 			this.dmg = 1;
 			lifeSpan = 500;
 		}
+		// MR MAC PROJECTILE
 		else if (projectileNum == 9)
 		{
 			try
@@ -246,6 +247,7 @@ public class Projectile extends GameObject
 			this.dmg = 1;
 			lifeSpan = 500;
 		}
+		// POMAKOV PROJECTILE
 		else if (projectileNum == 10)
 		{
 			try
@@ -259,13 +261,13 @@ public class Projectile extends GameObject
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
-			this.setSize(new Dimension(111,120));
-			this.setShadowSize(new Dimension(104,22));
-			this.setXShadow(2);
-			this.setYShadow(122);
+			this.setSize(new Dimension(72,78));
+			this.setShadowSize(new Dimension(67,13));
+			this.setXShadow(1);
+			this.setYShadow(80);
 			
 			this.speed = 500;
-			this.dmg = 1;
+			this.dmg = 2;
 			lifeSpan = 1000;
 		}
 		isDead = false;
