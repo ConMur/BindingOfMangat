@@ -113,17 +113,23 @@ public class Projectile extends GameObject
 			try
 			{
 				image = ImageIO.read(getClass().getResourceAsStream(
-						"/images/projectiles/player/projectile4.png"));
+						"/images/projectiles/player/projectile2.png"));
 			}
 			catch (IOException ioe)
 			{
-				System.err.println("Error loading projectile 4");
+				System.err.println("Error loading projectile 1");
 				ioe.printStackTrace();
 			}
 			this.setImage(image);
 			this.setSize(new Dimension(30, 25));
+			this.setShadowSize(new Dimension (25, 5));
+			this.setXShadow(4);
+			this.setYShadow(24);
+			
+
+			//TODO: reset damage to 10
 			this.speed = 600;
-			this.dmg = 10;
+			this.dmg = 3;
 			lifeSpan = 500;
 		}
 		// Reflective Sunglasses (instant speed, low dmg)
@@ -217,6 +223,50 @@ public class Projectile extends GameObject
 			this.speed = 50;
 			this.dmg = 1;
 			lifeSpan = 500;
+		}
+		else if (projectileNum == 9)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/enemy/canada.PNG"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 1");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(42,27));
+			this.setShadowSize(new Dimension(30,7));
+			this.setXShadow(6);
+			this.setYShadow(28);
+			
+			this.speed = 400;
+			this.dmg = 1;
+			lifeSpan = 500;
+		}
+		else if (projectileNum == 10)
+		{
+			try
+			{
+				image = ImageIO.read(getClass().getResourceAsStream(
+						"/images/projectiles/enemy/journal.PNG"));
+			}
+			catch (IOException ioe)
+			{
+				System.err.println("Error loading projectile 1");
+				ioe.printStackTrace();
+			}
+			this.setImage(image);
+			this.setSize(new Dimension(111,120));
+			this.setShadowSize(new Dimension(104,22));
+			this.setXShadow(2);
+			this.setYShadow(122);
+			
+			this.speed = 500;
+			this.dmg = 1;
+			lifeSpan = 1000;
 		}
 		isDead = false;
 	}
