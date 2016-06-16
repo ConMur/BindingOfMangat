@@ -391,9 +391,9 @@ public class Room {
             atNorthDoor = true;
         } else if (south != null && southOpen && x > 412 && x < 518 && y > 600) {
             atSouthDoor = true;
-        } else if (east != null && eastOpen && x > 845 && y > 340 && y < 405) {
+        } else if (east != null && eastOpen && x > 845 && y > 360 && y < 450) {
             atEastDoor = true;
-        } else if (west != null && westOpen && x < 90 && y > 340 && y < 405) {
+        } else if (west != null && westOpen && x < 90 && y > 360 && y < 450) {
             atWestDoor = true;
         }
 
