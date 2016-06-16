@@ -57,9 +57,57 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 		addMouseMotionListener(this);
 	}
 
+
+
 	/**
 	 * Initializes any resources and starts the program. Contains the game's main loop
 	 */
+	/**
+	 * Initializes any resources and starts the program
+	 */
+	public void go()
+	{
+		//Initialize static classes
+		ImageManager.init();
+		GameStateManager.init();
+
+		//Program loop
+		while (running)
+		{
+			// Calculate the time between frames
+			long currentTime = System.nanoTime();
+			double deltaTime = (currentTime - lastTime) / 1000000000.0;
+			Util.setDeltaTime(deltaTime);
+			// Update the simulation
+			update();
+
+			//Check if the window was resized
+
+			int height = getHeight();
+			int width = getWidth();
+			if(width != oldWidth || height != oldHeight )
+			{
+				ImageManager.resizeImages(width, height);
+				oldWidth = width;
+				oldHeight = height;
+			}
+			// Draw the updates
+			draw();
+
+			lastTime = currentTime;
+			fpsLabel.setText("fps: " + (int)Util.calcFPS(deltaTime));
+			try
+			{
+				Thread.sleep(16);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/*
 	public void go()
 	{
 		//Initialize static classes
@@ -87,7 +135,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 				fpsLabel.setText("FPS: " + (int)Util.calcFPS(deltaFrameTime));
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Updates the program
