@@ -26,22 +26,18 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 
 	private boolean running;
 
-
 	private JLabel fpsLabel;
 
 	private int oldWidth, oldHeight;
 
 	//Variables for timing
 	private long lastTime = System.nanoTime();
-	private final double amountOfTicks = 60.0;
-	private double ns = 1000000000 / amountOfTicks;
-	private double delta = 0;
 
 	public GamePanel()
 	{
 		super();
 		running = true;
-		
+
 		setPreferredSize(new Dimension(1024, 768));
 
 		fpsLabel = new JLabel();
@@ -57,18 +53,12 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 		addMouseMotionListener(this);
 	}
 
-
-
 	/**
 	 * Initializes any resources and starts the program. Contains the game's main loop
 	 */
-	/**
-	 * Initializes any resources and starts the program
-	 */
 	public void go()
 	{
-		//Initialize static classes
-		ImageManager.init();
+		//Initialize the game state manager
 		GameStateManager.init();
 
 		//Program loop
@@ -78,24 +68,19 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 			long currentTime = System.nanoTime();
 			double deltaTime = (currentTime - lastTime) / 1000000000.0;
 			Util.setDeltaTime(deltaTime);
+
 			// Update the simulation
 			update();
 
-			//Check if the window was resized
-
-			int height = getHeight();
-			int width = getWidth();
-			if(width != oldWidth || height != oldHeight )
-			{
-				ImageManager.resizeImages(width, height);
-				oldWidth = width;
-				oldHeight = height;
-			}
 			// Draw the updates
 			draw();
 
 			lastTime = currentTime;
+
+			//Display the FPS
 			fpsLabel.setText("fps: " + (int)Util.calcFPS(deltaTime));
+
+			//Sleep the thread
 			try
 			{
 				Thread.sleep(16);
@@ -222,6 +207,6 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if(e.getButton() == MouseEvent.BUTTON1)
-		GameStateManager.mousePressed(e.getX(), e.getY());
+			GameStateManager.mousePressed(e.getX(), e.getY());
 	}
 }
