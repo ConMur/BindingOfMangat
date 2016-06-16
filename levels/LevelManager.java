@@ -356,7 +356,7 @@ public final class LevelManager {
         } else if (levelNumber == 5) {
             try {
                 BufferedImage bossImage = ImageIO.read(LevelManager.class.getResourceAsStream("/images/bosses/ridoutfront.png"));
-                enemyList.add(new Ridout(1, 100, 250, 500, 500, bossImage, new Dimension(128, 79), 100, 2, true, true));
+                enemyList.add(new Ridout(1, 100, 250, 500, 500, bossImage, new Dimension(128, 79), 100, 1, true, true));
             } catch (IOException ioe) {
                 System.err.println("Error loading ridout image file");
                 ioe.printStackTrace();

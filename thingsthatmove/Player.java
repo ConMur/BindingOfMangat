@@ -179,30 +179,30 @@ public class Player extends MoveableObject {
      * @param amount the amount to decrease the player's hp by
      */
     public void takeDamage(int amount) {
-//        if (System.currentTimeMillis() - lastDmgTime > invincibleTime) {
-//            super.takeDamage(amount);
-//            lastDmgTime = System.currentTimeMillis();
-//            takenDMG = true;
-//
-//            if (getImage() == mangatFront) {
-//                setImage(mangatHurtFront);
-//            } else if (getImage() == mangatBack) {
-//                setImage(mangatHurtBack);
-//            } else if (getImage() == mangatLeft) {
-//                setImage(mangatHurtLeft);
-//            } else if (getImage() == mangatRight) {
-//                setImage(mangatHurtRight);
-//            }
-//
-//            if (currentItem == null) {
-//            } else if (currentItem.getName() == "ankh"
-//                    && this.getCurrentHP() == 0) {
-//                System.out.println("REVIVE");
-//                super.takeDamage(0);
-//                this.heal(10);
-//                currentItem = null;
-//            }
-//        }
+        if (System.currentTimeMillis() - lastDmgTime > invincibleTime) {
+            super.takeDamage(amount);
+            lastDmgTime = System.currentTimeMillis();
+            takenDMG = true;
+
+            if (getImage() == mangatFront) {
+                setImage(mangatHurtFront);
+            } else if (getImage() == mangatBack) {
+                setImage(mangatHurtBack);
+            } else if (getImage() == mangatLeft) {
+                setImage(mangatHurtLeft);
+            } else if (getImage() == mangatRight) {
+                setImage(mangatHurtRight);
+            }
+
+            if (currentItem == null) {
+            } else if (currentItem.getName() == "ankh"
+                    && this.getCurrentHP() == 0) {
+                System.out.println("REVIVE");
+                super.takeDamage(0);
+                this.heal(10);
+                currentItem = null;
+            }
+        }
     }
 
     /**

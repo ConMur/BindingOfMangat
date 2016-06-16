@@ -99,7 +99,7 @@ public class Ridout extends Enemy
 		}
 		else
 		{
-			//NOTE: i do not want to do this in the draw method but it is the only consitant update an enemy has
+			//NOTE: i do not want to do this in the draw method but it is the only consistent update an enemy has
 			if(!playedFirstCutscene) {
 				g.drawImage(firstCutScene, 0, 0, null);
 				if(System.currentTimeMillis() - lastCutsceneTime > CUTSCENE_DISPLAY_LENGTH)

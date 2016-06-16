@@ -332,7 +332,6 @@ public class Room {
                         if (ridout.resumeGame()) {
                             pauseRoom = false;
                         }
-                        break;
                     }
                 }
             }
@@ -382,10 +381,10 @@ public class Room {
     public void updateDoorStatus() {
         // Keep all doors closed if there are enemies
         if (hasEnemies()) {
-            northOpen = true;
-            southOpen = true;
-            eastOpen = true;
-            westOpen = true;
+            northOpen = false;
+            southOpen = false;
+            eastOpen = false;
+            westOpen = false;
         }
 
         // No enemies, open all doors
@@ -1007,7 +1006,6 @@ public class Room {
                     Ridout ridout = (Ridout) e;
                     ridout.draw(g);
                 }
-                break;
             }
         }
     }
