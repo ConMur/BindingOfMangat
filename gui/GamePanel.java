@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements KeyListener, MouseListener, Mou
 		super();
 		running = true;
 
-		setPreferredSize(new Dimension(1024, 768));
+		setPreferredSize(new Dimension(1014, 758));
 
 		fpsLabel = new JLabel();
 		add(fpsLabel);
