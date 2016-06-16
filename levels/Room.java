@@ -399,8 +399,8 @@ public class Room {
 
         // Check if at trapDoor
         if (showTrapDoor) {
-            if (x > ROOM_CENTRE_X && x < ROOM_CENTRE_X + 70
-                    && y > ROOM_CENTRE_Y && y < ROOM_CENTRE_X + 70) {
+            if (x + 32> ROOM_CENTRE_X && x + 32 < ROOM_CENTRE_X + 70
+                    && y + 32> ROOM_CENTRE_Y && y + 32 < ROOM_CENTRE_X + 70) {
                 endRoom();
                 LevelManager.advanceLevel();
             }
@@ -956,7 +956,6 @@ public class Room {
         //
 
         player.draw(g);
-
     }
 
     /**
