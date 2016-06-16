@@ -21,7 +21,7 @@ public class IntroCutsceneState implements GameState
 	private final int NUMBER_SCENES = 23;
 	
 	private long lastSceneTime;
-	private final int CUTSCENE_TIME = 3000;
+	private final int CUTSCENE_TIME = 5000;
 
 	@Override
 	public void init()
