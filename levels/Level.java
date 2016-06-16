@@ -18,8 +18,8 @@ public class Level
 
 	private Minimap minimap;
 
-	private final int PLAYER_SOUTH_X = 450;
-	private final int PLAYER_SOUTH_Y = 560;
+	private final int PLAYER_SOUTH_X = 460;
+	private final int PLAYER_SOUTH_Y = 570;
 
 	private final int PLAYER_NORTH_X = 470;
 	private final int PLAYER_NORTH_Y = 220;
